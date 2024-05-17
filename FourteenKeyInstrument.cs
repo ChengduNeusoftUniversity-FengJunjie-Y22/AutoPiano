@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace AutoPiano
 {
     /// <summary>
-    /// 【抽象类】七音乐器
+    /// 【抽象类】十四音乐器
     /// </summary>
-    internal abstract class Instrument_SevenKey : IMusicalInstrument
+    internal abstract class FourteenKeyInstrument : IMusicalInstrument
     {
-        public abstract InstrumentTypes InstrumentType { get; set; }
+        
     }
 }

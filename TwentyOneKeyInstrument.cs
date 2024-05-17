@@ -9,8 +9,8 @@ namespace AutoPiano
     /// <summary>
     /// 【抽象类】二十一音乐器
     /// </summary>
-    internal abstract class Instrument_TwentyOneKey : IMusicalInstrument
+    internal abstract class TwentyOneKeyInstrument : IMusicalInstrument
     {
-        public abstract InstrumentTypes InstrumentType { get; }
+
     }
 }
