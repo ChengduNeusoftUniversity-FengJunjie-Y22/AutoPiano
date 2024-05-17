@@ -2,6 +2,7 @@
 using System.Security.Permissions;
 using System.Windows.Input;
 using System.Windows.Media;
+using WindowsInput.Native;
 
 /// <summary>
 /// 【枚举】乐器类型
@@ -44,7 +45,7 @@ namespace AutoPiano
     /// <summary>
     /// 【接口】乐器
     /// </summary>
-    internal interface IMusicalInstrument
+    internal interface IMusicalInstrument : IBasic
     {
         /// 预览功能的音频支持文件地址
         public static string AudioForFWPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_FW");
@@ -56,16 +57,55 @@ namespace AutoPiano
         /// <summary>
         /// 切换乐器时，请更新字典
         /// </summary>
-        public static Dictionary<Key, MediaPlayer> KeyToMediaPlayer = new Dictionary<Key, MediaPlayer>();
+        public static Dictionary<VirtualKeyCode, MediaPlayer> KeyToMediaPlayer = new Dictionary<VirtualKeyCode, MediaPlayer>();
 
         /// <summary>
         /// 【接口】乐器类型
         /// </summary>
         public static InstrumentTypes InstrumentType { get; }
 
+        /// <summary>
+        /// 检查预览音频支持文件夹是否完备
+        /// </summary>
         public static void CheckAudioFolder()
         {
+            if (!System.IO.Directory.Exists(AudioForFWPiano))
+            {
+                System.IO.Directory.CreateDirectory(AudioForFWPiano);
+            }
+            if (!System.IO.Directory.Exists(AudioForWFHorn))
+            {
+                System.IO.Directory.CreateDirectory(AudioForWFHorn);
+            }
+            if (!System.IO.Directory.Exists(AudioForJHPiano))
+            {
+                System.IO.Directory.CreateDirectory(AudioForJHPiano);
+            }
+            if (!System.IO.Directory.Exists(AudioForHLDrum))
+            {
+                System.IO.Directory.CreateDirectory(AudioForHLDrum);
+            }
+            if (!System.IO.Directory.Exists(AudioForXMPiano))
+            {
+                System.IO.Directory.CreateDirectory(AudioForXMPiano);
+            }
+        }
 
+        public static void PlayWithKeyCode(VirtualKeyCode target)
+        {
+            MediaPlayer? player = null;
+            KeyToMediaPlayer.TryGetValue(target, out player);
+            if (player != null) { player.Stop(); player.Position = TimeSpan.Zero; player.Play(); }
+        }
+
+        public static void UpdateDictionary(InstrumentTypes type)
+        {
+            switch (type)
+            {
+                case InstrumentTypes.FWPiano:
+
+                    break;
+            }
         }
     }
 }

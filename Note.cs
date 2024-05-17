@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WindowsInput.Native;
+using WindowsInput;
+
+namespace AutoPiano
+{
+    internal class Note : IBasic, IMusicalInstrument
+    {
+        public Note() { }
+
+        public VirtualKeyCode Key { get; set; }
+
+        public int Span { get; set; }
+
+        /// <param name="code">操作码</param>
+        /// <param name="span">时值</param>
+        public Note(VirtualKeyCode code, int span)
+        {
+            Key = code;
+            Span = span;
+        }
+
+        /// <param name="value">操作字符</param>
+        /// <param name="span">时值</param>
+        public Note(char value, int span)
+        {
+            Key = IBasic.GetKeyCode(value);
+            Span = span;
+        }
+
+        public void NewSpan(int target)
+        {
+            Span = target;
+        }
+
+        public void Preview()
+        {
+            IMusicalInstrument.PlayWithKeyCode(Key);
+        }
+
+        public void Play()
+        {
+            IBasic.Simulator.Keyboard.KeyDown(Key);
+            IBasic.Simulator.Keyboard.KeyUp(Key);
+        }
+
+        public string GetContent()
+        {
+            if (Span == 0)
+            {
+                return IBasic.GetKeyChar(Key).ToString();
+            }
+            else
+            {
+                return IBasic.GetKeyChar(Key).ToString() + " + " + Span;
+            }
+        }
+    }
+}

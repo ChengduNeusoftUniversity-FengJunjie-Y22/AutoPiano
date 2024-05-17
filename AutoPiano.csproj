@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="FastHotKeyForWPF" Version="1.1.5" />
+    <PackageReference Include="InputSimulator" Version="1.0.4" />
   </ItemGroup>
 
 </Project>
