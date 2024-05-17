@@ -9,11 +9,10 @@
              BorderThickness="2"
              BorderBrush="Cyan"
              Background="Transparent"
-             HorizontalAlignment="Left"
-             MouseLeave="Border_MouseLeave"
-             Height="600" Width="240">
+             Height="740" Width="320">
     <Border.Resources>
-        <Style TargetType="Button">
+        <Style x:Key="SideBox" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -31,9 +30,24 @@
             </Style.Triggers>
         </Style>
     </Border.Resources>
-    <StackPanel Orientation="Vertical" Height="600" Width="240">
-        <Border BorderThickness="0" BorderBrush="Transparent" Margin="0,0,0,511">
-            <Button Content="风物之诗琴" FontSize="40" Foreground="White"/>
+    <StackPanel Orientation="Vertical" Height="740" Width="320">
+        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
+            <Button x:Name="ins1" Content="风物之诗琴" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
+        </Border>
+        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
+            <Button x:Name="ins2" Content="晚风圆号" FontSize="40" Foreground="White" Style="{StaticResource SideBox}" />
+        </Border>
+        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
+            <Button x:Name="ins3" Content="镜花之琴" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
+        </Border>
+        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
+            <Button x:Name="ins4" Content="荒泷盛世豪鼓" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
+        </Border>
+        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
+            <Button x:Name="ins5" Content="老旧的诗琴" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
+        </Border>
+        <Border BorderThickness="0" BorderBrush="Transparent" Height="220">
+            <Button x:Name="ins6" Content="? ? ?" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
         </Border>
     </StackPanel>
 </Border>

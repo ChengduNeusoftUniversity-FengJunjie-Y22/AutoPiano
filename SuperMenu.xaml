@@ -21,15 +21,15 @@
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="False">
                     <Setter Property="Background" Value="{x:Null}"/>
-                    <Setter Property="Foreground" Value="Lime"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Border.Resources>
     <Grid>
-        <Button x:Name="MenuBox" Background="Transparent" Foreground="White" FontSize="35" Content="选择乐器" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Margin="10,-2,1233,0" FontFamily="Microsoft YaHei"/>
-        <Button x:Name="WindowClose" Background="Transparent" Foreground="White" FontSize="40" Content="×" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" MouseEnter="WindowClose_MouseEnter" MouseLeave="WindowClose_MouseLeave" Margin="1373,-2,0,10" FontFamily="Microsoft YaHei" Click="WindowClose_Click"/>
-        <Button x:Name="MinSize" Background="Transparent" Foreground="White" FontSize="40" Content="-" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" MouseEnter="MinSize_MouseEnter" MouseLeave="MinSize_MouseLeave" Margin="1243,-1,132,10" FontFamily="Microsoft YaHei" Click="MinSize_Click"/>
-        <Button x:Name="MidelSize" Background="Transparent" Foreground="White" FontSize="35" Content="❒" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" MouseEnter="MidelSize_MouseEnter" MouseLeave="MidelSize_MouseLeave" Margin="1309,3,68,10" FontFamily="Microsoft YaHei" Click="MidelSize_Click"/>
+        <TextBlock Background="Transparent" Margin="10,0,0,0" Text="⚙" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="30"/>
+        <Button x:Name="MenuBox1" Background="Transparent" Foreground="White" FontSize="40" Content="选择乐器" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Margin="50,0,1193,1" FontFamily="Microsoft YaHei" Click="MenuBox1_Click"/>
+        <Button x:Name="WindowClose" Background="Transparent" Foreground="White" FontSize="40" Content="×" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" Margin="1373,-2,0,10" FontFamily="Microsoft YaHei" Click="WindowClose_Click"/>
+        <Button x:Name="MinSize" Background="Transparent" Foreground="White" FontSize="40" Content="-" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" Margin="1243,-1,132,10" FontFamily="Microsoft YaHei" Click="MinSize_Click"/>
+        <Button x:Name="MidelSize" Background="Transparent" Foreground="White" FontSize="35" Content="❒" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" BorderThickness="0" Margin="1309,3,68,10" FontFamily="Microsoft YaHei" Click="MidelSize_Click"/>
     </Grid>
 </Border>

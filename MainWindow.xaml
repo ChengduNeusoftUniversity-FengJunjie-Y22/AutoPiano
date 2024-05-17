@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         Background="#1e1e1e"
-        Title="MainWindow" Height="810" Width="1440">
+        Title="MainWindow" Height="810" Width="1440" ResizeMode="NoResize" MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.Resources>
         <Style TargetType="Ellipse">
             <Setter Property="Fill" Value="Cyan"/>
@@ -16,10 +16,11 @@
         </Style>
     </Window.Resources>
     <Viewbox>
-        <Grid Height="810" Width="1440">
-            <Ellipse x:Name="Trail"/>
-            <local:Sidebar Margin="0,157,1200,53" x:Name="TabA"/>
-            <local:SuperMenu Margin="0,0,0,750" x:Name="Selects"/>
-        </Grid>
+        <Border BorderBrush="White" BorderThickness="1">
+            <Grid Height="810" Width="1440">
+                <local:Sidebar x:Name="TabA" Width="0" HorizontalAlignment="Left" Margin="5,65,0,5"/>
+                <local:SuperMenu Margin="0,0,0,750" x:Name="Selects"/>
+            </Grid>
+        </Border>
     </Viewbox>
 </Window>

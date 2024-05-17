@@ -26,6 +26,46 @@ namespace AutoPiano
         {
             InitializeComponent();
             Instance = this;
+            ins1.MouseEnter += EnterBox;
+            ins1.MouseLeave += LeaveBox;
+            ins2.MouseEnter += EnterBox;
+            ins2.MouseLeave += LeaveBox;
+            ins3.MouseEnter += EnterBox;
+            ins3.MouseLeave += LeaveBox;
+            ins4.MouseEnter += EnterBox;
+            ins4.MouseLeave += LeaveBox;
+            ins5.MouseEnter += EnterBox;
+            ins5.MouseLeave += LeaveBox;
+            ins6.MouseEnter += EnterBox;
+            ins6.MouseLeave += LeaveBox;
+
+            ins1.Click += ClickBox;
+            ins2.Click += ClickBox;
+            ins3.Click += ClickBox;
+            ins4.Click += ClickBox;
+            ins5.Click += ClickBox;
+            ins6.Click += ClickBox;
+        }
+
+        private void EnterBox(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.Cyan;
+            }
+        }
+
+        private void LeaveBox(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.White;
+            }
+        }
+
+        private void ClickBox(object sender, RoutedEventArgs e)
+        {
+            UnExpandTAB();
         }
 
         public void ExpandTAB()
@@ -34,7 +74,7 @@ namespace AutoPiano
             DoubleAnimation widthAnimation = new DoubleAnimation();
             widthAnimation.AccelerationRatio = 1;
             widthAnimation.From = 0; // 起始宽度
-            widthAnimation.To = 240;   // 结束宽度
+            widthAnimation.To = 320;   // 结束宽度
             widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.2)); // 持续时间
 
             // 创建一个故事板，并将动画对象添加到其中
@@ -53,7 +93,7 @@ namespace AutoPiano
         {
             DoubleAnimation widthAnimation = new DoubleAnimation();
             widthAnimation.AccelerationRatio = 1;
-            widthAnimation.From = 240; // 起始宽度
+            widthAnimation.From = 320; // 起始宽度
             widthAnimation.To = 0;   // 结束宽度
             widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.2)); // 持续时间
 
@@ -67,11 +107,6 @@ namespace AutoPiano
 
             // 启动动画
             storyboard.Begin();
-        }
-
-        private void Border_MouseLeave(object sender, MouseEventArgs e)
-        {
-            UnExpandTAB();
         }
     }
 }

@@ -21,61 +21,41 @@ namespace AutoPiano
     /// </summary>
     public partial class SuperMenu : Border
     {
-        public static bool IsMenuLocked = false;
-
         public SuperMenu()
         {
             InitializeComponent();
+            WindowClose.MouseEnter += SizeModeEnter;
+            WindowClose.MouseLeave += SizeModeLeave;
+            MinSize.MouseEnter += SizeModeEnter;
+            MinSize.MouseLeave += SizeModeLeave;
+            MidelSize.MouseEnter += SizeModeEnter;
+            MidelSize.MouseLeave += SizeModeLeave;
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
-            IsMenuLocked = true;
-            MenuBox.Foreground = Brushes.Cyan;
-            if (Sidebar.Instance != null)
-            {
-                Sidebar.Instance.ExpandTAB();
-            }
+            MenuBox1.Foreground = Brushes.Cyan;
         }
 
         private void Button_MouseLeave(object sender, MouseEventArgs e)
         {
-            MenuBox.Foreground = Brushes.White;
-            if (IsMenuLocked) { IsMenuLocked = false; return; }
-            if (Sidebar.Instance != null)
+            MenuBox1.Foreground = Brushes.White;
+        }
+
+        private void SizeModeEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Button button)
             {
-                Sidebar.Instance.UnExpandTAB();
+                button.Foreground = Brushes.Red;
             }
         }
 
-        private void WindowClose_MouseEnter(object sender, MouseEventArgs e)
+        private void SizeModeLeave(object sender, MouseEventArgs e)
         {
-            WindowClose.Foreground = Brushes.Red;
-        }
-
-        private void MinSize_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MinSize.Foreground = Brushes.Red;
-        }
-
-        private void MidelSize_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MidelSize.Foreground = Brushes.Red;
-        }
-
-        private void WindowClose_MouseLeave(object sender, MouseEventArgs e)
-        {
-            WindowClose.Foreground = Brushes.White;
-        }
-
-        private void MidelSize_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MidelSize.Foreground = Brushes.White;
-        }
-
-        private void MinSize_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MinSize.Foreground = Brushes.White;
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.White;
+            }
         }
 
         private void WindowClose_Click(object sender, RoutedEventArgs e)
@@ -98,6 +78,14 @@ namespace AutoPiano
         private void MinSize_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void MenuBox1_Click(object sender, RoutedEventArgs e)
+        {
+            if (Sidebar.Instance != null)
+            {
+                Sidebar.Instance.ExpandTAB();
+            }
         }
     }
 }
