@@ -37,7 +37,7 @@
         <Style x:Key="MyBorder" TargetType="Border">
             <Setter Property="Height" Value="90"/>
             <Setter Property="Width" Value="400"/>
-            <Setter Property="Background" Value="#29353d"/>
+            <Setter Property="Background" Value="#545d64"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="10"/>
         </Style>
