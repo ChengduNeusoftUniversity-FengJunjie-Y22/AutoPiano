@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -18,7 +19,7 @@ namespace AutoPiano
     /// <summary>
     /// 【抽象类】采用XML格式，完成对实例对象的读写操作 
     /// </summary>
-    internal abstract class XmlObject : AudioBasic
+    public abstract class XmlObject : AudioBasic
     {
         /// <summary>
         /// 【Operate+Time】结构的歌曲数据,结构简单，泛用性极高，适用于自动演奏，占用性能最少
@@ -48,16 +49,22 @@ namespace AutoPiano
         /// <summary>
         /// 存储实例对象
         /// </summary>
-        public static bool SaveObject<T>(T target, DataTypes type) where T : XmlObject
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="target">要存储的对象</param>
+        /// <param name="type">数据类型</param>
+        /// <param name="fileName">文件名</param>
+        /// <returns>存储是否成功</returns>
+        public static bool SaveObject<T>(T target, DataTypes type, string fileName) where T : XmlObject
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
-            string? filePath = SelectFilePath(type);
+            string? filePath = SelectFilePath(type, fileName);
             if (filePath == null) { return false; }
             try
             {
                 using (TextWriter writer = new StreamWriter(filePath))
                 {
                     serializer.Serialize(writer, target);
+                    writer.Flush(); // 刷新缓冲区，确保数据被写入文件
                 }
                 return true;
             }
@@ -67,10 +74,10 @@ namespace AutoPiano
         /// <summary>
         /// 读取实例对象
         /// </summary>
-        public static T ReadObject<T>(DataTypes type) where T : XmlObject, new()
+        public static T ReadObject<T>(DataTypes type, string fileName) where T : XmlObject, new()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
-            string? filePath = SelectFilePath(type);
+            string? filePath = SelectFilePath(type, fileName);
             if (filePath == null) { return new T(); }
             try
             {
@@ -82,17 +89,17 @@ namespace AutoPiano
             catch { return new T(); }
         }
 
-        public static string? SelectFilePath(DataTypes type)
+        public static string? SelectFilePath(DataTypes type, string fileName)
         {
             string? filePath = null;
 
             switch (type)
             {
                 case DataTypes.Simple:
-                    filePath = SimpleStructData;
+                    filePath = Path.Combine(SimpleStructData, fileName);
                     break;
                 case DataTypes.Complex_NMN:
-                    filePath = ComplexData_NMN;
+                    filePath = Path.Combine(ComplexData_NMN, fileName);
                     break;
             }
 

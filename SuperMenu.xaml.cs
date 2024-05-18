@@ -36,12 +36,18 @@ namespace AutoPiano
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
-            MenuBox1.Foreground = Brushes.Cyan;
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.Cyan;
+            }
         }
 
         private void Button_MouseLeave(object sender, MouseEventArgs e)
         {
-            MenuBox1.Foreground = Brushes.White;
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.White;
+            }
         }
 
         private void SizeModeEnter(object sender, MouseEventArgs e)
@@ -95,6 +101,12 @@ namespace AutoPiano
                     Sidebar.Instance.ExpandTAB();
                 }
             }
+        }
+
+        private async void MenuBox2_Click(object sender, RoutedEventArgs e)
+        {
+            Song result = await StringProcessing.SelectThenAnalize();
+            XmlObject.SaveObject(result, DataTypes.Simple, "测试数据");
         }
     }
 }

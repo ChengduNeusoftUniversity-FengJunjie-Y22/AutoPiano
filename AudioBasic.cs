@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using WindowsInput;
 using WindowsInput.Native;
@@ -10,37 +11,37 @@ using WindowsInput.Native;
 /// <summary>
 /// 【枚举】乐器类型
 /// </summary>
-public enum InstrumentTypes : int
+public enum InstrumentTypes
 {
     /// <summary>
     /// 风物之诗琴
     /// </summary>
-    FWPiano = 21,
+    FWPiano,
 
     /// <summary>
     /// 晚风圆号
     /// </summary>
-    WFHorn = 14,
+    WFHorn,
 
     /// <summary>
     /// 镜花之琴
     /// </summary>
-    JHPiano = 21,
+    JHPiano,
 
     /// <summary>
     /// 荒泷盛世豪鼓
     /// </summary>
-    HLDrum = 4,
+    HLDrum,
 
     /// <summary>
     /// 老旧的诗琴
     /// </summary>
-    XMPiano = 21,
+    XMPiano,
 
     /// <summary>
     /// ⚠类型不明
     /// </summary>
-    None = 0
+    None
 }
 
 namespace AutoPiano
@@ -48,7 +49,7 @@ namespace AutoPiano
     /// <summary>
     /// 【抽象类】最为基础的音乐依赖
     /// </summary>
-    internal abstract class AudioBasic : MusicTheory
+    public abstract class AudioBasic : MusicTheory
     {
         #region 音源控制模块
         public static readonly string AudioForFWPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_FW");
@@ -176,19 +177,29 @@ namespace AutoPiano
             switch (type)
             {
                 case InstrumentTypes.FWPiano:
-                    for (int i = 0; i < (int)type; i++)
+                    for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForFWPiano + AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForFWPiano, AudioName[i])));
+                        result.Add(AdudioKey[i], mediaPlayer);
+                    }
+                    KeyToMediaPlayer = result;
+                    MessageBox.Show($"COunt{result.Count}");
+                    break;
+                case InstrumentTypes.WFHorn:
+                    for (int i = 0; i < 14; i++)
+                    {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForWFHorn, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
                     break;
-                case InstrumentTypes.WFHorn:
-                    for (int i = 0; i < (int)type; i++)
+                case InstrumentTypes.JHPiano:
+                    for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForWFHorn + AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForJHPiano, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;

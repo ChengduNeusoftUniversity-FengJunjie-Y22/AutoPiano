@@ -42,7 +42,7 @@ public enum MusicScoreSets
 
 namespace AutoPiano
 {
-    internal class NumberedMusicalNotation : AudioBasic
+    public class NumberedMusicalNotation : AudioBasic
     {
         #region 构成可视化简谱的核心四类
         /// <summary>

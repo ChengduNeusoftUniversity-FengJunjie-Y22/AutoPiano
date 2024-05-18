@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace AutoPiano
 {
-    internal class Song : XmlObject
+    public class Song : XmlObject
     {
         public Song() { }
 
@@ -14,6 +15,40 @@ namespace AutoPiano
         /// 存放音符对象，可以是单音、和弦、占位符
         /// </summary>
         public List<object> notes = new List<object>();
+
+        private bool _isStop = false;
+        public bool IsStop
+        {
+            get { return _isStop; }
+        }
+        public async void Start()
+        {
+            foreach (object item in notes)
+            {
+                if (IsStop)
+                {
+                    return;
+                }
+                if (item is Note note)
+                {
+                    note.Preview();
+                    await Task.Delay(note.Span);
+                }
+                else if (item is Chord chord)
+                {
+                    chord.Preview();
+                    await Task.Delay(chord.Chords.Last().Span);
+                }
+                else if (item is NullNote nunote)
+                {
+                    await Task.Delay(nunote.Span);
+                }
+            }
+        }
+        public void Stop()
+        {
+
+        }
 
         /// <summary>
         /// 实现曲子的衔接

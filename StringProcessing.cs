@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,6 +29,24 @@ namespace AutoPiano
             {
                 System.IO.Directory.CreateDirectory(DefaultTxtPath);
             }
+        }
+
+        public static async Task<Song> SelectThenAnalize()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = DefaultTxtPath;
+            openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string selectedFilePath = openFileDialog.FileName;
+
+                string fileContent = File.ReadAllText(selectedFilePath);
+
+                return await SongParse(fileContent);
+            }
+
+            return new Song();
         }
 
         #region 文本谱解析工具

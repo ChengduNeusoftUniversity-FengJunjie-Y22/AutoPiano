@@ -32,7 +32,8 @@ namespace AutoPiano
             AudioBasic.CheckAudioFolder();
             StringProcessing.CheckTxtFloder();
             XmlObject.CheckDataFloder();
-            AudioBasic.UpdateAudioByType(InstrumentTypes.FWPiano);
+            //AudioBasic.UpdateAudioByType(InstrumentTypes.FWPiano);
+            AudioBasic.UpdateAudioByType(InstrumentTypes.JHPiano);
 
             base.OnSourceInitialized(e);
         }

@@ -10,7 +10,7 @@ namespace AutoPiano
     /// <summary>
     /// 【乐理基础】
     /// </summary>
-    internal abstract class MusicTheory
+    public abstract class MusicTheory
     {
         /// <summary>
         /// 只能同时进行一个与播放有关的操作
@@ -21,11 +21,6 @@ namespace AutoPiano
         /// 是否要停止目前进行中的预览OR自动演奏
         /// </summary>
         public static bool IsWorkStop = false;
-
-        /// <summary>
-        /// 用于获取快捷键提示
-        /// </summary>
-        public static Introducer introduce = new Introducer();
 
         /// <summary>
         /// 速度

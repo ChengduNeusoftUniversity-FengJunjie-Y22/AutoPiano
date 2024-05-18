@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoPiano
 {
-    internal class MetaData : XmlObject
+    public class MetaData : XmlObject
     {
         public MetaData() { }
 
