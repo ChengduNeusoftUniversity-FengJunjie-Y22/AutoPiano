@@ -9,7 +9,7 @@ using WindowsInput.Native;
 namespace AutoPiano
 {
     /// <summary>
-    /// 【工具类】处理一切有关于字符的内容
+    /// 【字符工具类】处理一切有关于字符的内容
     /// </summary>
     internal static class StringProcessing
     {
@@ -29,7 +29,7 @@ namespace AutoPiano
             }
         }
 
-        #region 解析工具包
+        #region 文本谱解析工具
         /// <summary>
         /// 筛选条件: 单音符、和弦、间断都将被囊括(用于初步筛选)
         /// </summary>

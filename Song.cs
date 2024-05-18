@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutoPiano
 {
-    internal class Song : IBasic, IMusicalInstrument
+    internal class Song : XmlObject
     {
         public Song() { }
 

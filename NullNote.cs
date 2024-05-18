@@ -7,7 +7,7 @@ using WindowsInput.Native;
 
 namespace AutoPiano
 {
-    internal class NullNote : IBasic, IMusicalInstrument
+    internal class NullNote : XmlObject
     {
         public NullNote() { }
 

@@ -8,7 +8,7 @@ using WindowsInput;
 
 namespace AutoPiano
 {
-    internal class Note : IBasic, IMusicalInstrument
+    internal class Note : XmlObject
     {
         public Note() { }
 
@@ -28,7 +28,7 @@ namespace AutoPiano
         /// <param name="span">时值</param>
         public Note(char value, int span)
         {
-            Key = IBasic.GetKeyCode(value);
+            Key = Basic.GetKeyCode(value);
             Span = span;
         }
 
@@ -39,24 +39,24 @@ namespace AutoPiano
 
         public void Preview()
         {
-            IMusicalInstrument.PlayWithKeyCode(Key);
+            MusicalInstrument.PlayWithKeyCode(Key);
         }
 
         public void Play()
         {
-            IBasic.Simulator.Keyboard.KeyDown(Key);
-            IBasic.Simulator.Keyboard.KeyUp(Key);
+            Simulator.Keyboard.KeyDown(Key);
+            Simulator.Keyboard.KeyUp(Key);
         }
 
         public string GetContent()
         {
             if (Span == 0)
             {
-                return IBasic.GetKeyChar(Key).ToString();
+                return GetKeyChar(Key).ToString();
             }
             else
             {
-                return IBasic.GetKeyChar(Key).ToString() + " + " + Span;
+                return GetKeyChar(Key).ToString() + " + " + Span;
             }
         }
     }

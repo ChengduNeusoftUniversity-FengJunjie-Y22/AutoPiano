@@ -3,22 +3,106 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using WindowsInput;
 using WindowsInput.Native;
 
 namespace AutoPiano
 {
     /// <summary>
-    /// 【接口】最为基础的模块
+    /// 【抽象类】最为基础的音乐依赖
     /// </summary>
-    internal interface IBasic
+    internal abstract class Basic
     {
+        #region 音源控制模块
+        public static string AudioForFWPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_FW");
+        public static string AudioForWFHorn = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_WF");
+        public static string AudioForJHPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_JH");
+        public static string AudioForHLDrum = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_HL");
+        public static string AudioForXMPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_XM");
         /// <summary>
-        /// 【接口】键盘操作模拟器
+        /// 约定所有乐器的文件名必须是【Key+.mp3】
+        /// </summary>
+        public static string[] AudioName = new string[]
+        {
+        "Z.mp3",
+        "X.mp3",
+        "C.mp3",
+        "V.mp3",
+        "B.mp3",
+        "N.mp3",
+        "M.mp3",
+
+        "A.mp3",
+        "S.mp3",
+        "D.mp3",
+        "F.mp3",
+        "G.mp3",
+        "H.mp3",
+        "J.mp3",
+
+        "Q.mp3",
+        "W.mp3",
+        "E.mp3",
+        "R.mp3",
+        "T.mp3",
+        "Y.mp3",
+        "U.mp3",
+        };
+        /// <summary>
+        /// 检查预览音频支持文件夹是否完备
+        /// </summary>
+        public static void CheckAudioFolder()
+        {
+            if (!System.IO.Directory.Exists(AudioForFWPiano))
+            {
+                System.IO.Directory.CreateDirectory(AudioForFWPiano);
+            }
+            if (!System.IO.Directory.Exists(AudioForWFHorn))
+            {
+                System.IO.Directory.CreateDirectory(AudioForWFHorn);
+            }
+            if (!System.IO.Directory.Exists(AudioForJHPiano))
+            {
+                System.IO.Directory.CreateDirectory(AudioForJHPiano);
+            }
+            if (!System.IO.Directory.Exists(AudioForHLDrum))
+            {
+                System.IO.Directory.CreateDirectory(AudioForHLDrum);
+            }
+            if (!System.IO.Directory.Exists(AudioForXMPiano))
+            {
+                System.IO.Directory.CreateDirectory(AudioForXMPiano);
+            }
+        }
+        /// <summary>
+        /// 键盘操作模拟器
         /// </summary>
         public static InputSimulator Simulator = new InputSimulator();
+        /// <summary>
+        /// 切换乐器时，请更新字典，这是能够正确进行预览操作的前提
+        /// </summary>
+        public static Dictionary<VirtualKeyCode, MediaPlayer> KeyToMediaPlayer = new Dictionary<VirtualKeyCode, MediaPlayer>();
+        /// <summary>
+        /// 依据按键码模拟用户输入
+        /// </summary>
+        public static void PlayWithKeyCode(VirtualKeyCode target)
+        {
+            MediaPlayer? player = null;
+            KeyToMediaPlayer.TryGetValue(target, out player);
+            if (player != null) { player.Stop(); player.Position = TimeSpan.Zero; player.Play(); }
+        }
+        /// <summary>
+        /// 依据乐器类型更新音源字典
+        /// </summary>
+        /// <param name="type"></param>
+        public static void UpdateAudioByType(InstrumentTypes type)
+        {
 
-        #region 字典
+        }
+        #endregion
+
+        #region 各类解析过程中，需要的转化
         /// <summary>
         /// [键盘char]  映射到  [虚拟按键VirtualKeyCode]
         /// </summary>
@@ -48,12 +132,10 @@ namespace AutoPiano
         {'N', VirtualKeyCode.VK_N},
         {'M', VirtualKeyCode.VK_M},
         };
-
         /// <summary>
         /// [虚拟按键VirtualKeyCode]  映射到  [键盘char]
         /// </summary>
         public static Dictionary<VirtualKeyCode, char> KeyCodeToChar = CharToKeyCode.ToDictionary(x => x.Value, x => x.Key);
-
         /// <summary>
         /// [音阶int]  映射到  [虚拟按键VirtualKeyCode]
         /// </summary>
@@ -85,6 +167,7 @@ namespace AutoPiano
 
         {0, VirtualKeyCode.VK_P},
         };
+
         /// <summary>
         /// [音阶int]  映射到  [无高低音的字符表示string]
         /// </summary>
@@ -166,7 +249,6 @@ namespace AutoPiano
         /// [中音int]  映射到  [低音int]
         /// </summary>
         public static Dictionary<int, int> CenterToLow = LowToCenter.ToDictionary(x => x.Value, x => x.Key);
-        #endregion
 
         public static VirtualKeyCode GetKeyCode(char target)
         {
@@ -181,5 +263,6 @@ namespace AutoPiano
             KeyCodeToChar.TryGetValue(keyCode, out result);
             return result;
         }
+        #endregion
     }
 }

@@ -16,9 +16,9 @@ public enum DataTypes
 namespace AutoPiano
 {
     /// <summary>
-    /// 【接口】采用XML格式，完成对示例对象的读写操作 
+    /// 【抽象类】采用XML格式，完成对实例对象的读写操作 
     /// </summary>
-    internal interface IXmlObject
+    internal abstract class XmlObject : Basic
     {
         /// <summary>
         /// 【Operate+Time】结构的歌曲数据,结构简单，泛用性极高，适用于自动演奏，占用性能最少
@@ -46,10 +46,9 @@ namespace AutoPiano
         }
 
         /// <summary>
-        /// IXmlObject接口下的任意类型的实例对象可用此方法存储
+        /// 存储实例对象
         /// </summary>
-        /// <typeparam name="T">实现IXmlObject接口的类型</typeparam>
-        public static bool SaveObject<T>(T target, DataTypes type) where T : IXmlObject
+        public static bool SaveObject<T>(T target, DataTypes type) where T : XmlObject
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             string? filePath = SelectFilePath(type);
@@ -66,10 +65,9 @@ namespace AutoPiano
         }
 
         /// <summary>
-        /// IXmlObject接口下可使用此方法读取实例对象
+        /// 读取实例对象
         /// </summary>
-        /// <typeparam name="T">IXmlObject下的类型</typeparam>
-        public static T ReadObject<T>(DataTypes type) where T : IXmlObject, new()
+        public static T ReadObject<T>(DataTypes type) where T : XmlObject, new()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(T));
             string? filePath = SelectFilePath(type);
