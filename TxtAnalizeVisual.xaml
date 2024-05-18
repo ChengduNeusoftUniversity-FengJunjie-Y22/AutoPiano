@@ -1,0 +1,14 @@
+﻿<Page x:Class="AutoPiano.TxtAnalizeVisual"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:AutoPiano"
+      mc:Ignorable="d" 
+      d:DesignHeight="740" d:DesignWidth="1440"
+      Title="TxtAnalizeVisual">
+
+    <Grid>
+        
+    </Grid>
+</Page>
