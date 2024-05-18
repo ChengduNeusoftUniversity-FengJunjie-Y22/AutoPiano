@@ -7,8 +7,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="740" d:DesignWidth="1440"
       Title="NMNAnalizeVisual">
-
     <Grid>
-        
+        <Border x:Name="ModeVisual" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
+
+        </Border>
+        <TextBlock  Foreground="White" FontSize="25" Text="Edit - Mode - Visual"  HorizontalAlignment="Right" Margin="0,0,30,0"></TextBlock>
     </Grid>
 </Page>

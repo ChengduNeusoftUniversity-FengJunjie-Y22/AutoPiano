@@ -90,6 +90,26 @@ namespace AutoPiano
 
         private void MenuBox1_Click(object sender, RoutedEventArgs e)
         {
+            ReverseSideTab();
+        }
+
+        private void MenuBox2_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuBox3_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuBox4_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        public static void ReverseSideTab()
+        {
             if (Sidebar.Instance != null)
             {
                 if (IsSideBarOpen)
@@ -103,12 +123,51 @@ namespace AutoPiano
             }
         }
 
-        private async void MenuBox2_Click(object sender, RoutedEventArgs e)
+        public static void CloseSideTab()
         {
-            Song result = await StringProcessing.SelectThenAnalize();
-            Song target = BinaryObject.DeserializeObject<Song>("测试");
-            AudioBasic.UpdateAudioByType(InstrumentTypes.FWPiano);
-            target.Start();
+            if (Sidebar.Instance != null && IsSideBarOpen)
+            {
+                Sidebar.Instance.UnExpandTAB();
+            }
+        }
+
+        private void MenuBox2_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CloseSideTab();
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.Cyan;
+            }
+            if (EditArea.Instance != null)
+            {
+                EditArea.Instance.PageType = PageTypes.TxtAnalize;
+            }
+        }
+
+        private void MenuBox3_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CloseSideTab();
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.Cyan;
+            }
+            if (EditArea.Instance != null)
+            {
+                EditArea.Instance.PageType = PageTypes.NMNAnalize;
+            }
+        }
+
+        private void MenuBox4_MouseEnter(object sender, MouseEventArgs e)
+        {
+            CloseSideTab();
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.Cyan;
+            }
+            if (EditArea.Instance != null)
+            {
+                EditArea.Instance.PageType = PageTypes.HotKeySet;
+            }
         }
     }
 }

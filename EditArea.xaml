@@ -5,6 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AutoPiano"
              mc:Ignorable="d" 
-             d:DesignHeight="740" d:DesignWidth="1440" BorderThickness="0">
-    <Frame x:Name="WorkArea"/>
+             d:DesignHeight="740" d:DesignWidth="4320" BorderThickness="0" VerticalAlignment="Bottom">
+    <Border x:Name="PageControl" Height="740" VerticalAlignment="Top" Width="4320">
+        <StackPanel  Width="4320" Orientation="Horizontal">
+            <Frame x:Name="WorkAreaA" Height="740" Width="1440"/>
+            <Frame x:Name="WorkAreaB" Height="740" Width="1440"/>
+            <Frame x:Name="WorkAreaC" Height="740" Width="1440"/>
+        </StackPanel>
+    </Border>
 </Border>

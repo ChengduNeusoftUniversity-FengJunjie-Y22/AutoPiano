@@ -16,11 +16,11 @@
         </Style>
     </Window.Resources>
     <Viewbox MouseLeftButtonDown="Viewbox_MouseLeftButtonDown">
-        <Border BorderBrush="White" BorderThickness="1">
+        <Border BorderBrush="White" BorderThickness="0">
             <Grid Height="810" Width="1440">
                 <local:Sidebar x:Name="TabA" Width="0" HorizontalAlignment="Left" Margin="5,65,0,5"/>
                 <local:SuperMenu Margin="0,0,0,750" x:Name="Selects"/>
-                <local:EditArea VerticalAlignment="Bottom"/>
+                <local:EditArea Width="4320"/>
             </Grid>
         </Border>
     </Viewbox>

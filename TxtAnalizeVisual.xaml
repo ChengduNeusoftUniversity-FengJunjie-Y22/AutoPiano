@@ -7,8 +7,30 @@
       mc:Ignorable="d" 
       d:DesignHeight="740" d:DesignWidth="1440"
       Title="TxtAnalizeVisual">
-
+    <Page.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"         
+                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
     <Grid>
-        
+        <Border x:Name="ModeTXT" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
+
+        </Border>
+        <TextBlock Foreground="White" FontSize="25" Text="Edit - Mode - .txt" HorizontalAlignment="Right" Margin="0,0,50,0"/>
     </Grid>
 </Page>
