@@ -8,7 +8,8 @@ using WindowsInput;
 
 namespace AutoPiano
 {
-    public class Note : XmlObject
+    [Serializable]
+    public class Note : BinaryObject
     {
         public Note() { }
 

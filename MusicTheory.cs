@@ -7,6 +7,7 @@ using static AutoPiano.NumberedMusicalNotation;
 
 namespace AutoPiano
 {
+    [Serializable]
     /// <summary>
     /// 【乐理基础】
     /// </summary>

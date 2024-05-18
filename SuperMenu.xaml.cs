@@ -106,7 +106,9 @@ namespace AutoPiano
         private async void MenuBox2_Click(object sender, RoutedEventArgs e)
         {
             Song result = await StringProcessing.SelectThenAnalize();
-            XmlObject.SaveObject(result, DataTypes.Simple, "测试数据");
+            Song target = BinaryObject.DeserializeObject<Song>("测试");
+            AudioBasic.UpdateAudioByType(InstrumentTypes.FWPiano);
+            target.Start();
         }
     }
 }

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace AutoPiano
 {
-    public class MetaData : XmlObject
+    [Serializable]
+    public class MetaData : BinaryObject
     {
         public MetaData() { }
 

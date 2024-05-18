@@ -46,6 +46,7 @@ public enum InstrumentTypes
 
 namespace AutoPiano
 {
+    [Serializable]
     /// <summary>
     /// 【抽象类】最为基础的音乐依赖
     /// </summary>
@@ -82,6 +83,9 @@ namespace AutoPiano
             VirtualKeyCode.VK_B,
             VirtualKeyCode.VK_N,
             VirtualKeyCode.VK_M,
+
+            VirtualKeyCode.VK_K,
+            VirtualKeyCode.VK_L,
         };
         /// <summary>
         /// 约定所有乐器的文件名必须是【Key+.mp3】
@@ -111,6 +115,9 @@ namespace AutoPiano
         "B.mp3",
         "N.mp3",
         "M.mp3",
+
+        "K.mp3",
+        "L.mp3"
         };
         /// <summary>
         /// 检查预览音频支持文件夹是否完备
@@ -184,7 +191,6 @@ namespace AutoPiano
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
-                    MessageBox.Show($"COunt{result.Count}");
                     break;
                 case InstrumentTypes.WFHorn:
                     for (int i = 0; i < 14; i++)
@@ -202,6 +208,32 @@ namespace AutoPiano
                         mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForJHPiano, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
+                    KeyToMediaPlayer = result;
+                    break;
+                case InstrumentTypes.XMPiano:
+                    for (int i = 0; i < 21; i++)
+                    {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForXMPiano, AudioName[i])));
+                        result.Add(AdudioKey[i], mediaPlayer);
+                    }
+                    KeyToMediaPlayer = result;
+                    break;
+                case InstrumentTypes.HLDrum:
+
+                    MediaPlayer mediaPlayer1 = new MediaPlayer();
+                    mediaPlayer1.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[8])));
+                    result.Add(AdudioKey[8], mediaPlayer1);
+                    MediaPlayer mediaPlayer2 = new MediaPlayer();
+                    mediaPlayer2.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[9])));
+                    result.Add(AdudioKey[9], mediaPlayer2);
+                    MediaPlayer mediaPlayer3 = new MediaPlayer();
+                    mediaPlayer3.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[22])));
+                    result.Add(AdudioKey[22], mediaPlayer3);
+                    MediaPlayer mediaPlayer4 = new MediaPlayer();
+                    mediaPlayer4.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[23])));
+                    result.Add(AdudioKey[23], mediaPlayer4);
+
                     KeyToMediaPlayer = result;
                     break;
             }
@@ -237,6 +269,9 @@ namespace AutoPiano
         {'B', VirtualKeyCode.VK_B},
         {'N', VirtualKeyCode.VK_N},
         {'M', VirtualKeyCode.VK_M},
+
+        {'K', VirtualKeyCode.VK_K},
+        {'L', VirtualKeyCode.VK_L},
         };
         /// <summary>
         /// [虚拟按键VirtualKeyCode]  映射到  [键盘char]

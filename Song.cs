@@ -7,8 +7,11 @@ using System.Xml.Serialization;
 
 namespace AutoPiano
 {
-    public class Song : XmlObject
+    [Serializable]
+    public class Song : BinaryObject
     {
+        public static DataTypes Type = DataTypes.Simple;
+
         public Song() { }
 
         /// <summary>

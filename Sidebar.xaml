@@ -35,19 +35,19 @@
             <!--侧边栏A，负责音源的切换-->
             <StackPanel Orientation="Vertical" Height="740" Width="320">
                 <Border x:Name="borderA" BorderThickness="0" BorderBrush="Transparent" Height="100">
-                    <Button Style="{StaticResource SideButton}" x:Name="ins1" Content="风物之诗琴" FontSize="40" Foreground="White"/>
+                    <Button Style="{StaticResource SideButton}" x:Name="ins1" Content="风物之诗琴" FontSize="40" Foreground="White" Click="ins1_Click"/>
                 </Border>
                 <Border x:Name="borderB" BorderThickness="0" BorderBrush="Transparent" Height="100">
-                    <Button Style="{StaticResource SideButton}" x:Name="ins2" Content="晚风圆号" FontSize="40" Foreground="White" />
+                    <Button Style="{StaticResource SideButton}" x:Name="ins2" Content="晚风圆号" FontSize="40" Foreground="White" Click="ins2_Click" />
                 </Border>
                 <Border x:Name="borderC" BorderThickness="0" BorderBrush="Transparent" Height="100">
-                    <Button Style="{StaticResource SideButton}" x:Name="ins3" Content="镜花之琴" FontSize="40" Foreground="White"/>
+                    <Button Style="{StaticResource SideButton}" x:Name="ins3" Content="镜花之琴" FontSize="40" Foreground="White" Click="ins3_Click"/>
                 </Border>
                 <Border x:Name="borderD" BorderThickness="0" BorderBrush="Transparent" Height="100">
-                    <Button Style="{StaticResource SideButton}" x:Name="ins4" Content="荒泷盛世豪鼓" FontSize="40" Foreground="White"/>
+                    <Button Style="{StaticResource SideButton}" x:Name="ins4" Content="荒泷盛世豪鼓" FontSize="40" Foreground="White" Click="ins4_Click"/>
                 </Border>
                 <Border x:Name="borderE" BorderThickness="0" BorderBrush="Transparent" Height="100">
-                    <Button Style="{StaticResource SideButton}" x:Name="ins5" Content="老旧的诗琴" FontSize="40" Foreground="White"/>
+                    <Button Style="{StaticResource SideButton}" x:Name="ins5" Content="老旧的诗琴" FontSize="40" Foreground="White" Click="ins5_Click"/>
                 </Border>
                 <Border x:Name="borderF" BorderThickness="0" BorderBrush="Transparent" Height="100">
 
