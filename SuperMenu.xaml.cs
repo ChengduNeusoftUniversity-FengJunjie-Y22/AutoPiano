@@ -21,6 +21,8 @@ namespace AutoPiano
     /// </summary>
     public partial class SuperMenu : Border
     {
+        public static bool IsSideBarOpen = false;
+
         public SuperMenu()
         {
             InitializeComponent();
@@ -84,7 +86,14 @@ namespace AutoPiano
         {
             if (Sidebar.Instance != null)
             {
-                Sidebar.Instance.ExpandTAB();
+                if (IsSideBarOpen)
+                {
+                    Sidebar.Instance.UnExpandTAB();
+                }
+                else
+                {
+                    Sidebar.Instance.ExpandTAB();
+                }
             }
         }
     }

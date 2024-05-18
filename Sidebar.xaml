@@ -9,9 +9,9 @@
              BorderThickness="2"
              BorderBrush="Cyan"
              Background="Transparent"
-             Height="740" Width="320">
+             Height="740" Width="320" Grid.ZIndex="3">
     <Border.Resources>
-        <Style x:Key="SideBox" TargetType="Button">
+        <Style x:Key="SideButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -30,24 +30,47 @@
             </Style.Triggers>
         </Style>
     </Border.Resources>
-    <StackPanel Orientation="Vertical" Height="740" Width="320">
-        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
-            <Button x:Name="ins1" Content="风物之诗琴" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
-        </Border>
-        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
-            <Button x:Name="ins2" Content="晚风圆号" FontSize="40" Foreground="White" Style="{StaticResource SideBox}" />
-        </Border>
-        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
-            <Button x:Name="ins3" Content="镜花之琴" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
-        </Border>
-        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
-            <Button x:Name="ins4" Content="荒泷盛世豪鼓" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
-        </Border>
-        <Border BorderThickness="0" BorderBrush="Transparent" Height="100">
-            <Button x:Name="ins5" Content="老旧的诗琴" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
-        </Border>
-        <Border BorderThickness="0" BorderBrush="Transparent" Height="220">
-            <Button x:Name="ins6" Content="? ? ?" FontSize="40" Foreground="White" Style="{StaticResource SideBox}"/>
-        </Border>
-    </StackPanel>
+    <ScrollViewer x:Name="SideBoxes" Height="760" Width="340" VerticalContentAlignment="Top">
+        <StackPanel Height="740"  Orientation="Horizontal" VerticalAlignment="Top">
+            <!--侧边栏A，负责音源的切换-->
+            <StackPanel Orientation="Vertical" Height="740" Width="320">
+                <Border x:Name="borderA" BorderThickness="0" BorderBrush="Transparent" Height="100">
+                    <Button Style="{StaticResource SideButton}" x:Name="ins1" Content="风物之诗琴" FontSize="40" Foreground="White"/>
+                </Border>
+                <Border x:Name="borderB" BorderThickness="0" BorderBrush="Transparent" Height="100">
+                    <Button Style="{StaticResource SideButton}" x:Name="ins2" Content="晚风圆号" FontSize="40" Foreground="White" />
+                </Border>
+                <Border x:Name="borderC" BorderThickness="0" BorderBrush="Transparent" Height="100">
+                    <Button Style="{StaticResource SideButton}" x:Name="ins3" Content="镜花之琴" FontSize="40" Foreground="White"/>
+                </Border>
+                <Border x:Name="borderD" BorderThickness="0" BorderBrush="Transparent" Height="100">
+                    <Button Style="{StaticResource SideButton}" x:Name="ins4" Content="荒泷盛世豪鼓" FontSize="40" Foreground="White"/>
+                </Border>
+                <Border x:Name="borderE" BorderThickness="0" BorderBrush="Transparent" Height="100">
+                    <Button Style="{StaticResource SideButton}" x:Name="ins5" Content="老旧的诗琴" FontSize="40" Foreground="White"/>
+                </Border>
+                <Border x:Name="borderF" BorderThickness="0" BorderBrush="Transparent" Height="100">
+
+                </Border>
+                <Border x:Name="borderG" BorderThickness="0" BorderBrush="Transparent" Height="120">
+                    <Button Style="{StaticResource SideButton}" x:Name="ins6" Content="? ? ?" FontSize="40" Foreground="White"/>
+                </Border>
+            </StackPanel>
+
+            <!--侧边栏B，文字谱调试界面的相关选择-->
+            <StackPanel Orientation="Vertical" Height="740" Width="320">
+                
+            </StackPanel>
+
+            <!--侧边栏C，可视谱调试界面的相关选择-->
+            <StackPanel Orientation="Vertical" Height="740" Width="320">
+
+            </StackPanel>
+
+            <!--侧边栏D，负责音源的切换-->
+            <StackPanel Orientation="Vertical" Height="740" Width="320">
+
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </Border>

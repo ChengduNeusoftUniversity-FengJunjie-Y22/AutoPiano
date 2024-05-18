@@ -48,7 +48,7 @@ namespace AutoPiano
     /// <summary>
     /// 【抽象类】最为基础的音乐依赖
     /// </summary>
-    internal abstract class Basic
+    internal abstract class AudioBasic : MusicTheory
     {
         #region 音源控制模块
         public static readonly string AudioForFWPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_FW");
@@ -153,6 +153,18 @@ namespace AutoPiano
             MediaPlayer? player = null;
             KeyToMediaPlayer.TryGetValue(target, out player);
             if (player != null) { player.Stop(); player.Position = TimeSpan.Zero; player.Play(); }
+        }
+        public static void PlayWithInt(int key)
+        {
+            VirtualKeyCode keyCode;
+            IntToKeyCode.TryGetValue(key, out keyCode);
+            MediaPlayer? player = null;
+            KeyToMediaPlayer.TryGetValue(keyCode, out player);
+            if (player != null) { player.Stop(); player.Position = TimeSpan.Zero; player.Play(); }
+        }
+        public static void Operation()
+        {
+
         }
         /// <summary>
         /// 依据乐器类型更新音源字典

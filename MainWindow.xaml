@@ -15,7 +15,7 @@
             <Setter Property="Height" Value="10"/>
         </Style>
     </Window.Resources>
-    <Viewbox>
+    <Viewbox MouseLeftButtonDown="Viewbox_MouseLeftButtonDown">
         <Border BorderBrush="White" BorderThickness="1">
             <Grid Height="810" Width="1440">
                 <local:Sidebar x:Name="TabA" Width="0" HorizontalAlignment="Left" Margin="5,65,0,5"/>

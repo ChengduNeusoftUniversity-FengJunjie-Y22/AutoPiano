@@ -18,7 +18,7 @@ namespace AutoPiano
     /// <summary>
     /// 【抽象类】采用XML格式，完成对实例对象的读写操作 
     /// </summary>
-    internal abstract class XmlObject : Basic
+    internal abstract class XmlObject : AudioBasic
     {
         /// <summary>
         /// 【Operate+Time】结构的歌曲数据,结构简单，泛用性极高，适用于自动演奏，占用性能最少
