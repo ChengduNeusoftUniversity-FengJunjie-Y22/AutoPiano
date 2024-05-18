@@ -7,6 +7,42 @@ using System.Windows.Media;
 using WindowsInput;
 using WindowsInput.Native;
 
+/// <summary>
+/// 【枚举】乐器类型
+/// </summary>
+public enum InstrumentTypes : int
+{
+    /// <summary>
+    /// 风物之诗琴
+    /// </summary>
+    FWPiano = 21,
+
+    /// <summary>
+    /// 晚风圆号
+    /// </summary>
+    WFHorn = 14,
+
+    /// <summary>
+    /// 镜花之琴
+    /// </summary>
+    JHPiano = 21,
+
+    /// <summary>
+    /// 荒泷盛世豪鼓
+    /// </summary>
+    HLDrum = 4,
+
+    /// <summary>
+    /// 老旧的诗琴
+    /// </summary>
+    XMPiano = 21,
+
+    /// <summary>
+    /// ⚠类型不明
+    /// </summary>
+    None = 0
+}
+
 namespace AutoPiano
 {
     /// <summary>
@@ -15,23 +51,49 @@ namespace AutoPiano
     internal abstract class Basic
     {
         #region 音源控制模块
-        public static string AudioForFWPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_FW");
-        public static string AudioForWFHorn = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_WF");
-        public static string AudioForJHPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_JH");
-        public static string AudioForHLDrum = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_HL");
-        public static string AudioForXMPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_XM");
+        public static readonly string AudioForFWPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_FW");
+        public static readonly string AudioForWFHorn = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_WF");
+        public static readonly string AudioForJHPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_JH");
+        public static readonly string AudioForHLDrum = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_HL");
+        public static readonly string AudioForXMPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_XM");
+        public static readonly VirtualKeyCode[] AdudioKey = new VirtualKeyCode[]
+        {
+            VirtualKeyCode.VK_Q,
+            VirtualKeyCode.VK_W,
+            VirtualKeyCode.VK_E,
+            VirtualKeyCode.VK_R,
+            VirtualKeyCode.VK_T,
+            VirtualKeyCode.VK_Y,
+            VirtualKeyCode.VK_U,
+
+            VirtualKeyCode.VK_A,
+            VirtualKeyCode.VK_S,
+            VirtualKeyCode.VK_D,
+            VirtualKeyCode.VK_F,
+            VirtualKeyCode.VK_G,
+            VirtualKeyCode.VK_H,
+            VirtualKeyCode.VK_J,
+
+            VirtualKeyCode.VK_Z,
+            VirtualKeyCode.VK_X,
+            VirtualKeyCode.VK_C,
+            VirtualKeyCode.VK_V,
+            VirtualKeyCode.VK_B,
+            VirtualKeyCode.VK_N,
+            VirtualKeyCode.VK_M,
+        };
         /// <summary>
         /// 约定所有乐器的文件名必须是【Key+.mp3】
         /// </summary>
-        public static string[] AudioName = new string[]
+        public static readonly string[] AudioName = new string[]
         {
-        "Z.mp3",
-        "X.mp3",
-        "C.mp3",
-        "V.mp3",
-        "B.mp3",
-        "N.mp3",
-        "M.mp3",
+        "Q.mp3",
+        "W.mp3",
+        "E.mp3",
+        "R.mp3",
+        "T.mp3",
+        "Y.mp3",
+        "U.mp3",
 
         "A.mp3",
         "S.mp3",
@@ -41,13 +103,13 @@ namespace AutoPiano
         "H.mp3",
         "J.mp3",
 
-        "Q.mp3",
-        "W.mp3",
-        "E.mp3",
-        "R.mp3",
-        "T.mp3",
-        "Y.mp3",
-        "U.mp3",
+        "Z.mp3",
+        "X.mp3",
+        "C.mp3",
+        "V.mp3",
+        "B.mp3",
+        "N.mp3",
+        "M.mp3",
         };
         /// <summary>
         /// 检查预览音频支持文件夹是否完备
@@ -98,7 +160,28 @@ namespace AutoPiano
         /// <param name="type"></param>
         public static void UpdateAudioByType(InstrumentTypes type)
         {
-
+            Dictionary<VirtualKeyCode, MediaPlayer> result = new Dictionary<VirtualKeyCode, MediaPlayer>();
+            switch (type)
+            {
+                case InstrumentTypes.FWPiano:
+                    for (int i = 0; i < (int)type; i++)
+                    {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForFWPiano + AudioName[i])));
+                        result.Add(AdudioKey[i], mediaPlayer);
+                    }
+                    KeyToMediaPlayer = result;
+                    break;
+                case InstrumentTypes.WFHorn:
+                    for (int i = 0; i < (int)type; i++)
+                    {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForWFHorn + AudioName[i])));
+                        result.Add(AdudioKey[i], mediaPlayer);
+                    }
+                    KeyToMediaPlayer = result;
+                    break;
+            }
         }
         #endregion
 

@@ -28,7 +28,7 @@ namespace AutoPiano
         /// <param name="span">时值</param>
         public Note(char value, int span)
         {
-            Key = Basic.GetKeyCode(value);
+            Key = GetKeyCode(value);
             Span = span;
         }
 
@@ -39,7 +39,7 @@ namespace AutoPiano
 
         public void Preview()
         {
-            MusicalInstrument.PlayWithKeyCode(Key);
+            PlayWithKeyCode(Key);
         }
 
         public void Play()
