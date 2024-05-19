@@ -31,8 +31,11 @@ namespace AutoPiano
             }
         }
 
-        public static async Task<Song> SelectThenAnalize()
+        public static async Task<Tuple<Song, string>> SelectThenAnalize()
         {
+            Song song = new Song();
+            string name = "?";
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = DefaultTxtPath;
             openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
@@ -43,10 +46,11 @@ namespace AutoPiano
 
                 string fileContent = File.ReadAllText(selectedFilePath);
 
-                return await SongParse(fileContent);
+                song = await SongParse(fileContent);
+                name = System.IO.Path.GetFileNameWithoutExtension(selectedFilePath);
             }
 
-            return new Song();
+            return Tuple.Create(song, name);
         }
 
         #region 文本谱解析工具
@@ -124,7 +128,7 @@ namespace AutoPiano
             }
         }
 
-        private static async Task<Song> SongParse(string text)//将数据解析至Page1的song对象
+        public static async Task<Song> SongParse(string text)//将数据解析至Page1的song对象
         {
             Song result = new Song();
             await Task.Run(() =>

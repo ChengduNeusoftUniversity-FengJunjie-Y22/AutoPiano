@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -10,6 +11,8 @@ namespace AutoPiano
     [Serializable]
     public class Song : BinaryObject
     {
+        public string Name = "None";
+
         public static DataTypes Type = DataTypes.Simple;
 
         public Song() { }
@@ -19,38 +22,101 @@ namespace AutoPiano
         /// </summary>
         public List<object> notes = new List<object>();
 
+        private bool _isOnPlaying = false;
+        public bool IsOnPlaying
+        {
+            get { return _isOnPlaying; }
+            set { _isOnPlaying = value; }
+        }
+
         private bool _isStop = false;
         public bool IsStop
         {
             get { return _isStop; }
+            set { _isStop = value; }
         }
-        public async void Start()
+
+        private int _position = 0;
+        public int Position
         {
-            foreach (object item in notes)
+            get
             {
-                if (IsStop)
+                if (_position < notes.Count)
                 {
-                    return;
+                    return _position;
                 }
-                if (item is Note note)
+                return 0;
+            }
+            set
+            {
+                if (value < notes.Count)
                 {
-                    note.Preview();
-                    await Task.Delay(note.Span);
-                }
-                else if (item is Chord chord)
-                {
-                    chord.Preview();
-                    await Task.Delay(chord.Chords.Last().Span);
-                }
-                else if (item is NullNote nunote)
-                {
-                    await Task.Delay(nunote.Span);
+                    _position = value;
                 }
             }
         }
+
+        public async void Start()
+        {
+            if (IsOnPlaying) return;
+            IsOnPlaying = true;
+            for (int i = Position; i < notes.Count; i++)
+            {
+                if (IsStop)
+                {
+                    IsStop = false;
+                    IsOnPlaying = false;
+                    Position--;
+                    return;
+                }
+                UpdateTxtVisual();
+                if (notes[i] is Note note)
+                {
+                    note.Preview();
+                    TxtAnalizeVisual.ColorChange(Position, note.Span, note.GetContent());
+                    await Task.Delay(note.Span);
+                }
+                else if (notes[i] is Chord chord)
+                {
+                    chord.Preview();
+                    TxtAnalizeVisual.ColorChange(Position, chord.Chords.Last().Span, chord.GetContent());
+                    await Task.Delay(chord.Chords.Last().Span);
+                }
+                else if (notes[i] is NullNote nunote)
+                {
+                    TxtAnalizeVisual.ColorChange(Position, nunote.Span, nunote.GetContent());
+                    await Task.Delay(nunote.Span);
+                }
+                Position++;
+            }
+            IsOnPlaying = false;
+        }
         public void Stop()
         {
+            if (IsOnPlaying)
+            {
+                IsStop = true;
+                Position = 0;
+            }
+        }
+        public void Pause()
+        {
+            if (IsOnPlaying)
+            {
+                IsStop = true;
+            }
+            else
+            {
+                Start();
+            }
+        }
 
+        public void UpdateTxtVisual()
+        {
+            if (TxtAnalizeVisual.Instance != null)
+            {
+                TxtAnalizeVisual.Instance.SDValuePlay.Value = Position * 60;
+            }
         }
 
         /// <summary>

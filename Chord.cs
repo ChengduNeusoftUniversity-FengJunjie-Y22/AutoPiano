@@ -67,5 +67,14 @@ namespace AutoPiano
             }
             return result;
         }
+        public string GetContentWithOutTime()
+        {
+            string result = string.Empty;
+            foreach (Note note in Chords)
+            {
+                result += note.GetContentWithOutTime();
+            }
+            return result;
+        }
     }
 }

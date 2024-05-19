@@ -61,5 +61,10 @@ namespace AutoPiano
                 return "0" + " + " + Span;
             }
         }
+
+        public string GetContentWithOutTime()
+        {
+            return "0";
+        }
     }
 }

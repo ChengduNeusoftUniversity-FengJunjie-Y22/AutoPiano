@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +24,7 @@ namespace AutoPiano
     /// </summary>
     public partial class HotKeySet : Page
     {
+        public static HotKeySet? Instance;
         private static ComponentInfo Info = new ComponentInfo(40, Brushes.Cyan, Brushes.Transparent, new Thickness());
 
         KeySelectBox k1 = PrefabComponent.GetComponent<KeySelectBox>();
@@ -43,7 +46,15 @@ namespace AutoPiano
         public HotKeySet()
         {
             InitializeComponent();
-            LoadHotKeySetPage();
+            Instance = this;
+        }
+
+        public static void LoadPage()
+        {
+            if (Instance != null)
+            {
+                Instance.LoadHotKeySetPage();
+            }
         }
 
         public void LoadHotKeySetPage()
@@ -70,17 +81,6 @@ namespace AutoPiano
             k9.IsDefaultColorChange = false;
             k10.IsDefaultColorChange = false;
 
-            k1.UseFatherSize<Border>();
-            k2.UseFatherSize<Border>();
-            k3.UseFatherSize<Border>();
-            k4.UseFatherSize<Border>();
-            k5.UseFatherSize<Border>();
-            k6.UseFatherSize<Border>();
-            k7.UseFatherSize<Border>();
-            k8.UseFatherSize<Border>();
-            k9.UseFatherSize<Border>();
-            k10.UseFatherSize<Border>();
-
             k1.UseStyleProperty("MyBox");
             k2.UseStyleProperty("MyBox");
             k3.UseStyleProperty("MyBox");
@@ -92,16 +92,42 @@ namespace AutoPiano
             k9.UseStyleProperty("MyBox");
             k10.UseStyleProperty("MyBox");
 
+            k1.UseFatherSize<Border>();
+            k2.UseFatherSize<Border>();
+            k3.UseFatherSize<Border>();
+            k4.UseFatherSize<Border>();
+            k5.UseFatherSize<Border>();
+            k6.UseFatherSize<Border>();
+            k7.UseFatherSize<Border>();
+            k8.UseFatherSize<Border>();
+            k9.UseFatherSize<Border>();
+            k10.UseFatherSize<Border>();
+
             BindingRef.Connect(k1, k6, PlayInEdit);
             BindingRef.Connect(k2, k7, PlayOutEdit);
             BindingRef.Connect(k3, k8, Pause);
             BindingRef.Connect(k4, k9, Stop);
             BindingRef.Connect(k5, k10, Visual);
+
+            k1.CurrentKey = Key.LeftCtrl;
+            k6.CurrentKey = Key.A;
+
+            k2.CurrentKey = Key.LeftAlt;
+            k7.CurrentKey = Key.C;
+
+            k3.CurrentKey = Key.LeftCtrl;
+            k8.CurrentKey = Key.S;
+
+            k4.CurrentKey = Key.LeftCtrl;
+            k9.CurrentKey = Key.D;
+
+            k5.CurrentKey = Key.LeftAlt;
+            k10.CurrentKey = Key.V;
         }
 
         public static void PlayInEdit()
         {
-
+            if (TxtAnalizeVisual.CurrentSong != null) { TxtAnalizeVisual.CurrentSong.Start(); }
         }
         public static void PlayOutEdit()
         {
@@ -109,11 +135,11 @@ namespace AutoPiano
         }
         public static void Pause()
         {
-
+            if (TxtAnalizeVisual.CurrentSong != null) { TxtAnalizeVisual.CurrentSong.Pause(); }
         }
         public static void Stop()
         {
-
+            if (TxtAnalizeVisual.CurrentSong != null) { TxtAnalizeVisual.CurrentSong.Stop(); }
         }
         public static void Visual()
         {

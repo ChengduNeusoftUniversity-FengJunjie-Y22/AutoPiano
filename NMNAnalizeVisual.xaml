@@ -7,10 +7,172 @@
       mc:Ignorable="d" 
       d:DesignHeight="740" d:DesignWidth="1440"
       Title="NMNAnalizeVisual">
+    <Page.Resources>
+        <DropShadowEffect x:Key="UnhoverThumbEffect" BlurRadius="5" ShadowDepth="0" Opacity="0.3" Color="RoyalBlue"/>
+        <DropShadowEffect x:Key="HoverThumbEffect" BlurRadius="5" ShadowDepth="0" Opacity="0.5" Color="RoyalBlue"/>
+        <DropShadowEffect x:Key="DragThumbEffect" BlurRadius="8" ShadowDepth="0" Opacity="1" Color="RoyalBlue"/>
+        <Style x:Key="DefaultSliderThumbStyle" TargetType="Thumb">
+            <Setter Property="Width" Value="15"/>
+            <Setter Property="Height" Value="15"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse Width="{TemplateBinding Width}" 
+                             Height="{TemplateBinding Height}"
+                             Fill="{TemplateBinding Background}"
+                             Effect="{StaticResource UnhoverThumbEffect}">
+                        </Ellipse>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Effect" Value="{StaticResource HoverThumbEffect}"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                            <Trigger Property="IsDragging" Value="True">
+                                <Setter Property="Effect" Value="{StaticResource DragThumbEffect}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DefaultLeftRepeatButtonStyle" TargetType="RepeatButton">
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="Cyan" Height="4"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DefaultRightRepeatButtonStyle" TargetType="RepeatButton">
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border Background="Transparent"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="BaseSliderStyle" TargetType="Slider">
+            <Setter Property="Width" Value="500"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Margin" Value="20"/>
+            <Setter Property="Maximum" Value="100"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <!--移到鼠标点击的指定刻度点-->
+            <Setter Property="IsMoveToPointEnabled" Value="True"/>
+            <!--移动的最大最小距离。
+            由于设置了IsMoveToPointEnabled=True，下面两个属性就没发挥作用了。
+            点击RepeatButton时直接就移动到了指定位置。
+            如果为False，那么由于RepeatButton绑定了Slider.DecreaseLarge命令，
+            那点击左右的RepeatButton一次，就移动10个单位距离。
+            同样的还有Slider.DecreaseSmall命令，移动1个单位距离-->
+            <Setter Property="LargeChange" Value="10"/>
+            <Setter Property="SmallChange" Value="1"/>
+            <Setter Property="Background" Value="LightGray"/>
+            <Setter Property="Foreground" Value="Cyan"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+        <Style x:Key="BeautifySliderStyle" TargetType="Slider" BasedOn="{StaticResource BaseSliderStyle}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Slider">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition MinHeight="{TemplateBinding MinHeight}" Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TickBar Name="TopTick"
+                                 Grid.Row="0"
+                                 Placement="Top"
+                                 Height="4"
+                                 Visibility="Collapsed"
+                                 Fill="{TemplateBinding Foreground}"/>
+                            <Border Name="TrackBackground" 
+                                Grid.Row="1"
+                                Height="4"
+                                Background="{TemplateBinding Background}"/>
+                            <Track Name="PART_Track" Grid.Row="1">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource DefaultLeftRepeatButtonStyle}" Command="Slider.DecreaseLarge"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource DefaultSliderThumbStyle}"/>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Style="{StaticResource DefaultRightRepeatButtonStyle}" Command="Slider.IncreaseLarge"/>
+                                </Track.IncreaseRepeatButton>
+                            </Track>
+                            <TickBar Name="BottomTick"
+                                 Grid.Row="2"
+                                 Placement="Bottom"
+                                 Height="4"
+                                 Visibility="Collapsed"
+                                 Fill="{TemplateBinding Foreground}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="TickPlacement" Value="Both">
+                                <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="TickPlacement" Value="BottomRight">
+                                <Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="TickPlacement" Value="TopLeft">
+                                <Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"         
+                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="False">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
     <Grid>
         <Border x:Name="ModeVisual" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
 
         </Border>
         <TextBlock  Foreground="White" FontSize="25" Text="Edit - Mode - Visual"  HorizontalAlignment="Right" Margin="0,0,30,0"></TextBlock>
+
+        <Border BorderThickness="0" Height="330" Width="1440" Margin="0,384,0,26">
+            <ScrollViewer Name="SongBox" Height="350" Width="1460" HorizontalScrollBarVisibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Left">
+
+            </ScrollViewer>
+        </Border>
+        <Border BorderBrush="White" BorderThickness="8,1,8,1" Width="1440" Margin="0,384,0,0"/>
+
+        <Slider Style="{StaticResource BeautifySliderStyle}" Height="2" Width="NaN" RenderTransformOrigin="0.5,0.5" Margin="36,711,30,-1">
+            <Slider.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="180"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Slider.RenderTransform>
+        </Slider>
     </Grid>
 </Page>

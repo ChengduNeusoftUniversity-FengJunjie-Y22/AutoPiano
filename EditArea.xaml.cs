@@ -35,7 +35,15 @@ namespace AutoPiano
         public static HotKeySet? VisualC;
 
         private static PageTypes _pageType = PageTypes.TxtAnalize;
+
+        /// <summary>
+        /// 切页效果的其实位置
+        /// </summary>
         public static double StartValue = 0;
+
+        /// <summary>
+        /// 更改此属性将直接切换页面
+        /// </summary>
         public PageTypes PageType
         {
             get { return _pageType; }
@@ -70,7 +78,10 @@ namespace AutoPiano
             WorkAreaC.Navigate(VisualC);
         }
 
-        public async void ChangePage()
+        /// <summary>
+        /// 切换页面的动画效果实现，已在属性中被实时调用
+        /// </summary>
+        public void ChangePage()
         {
             double Offest = 0;
 

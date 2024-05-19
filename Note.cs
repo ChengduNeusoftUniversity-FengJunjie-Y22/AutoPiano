@@ -60,5 +60,10 @@ namespace AutoPiano
                 return GetKeyChar(Key).ToString() + " + " + Span;
             }
         }
+
+        public string GetContentWithOutTime()
+        {
+            return GetKeyChar(Key).ToString();
+        }
     }
 }

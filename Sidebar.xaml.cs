@@ -103,26 +103,31 @@ namespace AutoPiano
         private void ins1_Click(object sender, RoutedEventArgs e)
         {
             AudioBasic.UpdateAudioByType(InstrumentTypes.FWPiano);
+            TxtAnalizeVisual.InstrumentType = InstrumentTypes.FWPiano;
         }
 
         private void ins2_Click(object sender, RoutedEventArgs e)
         {
             AudioBasic.UpdateAudioByType(InstrumentTypes.WFHorn);
+            TxtAnalizeVisual.InstrumentType = InstrumentTypes.WFHorn;
         }
 
         private void ins3_Click(object sender, RoutedEventArgs e)
         {
             AudioBasic.UpdateAudioByType(InstrumentTypes.JHPiano);
+            TxtAnalizeVisual.InstrumentType = InstrumentTypes.JHPiano;
         }
 
         private void ins4_Click(object sender, RoutedEventArgs e)
         {
             AudioBasic.UpdateAudioByType(InstrumentTypes.HLDrum);
+            TxtAnalizeVisual.InstrumentType = InstrumentTypes.HLDrum;
         }
 
         private void ins5_Click(object sender, RoutedEventArgs e)
         {
             AudioBasic.UpdateAudioByType(InstrumentTypes.XMPiano);
+            TxtAnalizeVisual.InstrumentType = InstrumentTypes.XMPiano;
         }
     }
 }
