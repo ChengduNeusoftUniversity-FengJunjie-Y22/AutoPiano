@@ -18,7 +18,7 @@
     <Viewbox MouseLeftButtonDown="Viewbox_MouseLeftButtonDown">
         <Border BorderBrush="White" BorderThickness="0">
             <Grid Height="810" Width="1440">
-                <local:Sidebar x:Name="TabA" Width="0" HorizontalAlignment="Left" Margin="5,65,0,5"/>
+                <local:Sidebar x:Name="TabA" Width="0" Margin="0,70,1120,0" HorizontalAlignment="Left"/>
                 <local:SuperMenu Margin="0,0,0,750" x:Name="Selects"/>
                 <local:EditArea Width="4320"/>
             </Grid>

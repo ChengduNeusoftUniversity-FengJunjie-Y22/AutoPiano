@@ -8,7 +8,7 @@
              CornerRadius="15"
              BorderThickness="2"
              BorderBrush="Cyan"
-             Background="Transparent"
+             Background="#1e1e1e"
              Height="740" Width="320" Grid.ZIndex="3">
     <Border.Resources>
         <Style x:Key="SideButton" TargetType="Button">
@@ -30,10 +30,10 @@
             </Style.Triggers>
         </Style>
     </Border.Resources>
-    <ScrollViewer x:Name="SideBoxes" Height="760" Width="340" VerticalContentAlignment="Top">
+    <ScrollViewer x:Name="SideBoxes" Height="760" Width="340" HorizontalAlignment="Left">
         <StackPanel Height="740"  Orientation="Horizontal" VerticalAlignment="Top">
             <!--侧边栏A，负责音源的切换-->
-            <StackPanel Orientation="Vertical" Height="740" Width="320">
+            <StackPanel Orientation="Vertical" Width="320" HorizontalAlignment="Left">
                 <Border x:Name="borderA" BorderThickness="0" BorderBrush="Transparent" Height="100">
                     <Button Style="{StaticResource SideButton}" x:Name="ins1" Content="风物之诗琴" FontSize="40" Foreground="White" Click="ins1_Click"/>
                 </Border>

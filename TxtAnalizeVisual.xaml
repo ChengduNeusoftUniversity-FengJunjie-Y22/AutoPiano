@@ -10,6 +10,7 @@
     <Page.Resources>
         <Style TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -32,5 +33,12 @@
 
         </Border>
         <TextBlock Foreground="White" FontSize="25" Text="Edit - Mode - .txt" HorizontalAlignment="Right" Margin="0,0,50,0"/>
+        <Border Width="600" HorizontalAlignment="Left" BorderThickness="0,0,4,0" BorderBrush="White" Margin="840,45,0,0">
+            <ScrollViewer Width="620">
+                <StackPanel HorizontalAlignment="Left" Width="600">
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Page>
