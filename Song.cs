@@ -90,6 +90,7 @@ namespace AutoPiano
                 Position++;
             }
             IsOnPlaying = false;
+            Position = 0;
         }
         public void Stop()
         {

@@ -85,7 +85,7 @@ namespace AutoPiano
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            TxtNotes.ScrollToHorizontalOffset((CurrentSong.Position - 12) * 60);
+            TxtNotes.ScrollToHorizontalOffset(e.NewValue - 12 * 60);
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -94,6 +94,7 @@ namespace AutoPiano
             var result = await StringProcessing.SelectThenAnalize();
             CurrentSong = result.Item1;
             SongName.Text = result.Item2;
+            SDValuePlay.Maximum = CurrentSong.notes.Count * 60;
         }
 
         private void MouEnter(object sender, RoutedEventArgs e)
@@ -165,7 +166,7 @@ namespace AutoPiano
                         Background = Brushes.Transparent,
                         Padding = new Thickness(0),
                         LineHeight = 0.1,
-                        FontSize = 30,
+                        FontSize = 28,
                         Width = 40,
                         Foreground = Brushes.White,
                         VerticalAlignment = VerticalAlignment.Center,
@@ -233,6 +234,11 @@ namespace AutoPiano
                     }
                 }
             }
+        }
+
+        private void SDValuePlay_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            CurrentSong.Position = (int)(SDValuePlay.Value / 60 - 12);
         }
     }
 }

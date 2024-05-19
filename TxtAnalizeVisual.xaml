@@ -193,7 +193,7 @@
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        <Slider Name="SDValuePlay" Style="{StaticResource BeautifySliderStyle}" Width="NaN" Height="2" Margin="27,697,25,13" RenderTransformOrigin="0.5,0.5" ValueChanged="Slider_ValueChanged" Minimum="0">
+        <Slider Name="SDValuePlay" Style="{StaticResource BeautifySliderStyle}" Width="NaN" Height="2" Margin="27,697,25,13" RenderTransformOrigin="0.5,0.5" ValueChanged="Slider_ValueChanged" Minimum="0" PreviewMouseUp="SDValuePlay_PreviewMouseUp">
             <Slider.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
