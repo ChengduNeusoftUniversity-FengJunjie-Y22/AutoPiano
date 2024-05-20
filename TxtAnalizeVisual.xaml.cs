@@ -81,6 +81,9 @@ namespace AutoPiano
                 }
             }
         }
+
+        public static bool IsAttentive = false;
+
         public TxtAnalizeVisual()
         {
             InitializeComponent();
@@ -290,6 +293,71 @@ namespace AutoPiano
                 ReadButton.Content = "读档";
                 ReadButton.Foreground = Brushes.White;
             }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            if (IsAttentive)
+            {
+                DoubleAnimation widthAnimation = new DoubleAnimation();
+                widthAnimation.AccelerationRatio = 1;
+                widthAnimation.From = 1440; // 起始宽度
+                widthAnimation.To = 0;   // 结束宽度
+                widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
+
+                // 创建一个故事板，并将动画对象添加到其中
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(widthAnimation);
+
+                // 将动画应用到按钮的宽度属性
+                Storyboard.SetTarget(widthAnimation, TimeEdit);
+                Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
+
+                // 启动动画
+                storyboard.Begin();
+                IsAttentive = false;
+            }
+            else
+            {
+                DoubleAnimation widthAnimation = new DoubleAnimation();
+                widthAnimation.AccelerationRatio = 1;
+                widthAnimation.From = 0; // 起始宽度
+                widthAnimation.To = 1440;   // 结束宽度
+                widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
+
+                // 创建一个故事板，并将动画对象添加到其中
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(widthAnimation);
+
+                // 将动画应用到按钮的宽度属性
+                Storyboard.SetTarget(widthAnimation, TimeEdit);
+                Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
+
+                // 启动动画
+                storyboard.Begin();
+                IsAttentive = true;
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            DoubleAnimation widthAnimation = new DoubleAnimation();
+            widthAnimation.AccelerationRatio = 1;
+            widthAnimation.From = 1440; // 起始宽度
+            widthAnimation.To = 0;   // 结束宽度
+            widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
+
+            // 创建一个故事板，并将动画对象添加到其中
+            Storyboard storyboard = new Storyboard();
+            storyboard.Children.Add(widthAnimation);
+
+            // 将动画应用到按钮的宽度属性
+            Storyboard.SetTarget(widthAnimation, TimeEdit);
+            Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
+
+            // 启动动画
+            storyboard.Begin();
+            IsAttentive = false;
         }
     }
 }

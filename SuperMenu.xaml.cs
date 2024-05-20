@@ -23,6 +23,8 @@ namespace AutoPiano
     {
         public static bool IsSideBarOpen = false;
 
+        public static bool IsClickMode = true;//是否为点击切换页面模式
+
         public SuperMenu()
         {
             InitializeComponent();
@@ -95,17 +97,26 @@ namespace AutoPiano
 
         private void MenuBox2_Click(object sender, RoutedEventArgs e)
         {
-
+            if (IsClickMode && EditArea.Instance != null)
+            {
+                EditArea.Instance.PageType = PageTypes.TxtAnalize;
+            }
         }
 
         private void MenuBox3_Click(object sender, RoutedEventArgs e)
         {
-
+            if (IsClickMode && EditArea.Instance != null)
+            {
+                EditArea.Instance.PageType = PageTypes.NMNAnalize;
+            }
         }
 
         private void MenuBox4_Click(object sender, RoutedEventArgs e)
         {
-
+            if (IsClickMode && EditArea.Instance != null)
+            {
+                EditArea.Instance.PageType = PageTypes.HotKeySet;
+            }
         }
 
         public static void ReverseSideTab()
@@ -138,7 +149,7 @@ namespace AutoPiano
             {
                 button.Foreground = Brushes.Cyan;
             }
-            if (EditArea.Instance != null)
+            if (EditArea.Instance != null && !IsClickMode)
             {
                 EditArea.Instance.PageType = PageTypes.TxtAnalize;
             }
@@ -151,7 +162,7 @@ namespace AutoPiano
             {
                 button.Foreground = Brushes.Cyan;
             }
-            if (EditArea.Instance != null)
+            if (EditArea.Instance != null && !IsClickMode)
             {
                 EditArea.Instance.PageType = PageTypes.NMNAnalize;
             }
@@ -164,7 +175,7 @@ namespace AutoPiano
             {
                 button.Foreground = Brushes.Cyan;
             }
-            if (EditArea.Instance != null)
+            if (EditArea.Instance != null && !IsClickMode)
             {
                 EditArea.Instance.PageType = PageTypes.HotKeySet;
             }

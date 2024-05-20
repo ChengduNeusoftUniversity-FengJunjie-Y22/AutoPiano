@@ -43,37 +43,64 @@
         </Style>
 
     </Page.Resources>
-    <Grid>
-        <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,80,0,570">
-            <TextBlock Foreground="White" FontSize="50" Text="开始-预览" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
-        </Border>
-        <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,210,0,440">
-            <TextBlock Foreground="White" FontSize="50" Text="开始-自动演奏" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
-        </Border>
-        <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,340,0,310">
-            <TextBlock Foreground="White" FontSize="50" Text="暂停" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
-        </Border>
-        <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,470,0,180">
-            <TextBlock Foreground="White" FontSize="50" Text="停止" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
-        </Border>
-        <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,600,0,50">
-            <TextBlock Foreground="White" FontSize="50" Text="视窗" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
-        </Border>
-        <Border x:Name="ModeHotKey" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
-        </Border>
-        <TextBlock  Foreground="White" FontSize="25" Text="Edit - Set - HotKey"  HorizontalAlignment="Right" Margin="0,0,30,705"></TextBlock>
+    <Border Width="1440" Height="740">
+        <ScrollViewer Width="1460" Height="740" VerticalAlignment="Top" HorizontalAlignment="Left">
+            <StackPanel Width="1440" Orientation="Vertical">
+                <Grid Height="740" Width="1440">
+                    <Border x:Name="ModeHotKey" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
+                    </Border>
+                    <TextBlock  Foreground="White" FontSize="25" Text="Set - Edit"  HorizontalAlignment="Right" Margin="0,10,93,695"></TextBlock>
 
-        <!--提示栏UI↑-->
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,80,0,570">
+                        <TextBlock Foreground="White" FontSize="50" Text="滑动切换" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,210,0,440">
+                        <TextBlock Foreground="White" FontSize="50" Text="高精度解析" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,340,0,310">
+                        <TextBlock Foreground="White" FontSize="50" Text="自动专注" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,470,0,180">
+                        <TextBlock Foreground="White" FontSize="50" Text="通用数据" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,600,0,50">
+                        <TextBlock Foreground="White" FontSize="50" Text="DeBug" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                </Grid>
+                <Grid>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,80,0,570">
+                        <TextBlock Foreground="White" FontSize="50" Text="开始-预览" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,210,0,440">
+                        <TextBlock Foreground="White" FontSize="50" Text="开始-自动演奏" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,340,0,310">
+                        <TextBlock Foreground="White" FontSize="50" Text="暂停" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,470,0,180">
+                        <TextBlock Foreground="White" FontSize="50" Text="停止" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,600,0,50">
+                        <TextBlock Foreground="White" FontSize="50" Text="视窗" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
+                    <Border Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
+                    </Border>
+                    <TextBlock  Foreground="White" FontSize="25" Text="Set - Edit - HotKey"  HorizontalAlignment="Right" Margin="0,0,30,705"></TextBlock>
 
-        <Border x:Name="b1" Style="{StaticResource MyBorder}" Margin="135,80,905,570"/>
-        <Border x:Name="b2" Style="{StaticResource MyBorder}" Margin="135,210,905,440"/>
-        <Border x:Name="b3" Style="{StaticResource MyBorder}" Margin="135,340,905,310"/>
-        <Border x:Name="b4" Style="{StaticResource MyBorder}" Margin="135,470,905,180"/>
-        <Border x:Name="b5" Style="{StaticResource MyBorder}" Margin="135,600,905,50"/>
-        <Border x:Name="b6" Style="{StaticResource MyBorder}" Margin="631,80,409,570"/>
-        <Border x:Name="b7" Style="{StaticResource MyBorder}" Margin="631,210,409,440"/>
-        <Border x:Name="b8" Style="{StaticResource MyBorder}" Margin="631,340,409,310"/>
-        <Border x:Name="b9" Style="{StaticResource MyBorder}" Margin="631,470,409,180"/>
-        <Border x:Name="b10" Style="{StaticResource MyBorder}" Margin="631,600,409,50"/>
-    </Grid>
+                    <!--提示栏UI↑-->
+
+                    <Border x:Name="b1" Style="{StaticResource MyBorder}" Margin="135,80,905,570"/>
+                    <Border x:Name="b2" Style="{StaticResource MyBorder}" Margin="135,210,905,440"/>
+                    <Border x:Name="b3" Style="{StaticResource MyBorder}" Margin="135,340,905,310"/>
+                    <Border x:Name="b4" Style="{StaticResource MyBorder}" Margin="135,470,905,180"/>
+                    <Border x:Name="b5" Style="{StaticResource MyBorder}" Margin="135,600,905,50"/>
+                    <Border x:Name="b6" Style="{StaticResource MyBorder}" Margin="631,80,409,570"/>
+                    <Border x:Name="b7" Style="{StaticResource MyBorder}" Margin="631,210,409,440"/>
+                    <Border x:Name="b8" Style="{StaticResource MyBorder}" Margin="631,340,409,310"/>
+                    <Border x:Name="b9" Style="{StaticResource MyBorder}" Margin="631,470,409,180"/>
+                    <Border x:Name="b10" Style="{StaticResource MyBorder}" Margin="631,600,409,50"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+    </Border>
 </Page>
