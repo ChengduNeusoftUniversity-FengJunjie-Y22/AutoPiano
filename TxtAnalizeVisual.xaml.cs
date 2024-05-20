@@ -359,5 +359,25 @@ namespace AutoPiano
             storyboard.Begin();
             IsAttentive = false;
         }
+
+        public void NewAttentiveInfo(object target)
+        {
+            AIndex.Text = CurrentSong.Position.ToString();
+            if (target is Note note)
+            {
+                AKey.Text = note.GetContentWithOutTime();
+                ATime.Text = note.Span.ToString();
+            }
+            else if (target is Chord chord)
+            {
+                AKey.Text = chord.GetContentWithOutTime();
+                ATime.Text = chord.Chords.Last().Span.ToString();
+            }
+            else if (target is NullNote nunote)
+            {
+                AKey.Text = nunote.GetContentWithOutTime();
+                ATime.Text = nunote.Span.ToString();
+            }
+        }
     }
 }

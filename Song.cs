@@ -53,6 +53,7 @@ namespace AutoPiano
                 {
                     _position = value;
                 }
+                TxtAnalizeVisual.Instance?.NewAttentiveInfo(notes[_position]);
             }
         }
 
