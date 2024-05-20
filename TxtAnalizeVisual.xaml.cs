@@ -18,6 +18,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoPiano
 {
@@ -360,23 +363,31 @@ namespace AutoPiano
             IsAttentive = false;
         }
 
-        public void NewAttentiveInfo(object target)
+        public void NewInfo(object target)
         {
             AIndex.Text = CurrentSong.Position.ToString();
+            double result = (CurrentSong.Position - 12) * 60;
+            SDValuePlay.Value = result;
             if (target is Note note)
             {
                 AKey.Text = note.GetContentWithOutTime();
                 ATime.Text = note.Span.ToString();
+                TimeValue.Text = note.GetContent();
+                return;
             }
-            else if (target is Chord chord)
+            if (target is Chord chord)
             {
                 AKey.Text = chord.GetContentWithOutTime();
                 ATime.Text = chord.Chords.Last().Span.ToString();
+                TimeValue.Text = chord.GetContent();
+                return;
             }
-            else if (target is NullNote nunote)
+            if (target is NullNote nunote)
             {
                 AKey.Text = nunote.GetContentWithOutTime();
                 ATime.Text = nunote.Span.ToString();
+                TimeValue.Text = nunote.GetContent();
+                return;
             }
         }
     }

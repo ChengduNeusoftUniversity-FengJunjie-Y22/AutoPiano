@@ -53,7 +53,7 @@ namespace AutoPiano
                 {
                     _position = value;
                 }
-                TxtAnalizeVisual.Instance?.NewAttentiveInfo(notes[_position]);
+                TxtAnalizeVisual.Instance?.NewInfo(notes[_position]);
             }
         }
 
@@ -119,6 +119,25 @@ namespace AutoPiano
             {
                 TxtAnalizeVisual.Instance.SDValuePlay.Value = Position * 60;
             }
+        }
+
+        public async void AddParagraph(string target)
+        {
+            Song temp1 = new Song();
+            Song temp2 = new Song();
+            Song temp3 = new Song();
+            Song result = new Song();
+            for (int i = 0; i < Position; i++)
+            {
+                temp1.notes.Add(notes[i]);
+            }
+            for (int i = Position + 1; i < notes.Count; i++)
+            {
+                temp2.notes.Add(notes[i]);
+            }
+            temp3 = await StringProcessing.SongParse(target);
+            result = temp1 + temp3 + temp2;
+            notes = result.notes;
         }
 
         /// <summary>
