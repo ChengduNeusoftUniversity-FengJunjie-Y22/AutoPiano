@@ -263,7 +263,7 @@ namespace AutoPiano
 
         public static void WhiteColor(int target, SolidColorBrush color)
         {
-            if (Instance != null)
+            if (Instance != null && target < CurrentSong.notes.Count)
             {
                 if (Instance.Notes.Children[target] is StackPanel spA)
                 {
@@ -432,7 +432,6 @@ namespace AutoPiano
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-            IsPreviewSingleOne = true;
             CurrentSong.Position--;
         }
 
@@ -503,6 +502,29 @@ namespace AutoPiano
                 nunote1.Span += StringProcessing.BlankSpace / 2;
             }
             CurrentSong.Position = CurrentSong.Position;
+        }
+
+        private void Button_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
+
+            if (key == Key.D0) { CurrentSong.Position = 0; return; }
+
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            IsPreviewSingleOne = true;
+            CurrentSong.Position++;
+
+            e.Handled = true;
+        }
+
+        private void TextBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            KeyDArea.Focus();
+        }
+
+        private void TextBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Keyboard.ClearFocus();
         }
     }
 }

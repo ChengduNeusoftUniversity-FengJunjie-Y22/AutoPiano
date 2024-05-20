@@ -186,6 +186,8 @@
 
         <Border Width="1440" HorizontalAlignment="Center" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,497,0,0"/>
 
+        <TextBox Name="KeyDArea" Grid.ZIndex="2" Margin="10,497,10,48" PreviewKeyDown="Button_PreviewKeyDown" Background="Transparent" IsReadOnly="True" MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" BorderThickness="0"/>
+
         <Border Width="1386" Height="170" HorizontalAlignment="Center" BorderThickness="0,0,0,0" BorderBrush="White" Margin="0,517,0,53">
             <ScrollViewer x:Name="TxtNotes" Height="190" Width="1460" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Visible">
                 <StackPanel x:Name="Notes" Height="170" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -220,12 +222,12 @@
                 <TextBlock Name="AIndex" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,279,0,0"/>
                 <TextBlock Name="AKey" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,58,0,0"/>
                 <TextBlock Name="ATime" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="198,0,0,0"/>
-                
+
                 <Button Margin="572,279,720,58" Content="下一个" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_7"/>
                 <Button Margin="425,279,868,58" Content="上一个" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_6"/>
 
-                <Button Margin="425,168,868,168" Content="加速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_8"/>
-                <Button Margin="572,168,720,168" Content="降速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_9"/>
+                <Button Margin="387,168,868,168" Content="加速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_8"/>
+                <Button Margin="572,168,686,168" Content="降速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_9"/>
 
                 <Button Background="Transparent" Foreground="White" FontSize="30" Content="退出专注" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,35,0" Width="151" Height="43" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_5"/>
             </Grid>
