@@ -68,6 +68,10 @@ namespace AutoPiano
                 _data = value;
                 if (Instance != null)
                 {
+                    Instance.SongName.Text = _data.Name;
+                    _data.Position = 0;
+                    _data.IsOnPlaying = false;
+                    _data.IsStop = false;
                     Instance.TimeValue.Text = string.Empty;
                     Instance.Notes.Children.Clear();
                     foreach (StackPanel textBlock in Instance.LoadPanelBoxes())
@@ -239,6 +243,53 @@ namespace AutoPiano
         private void SDValuePlay_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             CurrentSong.Position = (int)(SDValuePlay.Value / 60 - 12);
+        }
+
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            SaveButton.Content = "写入ing……";
+            SaveButton.Foreground = Brushes.Lime;
+            CurrentSong.Name = SongName.Text;
+            if (BinaryObject.SerializeObject(CurrentSong, DataTypes.Simple, CurrentSong.Name))
+            {
+                SaveButton.Content = "完成√";
+                await Task.Delay(2500);
+                SaveButton.Content = "存档";
+                SaveButton.Foreground = Brushes.White;
+            }
+            else
+            {
+                SaveButton.Foreground = Brushes.Red;
+                SaveButton.Content = "⚠失败";
+                await Task.Delay(2500);
+                SaveButton.Content = "存档";
+                SaveButton.Foreground = Brushes.White;
+            }
+        }
+
+        private async void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            ReadButton.Content = "读取ing……";
+            ReadButton.Foreground = Brushes.Lime;
+            var result = BinaryObject.DeserializeObject<Song>();
+            if (result.Item1)
+            {
+                if (result.Item2 != null) { CurrentSong = result.Item2; }
+                ReadButton.Content = "完成√";
+                await Task.Delay(2500);
+                ReadButton.Content = "读档";
+                ReadButton.Foreground = Brushes.White;
+            }
+            else
+            {
+                ReadButton.Foreground = Brushes.Red;
+                ReadButton.Content = "⚠失败";
+                await Task.Delay(2500);
+                ReadButton.Content = "读档";
+                ReadButton.Foreground = Brushes.White;
+            }
         }
     }
 }

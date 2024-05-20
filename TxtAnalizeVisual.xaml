@@ -158,16 +158,16 @@
         <TextBlock Foreground="White" FontSize="25" Text="Edit - Mode - .txt" HorizontalAlignment="Right" Margin="0,0,50,706"/>
 
         <Border Width="300" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,62,0,604">
-            <Button Content="Txt" FontSize="40" Click="Button_Click" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
+            <Button Content="Txt" FontSize="40" Width="300" Click="Button_Click" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
         </Border>
         <Border Width="300" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,160,0,506">
-            <Button Content="粘贴板" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_1"/>
+            <Button Content="粘贴板" FontSize="40" Width="300" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_1"/>
         </Border>
         <Border Width="300" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,264,0,402">
-            <Button Content="读档" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
+            <Button x:Name="ReadButton" Content="读档" FontSize="40" Width="300" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_3"/>
         </Border>
         <Border Width="300" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,370,0,296">
-            <Button Content="存档" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
+            <Button Name="SaveButton" Content="存档" Width="300" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_2"/>
         </Border>
         <Border Width="1135" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,62,305,604">
             <Grid>
@@ -212,7 +212,7 @@
 
                 <TextBlock Background="Transparent" Foreground="White" FontSize="40" Text="音色" Margin="1025,107,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 <TextBlock x:Name="AudioType" Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="40" Foreground="Cyan" Margin="0,107,130,0" Text="风物之诗琴"/>
-                <TextBlock Background="Transparent" Foreground="White" FontSize="40" Text="🔍" Margin="437,107,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <Button Background="Transparent" Foreground="White" FontSize="40" Content="🔍" Margin="401,89,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MouseEnter="MouEnter" MouseLeave="MouLeave" Width="254" Height="79"/>
                 <TextBlock x:Name="TimeValue" Background="Transparent" Foreground="Cyan" FontSize="40" Margin="0,107,731,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
 
             </Grid>

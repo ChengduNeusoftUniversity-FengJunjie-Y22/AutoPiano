@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 
@@ -55,7 +57,7 @@ namespace AutoPiano
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static string? SelectFilePath<T>(string name) where T : BinaryObject
+        public static string? SelectFilePath<T>() where T : BinaryObject
         {
             FieldInfo? fieldInfo = typeof(T).GetField("Type", BindingFlags.Static | BindingFlags.Public);
 
@@ -64,13 +66,25 @@ namespace AutoPiano
                 DataTypes reuslt = (DataTypes)fieldInfo.GetValue(null);
                 string? filePath = null;
 
+                OpenFileDialog folderBrowser = new OpenFileDialog();
+                folderBrowser.Multiselect = false;
+                folderBrowser.Filter = "Bin files (*.bin)|*.bin";
+
                 switch (reuslt)
                 {
                     case DataTypes.Simple:
-                        filePath = Path.Combine(SimpleStructData, name);
+                        folderBrowser.InitialDirectory = SimpleStructData;
+                        if (folderBrowser.ShowDialog() == true)
+                        {
+                            filePath = folderBrowser.FileName;
+                        }
                         break;
                     case DataTypes.Complex_NMN:
-                        filePath = Path.Combine(ComplexData_NMN, name);
+                        folderBrowser.InitialDirectory = ComplexData_NMN;
+                        if (folderBrowser.ShowDialog() == true)
+                        {
+                            filePath = folderBrowser.FileName;
+                        }
                         break;
                 }
                 return filePath;
@@ -81,9 +95,19 @@ namespace AutoPiano
         /// <summary>
         /// 序列化存储对象
         /// </summary>
-        public static void SerializeObject<T>(T song, string name) where T : BinaryObject, new()
+        public static bool SerializeObject<T>(T song, DataTypes type, string name) where T : BinaryObject, new()
         {
-            string? filePath = SelectFilePath<T>(name);
+            string? filePath = null;
+            switch (type)
+            {
+                case DataTypes.Simple:
+                    filePath = System.IO.Path.Combine(SimpleStructData, name + ".bin");
+                    break;
+                case DataTypes.Complex_NMN:
+                    System.IO.Path.Combine(ComplexData_NMN, name + ".bin");
+                    break;
+            }
+
             try
             {
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -95,25 +119,27 @@ namespace AutoPiano
                     File.WriteAllBytes(filePath, memoryStream.ToArray());
                 }
             }
-            catch { MessageBox.Show("存储过程发生意外！"); }
+            catch { return false; }
+            return true;
         }
 
         /// <summary>
         /// 反序列化存储对象
         /// </summary>
-        public static T DeserializeObject<T>(string name) where T : BinaryObject, new()
+        public static (bool, T?) DeserializeObject<T>() where T : BinaryObject, new()
         {
-            string? filePath = SelectFilePath<T>(name);
+            string? filePath = SelectFilePath<T>();
+            if (filePath == null) { return (false, null); }
             try
             {
                 byte[] bytes = File.ReadAllBytes(filePath);
                 using (MemoryStream memoryStream = new MemoryStream(bytes))
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
-                    return (T)binaryFormatter.Deserialize(memoryStream);
+                    return (true, (T)binaryFormatter.Deserialize(memoryStream));
                 }
             }
-            catch { MessageBox.Show("读取过程发生意外！"); return new T(); }
+            catch { return (false, null); }
         }
     }
 }
