@@ -187,21 +187,13 @@
         <Border Width="1440" HorizontalAlignment="Center" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,497,0,0"/>
 
         <Border Width="1386" Height="170" HorizontalAlignment="Center" BorderThickness="0,0,0,0" BorderBrush="White" Margin="0,517,0,53">
-            <ScrollViewer x:Name="TxtNotes" Height="190" Width="1460" VerticalAlignment="Top" HorizontalAlignment="Right" HorizontalScrollBarVisibility="Visible" FlowDirection="RightToLeft">
-                <StackPanel x:Name="Notes" Height="170" Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Right">
+            <ScrollViewer x:Name="TxtNotes" Height="190" Width="1460" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Visible">
+                <StackPanel x:Name="Notes" Height="170" Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock TextWrapping="Wrap" Background="Transparent" Padding="0" LineHeight="0.1" FontSize="30" Width="{Binding RelativeSource={RelativeSource Self},Path=FontSize}" Text="ABC" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        <Slider Name="SDValuePlay" Style="{StaticResource BeautifySliderStyle}" Width="NaN" Height="2" Margin="27,697,25,13" RenderTransformOrigin="0.5,0.5" ValueChanged="Slider_ValueChanged" Minimum="0" PreviewMouseUp="SDValuePlay_PreviewMouseUp">
-            <Slider.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="180"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Slider.RenderTransform>
+        <Slider Name="SDValuePlay" Style="{StaticResource BeautifySliderStyle}" Width="NaN" Height="2" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" PreviewMouseUp="SDValuePlay_PreviewMouseUp">
         </Slider>
         <Border Width="1135" HorizontalAlignment="Left" BorderThickness="4,1,4,1" BorderBrush="White" Margin="0,264,0,296">
             <Grid>
@@ -221,13 +213,19 @@
         <Border Name="TimeEdit" Width="1440" HorizontalAlignment="Left" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,60,0,290">
             <Grid Width="1440" Grid.ZIndex="2" Background="#1e1e1e">
 
-                <TextBlock Text="索引" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,66,0,0"/>
-                <TextBlock Text="按键" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="35,0,0,0"/>
-                <TextBlock Text="时值" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,274,0,0"/>
+                <TextBlock Text="索引" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,279,0,0"/>
+                <TextBlock Text="按键" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,58,0,0"/>
+                <TextBlock Text="时值" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="35,0,0,0"/>
 
-                <TextBlock Name="AIndex" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,66,0,0"/>
-                <TextBlock Name="AKey" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="198,0,0,0"/>
-                <TextBlock Name="ATime" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,274,0,0"/>
+                <TextBlock Name="AIndex" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,279,0,0"/>
+                <TextBlock Name="AKey" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,58,0,0"/>
+                <TextBlock Name="ATime" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="198,0,0,0"/>
+                
+                <Button Margin="572,279,720,58" Content="下一个" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_7"/>
+                <Button Margin="425,279,868,58" Content="上一个" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_6"/>
+
+                <Button Margin="425,168,868,168" Content="加速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_8"/>
+                <Button Margin="572,168,720,168" Content="降速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_9"/>
 
                 <Button Background="Transparent" Foreground="White" FontSize="30" Content="退出专注" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,35,0" Width="151" Height="43" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_5"/>
             </Grid>

@@ -21,6 +21,8 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static AutoPiano.NumberedMusicalNotation;
+using System.Reflection;
 
 namespace AutoPiano
 {
@@ -71,8 +73,10 @@ namespace AutoPiano
                 _data = value;
                 if (Instance != null)
                 {
+                    Instance.SDValuePlay.Maximum = (CurrentSong.notes.Count + 12) * 60;
                     Instance.SongName.Text = _data.Name;
                     _data.Position = 0;
+                    CheckPoint = _data.notes.Count - 14;
                     _data.IsOnPlaying = false;
                     _data.IsStop = false;
                     Instance.TimeValue.Text = string.Empty;
@@ -87,6 +91,10 @@ namespace AutoPiano
 
         public static bool IsAttentive = false;
 
+        public static int CheckPoint = 0;
+
+        public static bool IsPreviewSingleOne = false;
+
         public TxtAnalizeVisual()
         {
             InitializeComponent();
@@ -95,7 +103,14 @@ namespace AutoPiano
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            TxtNotes.ScrollToHorizontalOffset(e.NewValue - 12 * 60);
+            if (CurrentSong.Position < CheckPoint)
+            {
+                TxtNotes.ScrollToHorizontalOffset(e.NewValue - 12 * 60);
+            }
+            else
+            {
+                TxtNotes.ScrollToHorizontalOffset(SDValuePlay.Maximum);
+            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -246,6 +261,26 @@ namespace AutoPiano
             }
         }
 
+        public static void WhiteColor(int target, SolidColorBrush color)
+        {
+            if (Instance != null)
+            {
+                if (Instance.Notes.Children[target] is StackPanel spA)
+                {
+                    foreach (var item in spA.Children)
+                    {
+                        if (item is Border border)
+                        {
+                            if (border.Child is TextBlock textBlock)
+                            {
+                                textBlock.Foreground = color;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void SDValuePlay_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             CurrentSong.Position = (int)(SDValuePlay.Value / 60 - 12);
@@ -366,13 +401,14 @@ namespace AutoPiano
         public void NewInfo(object target)
         {
             AIndex.Text = CurrentSong.Position.ToString();
-            double result = (CurrentSong.Position - 12) * 60;
+            double result = CurrentSong.Position * 60;
             SDValuePlay.Value = result;
             if (target is Note note)
             {
                 AKey.Text = note.GetContentWithOutTime();
                 ATime.Text = note.Span.ToString();
                 TimeValue.Text = note.GetContent();
+                if (IsPreviewSingleOne) { note.Preview(); IsPreviewSingleOne = false; }
                 return;
             }
             if (target is Chord chord)
@@ -380,6 +416,7 @@ namespace AutoPiano
                 AKey.Text = chord.GetContentWithOutTime();
                 ATime.Text = chord.Chords.Last().Span.ToString();
                 TimeValue.Text = chord.GetContent();
+                if (IsPreviewSingleOne) { chord.Preview(); IsPreviewSingleOne = false; }
                 return;
             }
             if (target is NullNote nunote)
@@ -387,8 +424,85 @@ namespace AutoPiano
                 AKey.Text = nunote.GetContentWithOutTime();
                 ATime.Text = nunote.Span.ToString();
                 TimeValue.Text = nunote.GetContent();
+                if (IsPreviewSingleOne) { nunote.Preview(); IsPreviewSingleOne = false; }
                 return;
             }
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            IsPreviewSingleOne = true;
+            CurrentSong.Position--;
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            IsPreviewSingleOne = true;
+            CurrentSong.Position++;
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            object temp = CurrentSong.notes[CurrentSong.Position];
+            if (temp is Note note)
+            {
+                int a = note.Span - StringProcessing.BlankSpace / 2;
+                if (a >= 0)
+                {
+                    note.Span = a;
+                }
+                else
+                {
+                    note.Span = 0;
+                }
+            }
+            else if (temp is Chord chord)
+            {
+                int a = chord.Chords.Last().Span - StringProcessing.BlankSpace / 2;
+                if (a >= 0)
+                {
+                    chord.Chords.Last().Span = a;
+                }
+                else
+                {
+                    chord.Chords.Last().Span = 0;
+                }
+            }
+            else if (temp is NullNote nunote)
+            {
+                int a = nunote.Span - StringProcessing.BlankSpace / 2;
+                if (a >= 0)
+                {
+                    nunote.Span = a;
+                }
+                else
+                {
+                    nunote.Span = 0;
+                }
+            }
+            CurrentSong.Position = CurrentSong.Position;
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            object temp1 = CurrentSong.notes[CurrentSong.Position];
+            if (temp1 is Note note1)
+            {
+                note1.Span += StringProcessing.BlankSpace / 2;
+            }
+            else if (temp1 is Chord chord1)
+            {
+                chord1.Chords.Last().Span += StringProcessing.BlankSpace / 2;
+            }
+            else if (temp1 is NullNote nunote1)
+            {
+                nunote1.Span += StringProcessing.BlankSpace / 2;
+            }
+            CurrentSong.Position = CurrentSong.Position;
         }
     }
 }

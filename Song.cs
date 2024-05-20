@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Xml.Serialization;
 
 namespace AutoPiano
@@ -49,11 +50,17 @@ namespace AutoPiano
             }
             set
             {
-                if (value < notes.Count)
+                if (value < notes.Count && value >= 0)
                 {
+                    TxtAnalizeVisual.WhiteColor(_position, Brushes.White);
                     _position = value;
                 }
-                TxtAnalizeVisual.Instance?.NewInfo(notes[_position]);
+                else
+                {
+                    _position = 0;
+                }
+                if (_position < notes.Count) { TxtAnalizeVisual.Instance?.NewInfo(notes[_position]); }
+                if (!IsOnPlaying) { TxtAnalizeVisual.WhiteColor(_position, Brushes.Red); }
             }
         }
 
@@ -70,7 +77,6 @@ namespace AutoPiano
                     Position--;
                     return;
                 }
-                UpdateTxtVisual();
                 if (notes[i] is Note note)
                 {
                     note.Preview();
@@ -113,14 +119,10 @@ namespace AutoPiano
             }
         }
 
-        public void UpdateTxtVisual()
-        {
-            if (TxtAnalizeVisual.Instance != null)
-            {
-                TxtAnalizeVisual.Instance.SDValuePlay.Value = Position * 60;
-            }
-        }
-
+        /// <summary>
+        /// 从当前索引处插入一段新的解析结果，注意不会保留该索引处原有的内容
+        /// </summary>
+        /// <param name="target"></param>
         public async void AddParagraph(string target)
         {
             Song temp1 = new Song();
