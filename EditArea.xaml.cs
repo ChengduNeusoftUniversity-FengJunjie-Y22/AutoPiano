@@ -14,13 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-public enum PageTypes
-{
-    TxtAnalize,
-    NMNAnalize,
-    HotKeySet
-}
-
 namespace AutoPiano
 {
     /// <summary>
@@ -44,7 +37,7 @@ namespace AutoPiano
         /// <summary>
         /// 更改此属性将直接切换页面
         /// </summary>
-        public PageTypes PageType
+        public static PageTypes PageType
         {
             get { return _pageType; }
             set
@@ -62,7 +55,7 @@ namespace AutoPiano
                         break;
                 }
                 _pageType = value;
-                ChangePage();
+                Instance?.ChangePage();
             }
         }
 

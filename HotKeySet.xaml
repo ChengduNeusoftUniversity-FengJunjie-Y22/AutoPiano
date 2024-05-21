@@ -52,19 +52,19 @@
                     <TextBlock  Foreground="White" FontSize="25" Text="Set - Edit"  HorizontalAlignment="Right" Margin="0,10,93,695"></TextBlock>
 
                     <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,80,0,570">
-                        <TextBlock Foreground="White" FontSize="50" Text="滑动切换" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                        <TextBlock Foreground="White" FontSize="50" Text="切页模式" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
                     </Border>
                     <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,210,0,440">
-                        <TextBlock Foreground="White" FontSize="50" Text="高精度解析" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
-                    </Border>
-                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,340,0,310">
                         <TextBlock Foreground="White" FontSize="50" Text="自动专注" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
                     </Border>
+                    <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,340,0,310">
+                        <TextBlock Foreground="White" FontSize="50" Text=".txt 数据格式" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                    </Border>
                     <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,470,0,180">
-                        <TextBlock Foreground="White" FontSize="50" Text="通用数据" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                        <TextBlock Foreground="White" FontSize="50" Text="输出数据格式" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
                     </Border>
                     <Border BorderBrush="White" BorderThickness="0,0,4,0" Margin="1036,600,0,50">
-                        <TextBlock Foreground="White" FontSize="50" Text="DeBug" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
+                        <TextBlock Foreground="White" FontSize="50" Text="参数说明书" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,25,0"/>
                     </Border>
                 </Grid>
                 <Grid>

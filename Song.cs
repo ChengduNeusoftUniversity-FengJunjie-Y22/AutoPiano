@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Xml.Serialization;
 
+public enum PlayModel
+{
+    Auto,
+    Preview,
+    None
+}
+
 namespace AutoPiano
 {
     [Serializable]
@@ -15,6 +22,7 @@ namespace AutoPiano
         public string Name = "None";
 
         public static DataTypes Type = DataTypes.Simple;
+        public PlayModel Model = PlayModel.None;
 
         public Song() { }
 
@@ -52,15 +60,18 @@ namespace AutoPiano
             {
                 if (value < notes.Count && value >= 0)
                 {
-                    TxtAnalizeVisual.WhiteColor(_position, Brushes.White);
+                    if (Model == PlayModel.Preview) { TxtAnalizeVisual.WhiteColor(_position, Brushes.White); }
                     _position = value;
                 }
                 else
                 {
                     _position = 0;
                 }
-                if (_position < notes.Count) { TxtAnalizeVisual.Instance?.NewInfo(notes[_position]); }
-                if (!IsOnPlaying) { TxtAnalizeVisual.WhiteColor(_position, Brushes.Red); }
+                if (Model == PlayModel.Preview)
+                {
+                    if (_position < notes.Count) { TxtAnalizeVisual.Instance?.NewInfo(notes[_position]); }
+                    if (!IsOnPlaying) { TxtAnalizeVisual.WhiteColor(_position, Brushes.Red); }
+                }
             }
         }
 
@@ -79,13 +90,15 @@ namespace AutoPiano
                 }
                 if (notes[i] is Note note)
                 {
-                    note.Preview();
+                    if (Model == PlayModel.Preview) { note.Preview(); }
+                    else if (Model == PlayModel.Auto) { note.Play(); }
                     TxtAnalizeVisual.ColorChange(Position, note.Span, note.GetContent());
                     await Task.Delay(note.Span);
                 }
                 else if (notes[i] is Chord chord)
                 {
-                    chord.Preview();
+                    if (Model == PlayModel.Preview) { chord.Preview(); }
+                    else if (Model == PlayModel.Auto) { chord.Play(); }
                     TxtAnalizeVisual.ColorChange(Position, chord.Chords.Last().Span, chord.GetContent());
                     await Task.Delay(chord.Chords.Last().Span);
                 }
@@ -185,6 +198,19 @@ namespace AutoPiano
                 }
             }
             return a;
+        }
+
+        public static Song Copy(Song target)
+        {
+            Song temp = new Song();
+            temp.Name = target.Name;
+
+            foreach (object s in target.notes)
+            {
+                temp.notes.Add(s);
+            }
+
+            return temp;
         }
     }
 }

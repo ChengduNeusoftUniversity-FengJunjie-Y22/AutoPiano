@@ -28,7 +28,6 @@ namespace AutoPiano
     public partial class HotKeySet : Page
     {
         public static HotKeySet? Instance;
-        private static ComponentInfo Info = new ComponentInfo(40, Brushes.Cyan, Brushes.Transparent, new Thickness());
 
         KeySelectBox k1 = PrefabComponent.GetComponent<KeySelectBox>();
         KeySelectBox k2 = PrefabComponent.GetComponent<KeySelectBox>();
@@ -110,7 +109,7 @@ namespace AutoPiano
             BindingRef.Connect(k2, k7, PlayOutEdit);
             BindingRef.Connect(k3, k8, Pause);
             BindingRef.Connect(k4, k9, Stop);
-            BindingRef.Connect(k5, k10, Visual);
+            BindingRef.Connect(k5, k10, ReversetVisual);
 
             k1.CurrentKey = Key.LeftCtrl;
             k6.CurrentKey = Key.A;
@@ -130,21 +129,28 @@ namespace AutoPiano
 
         public static void PlayInEdit()
         {
+            Stop();
             if (TxtAnalizeVisual.CurrentSong != null) { TxtAnalizeVisual.CurrentSong.Start(); }
         }
         public static void PlayOutEdit()
         {
-
+            Stop();
+            if (!MainWindow.AutoTarget.IsOnPlaying) { MainWindow.AutoTarget.Start(); }
         }
+
         public static void Pause()
         {
-            if (TxtAnalizeVisual.CurrentSong != null) { TxtAnalizeVisual.CurrentSong.Pause(); }
+            TxtAnalizeVisual.CurrentSong.Pause();
+            MainWindow.AutoTarget.Pause();
+            NMNAnalizeVisual.Instance?.MusicScore.Stop();
         }
         public static void Stop()
         {
-            if (TxtAnalizeVisual.CurrentSong != null) { TxtAnalizeVisual.CurrentSong.Stop(); }
+            TxtAnalizeVisual.CurrentSong.Stop();
+            MainWindow.AutoTarget.Stop();
+            NMNAnalizeVisual.Instance?.MusicScore.Stop();
         }
-        public static void Visual()
+        public static void ReversetVisual()
         {
 
         }

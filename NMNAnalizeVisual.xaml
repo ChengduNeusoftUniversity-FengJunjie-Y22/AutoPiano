@@ -155,24 +155,32 @@
         <Border x:Name="ModeVisual" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
 
         </Border>
-        <TextBlock  Foreground="White" FontSize="25" Text="Edit - Mode - Visual"  HorizontalAlignment="Right" Margin="0,0,30,0"></TextBlock>
+        <TextBlock  Foreground="White" FontSize="25" Text="Edit - Mode - Visual"  HorizontalAlignment="Right" Margin="0,0,30,696"></TextBlock>
 
-        <Border BorderThickness="0" Height="330" Width="1440" Margin="0,384,0,26">
-            <ScrollViewer Name="SongBox" Height="350" Width="1460" HorizontalScrollBarVisibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <Border BorderThickness="0,1,0,1" BorderBrush="White" Height="330" Width="1440" Margin="0,384,0,26">
+            <ScrollViewer Name="SongBox" Height="350" Width="1450" HorizontalScrollBarVisibility="Visible" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="4,0,0,0">
 
             </ScrollViewer>
         </Border>
-        <Border BorderBrush="White" BorderThickness="8,1,8,1" Width="1440" Margin="0,384,0,0"/>
+        <Border  BorderThickness="4,0,4,0" Width="1440" Margin="0,384,0,26" BorderBrush="White"/>
 
-        <Slider Style="{StaticResource BeautifySliderStyle}" Height="2" Width="NaN" RenderTransformOrigin="0.5,0.5" Margin="36,711,30,-1">
-            <Slider.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="180"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Slider.RenderTransform>
-        </Slider>
+        <Slider Style="{StaticResource BeautifySliderStyle}" Height="2" Width="1440" Margin="0,714,0,-4" HorizontalAlignment="Center" ValueChanged="Slider_ValueChanged"/>
+
+        <Border BorderBrush="White" BorderThickness="1,1,1,1" CornerRadius="10" Margin="0,5,1036,652">
+            <Grid>
+                <TextBlock Foreground="White" FontSize="50" Text="  速度" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,25,0"/>
+            </Grid>
+        </Border>
+
+        <Border BorderBrush="White" BorderThickness="1,1,1,1" CornerRadius="10" Margin="0,110,1036,547">
+            <Grid>
+                <TextBlock Foreground="White" FontSize="50" Text="  拍号" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,25,0"/>
+            </Grid>
+        </Border>
+        <Border BorderBrush="White" BorderThickness="1,1,1,1" CornerRadius="10" Margin="0,215,1036,442">
+            <Grid>
+                <TextBlock Foreground="White" FontSize="50" Text="  拍号" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,25,0"/>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

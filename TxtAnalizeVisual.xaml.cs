@@ -79,12 +79,15 @@ namespace AutoPiano
                     CheckPoint = _data.notes.Count - 14;
                     _data.IsOnPlaying = false;
                     _data.IsStop = false;
+                    _data.Model = PlayModel.Preview;
                     Instance.TimeValue.Text = string.Empty;
                     Instance.Notes.Children.Clear();
                     foreach (StackPanel textBlock in Instance.LoadPanelBoxes())
                     {
                         Instance.Notes.Children.Add(textBlock);
                     }
+                    MainWindow.AutoTarget = Song.Copy(CurrentSong);
+                    MainWindow.AutoTarget.Model = PlayModel.Auto;
                 }
             }
         }

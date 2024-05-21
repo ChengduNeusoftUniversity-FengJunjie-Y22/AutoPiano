@@ -621,11 +621,11 @@ namespace AutoPiano
                 Height = double.NaN; // 设置高度为自动
                 PlayTrack.MouseEnter += (sender, e) =>
                 {
-
+                    PlayTrack.Background = Brushes.Red;
                 };
                 PlayTrack.MouseLeave += (sender, e) =>
                 {
-
+                    PlayTrack.Background = Brushes.Lime;
                 };
             }
             /// <summary>
@@ -636,7 +636,7 @@ namespace AutoPiano
                 BorderThickness = new Thickness(2),
                 BorderBrush = Brushes.Cyan,
                 Width = 18,
-                Background = Brushes.Transparent,
+                Background = Brushes.Lime,
                 Height = double.NaN,
             };
 
@@ -962,24 +962,24 @@ namespace AutoPiano
                 PlayParagraph.PreviewMouseLeftButtonDown += DispatcherAddTracks;
                 PlayParagraph.MouseEnter += (sender, e) =>
                 {
-
+                    PlayParagraph.Background = Brushes.Red;
                 };
 
                 PlayParagraph.MouseLeave += (sender, e) =>
                 {
-
+                    PlayParagraph.Background = Brushes.Cyan;
                 };
             }
 
             /// <summary>
             /// 小节独奏
             /// </summary>
-            Button PlayParagraph = new Button()
+            public Button PlayParagraph = new Button()
             {
                 BorderThickness = new Thickness(2),
                 BorderBrush = Brushes.Cyan,
                 Width = 18,
-                Background = Brushes.Transparent,
+                Background = Brushes.Cyan,
                 Height = double.NaN,
             };
 
@@ -1478,10 +1478,10 @@ namespace AutoPiano
             /// ⚠危险操作 将此简谱对象的全部数据【覆写】
             /// </summary>
             /// <param name="target">目标容器</param>
-            public void NewMusicScore()
+            public void Update()
             {
                 Children.Clear();
-                int Counter = 1;
+                int Counter = 0;
                 foreach (Paragraph paragraph in Paragraphs)
                 {
                     paragraph.IndexInMusicScore = Counter;

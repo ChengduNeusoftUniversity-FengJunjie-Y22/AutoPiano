@@ -99,7 +99,7 @@ namespace AutoPiano
         {
             if (IsClickMode && EditArea.Instance != null)
             {
-                EditArea.Instance.PageType = PageTypes.TxtAnalize;
+                EditArea.PageType = PageTypes.TxtAnalize;
             }
         }
 
@@ -107,7 +107,7 @@ namespace AutoPiano
         {
             if (IsClickMode && EditArea.Instance != null)
             {
-                EditArea.Instance.PageType = PageTypes.NMNAnalize;
+                EditArea.PageType = PageTypes.NMNAnalize;
             }
         }
 
@@ -115,7 +115,7 @@ namespace AutoPiano
         {
             if (IsClickMode && EditArea.Instance != null)
             {
-                EditArea.Instance.PageType = PageTypes.HotKeySet;
+                EditArea.PageType = PageTypes.HotKeySet;
             }
         }
 
@@ -151,7 +151,7 @@ namespace AutoPiano
             }
             if (EditArea.Instance != null && !IsClickMode)
             {
-                EditArea.Instance.PageType = PageTypes.TxtAnalize;
+                EditArea.PageType = PageTypes.TxtAnalize;
             }
         }
 
@@ -164,7 +164,7 @@ namespace AutoPiano
             }
             if (EditArea.Instance != null && !IsClickMode)
             {
-                EditArea.Instance.PageType = PageTypes.NMNAnalize;
+                EditArea.PageType = PageTypes.NMNAnalize;
             }
         }
 
@@ -177,7 +177,7 @@ namespace AutoPiano
             }
             if (EditArea.Instance != null && !IsClickMode)
             {
-                EditArea.Instance.PageType = PageTypes.HotKeySet;
+                EditArea.PageType = PageTypes.HotKeySet;
             }
         }
     }
