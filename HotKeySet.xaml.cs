@@ -29,6 +29,26 @@ namespace AutoPiano
     {
         public static HotKeySet? Instance;
 
+        private static bool _isClickChange = true;
+        public static bool IsClickChange
+        {
+            get { return _isClickChange; }
+            set
+            {
+                _isClickChange = value;
+            }
+        }
+
+        private static bool _isAutoAttentive = false;
+        public static bool IsAutoAttentive
+        {
+            get { return _isAutoAttentive; }
+            set
+            {
+                _isAutoAttentive = value;
+            }
+        }
+
         KeySelectBox k1 = PrefabComponent.GetComponent<KeySelectBox>();
         KeySelectBox k2 = PrefabComponent.GetComponent<KeySelectBox>();
 
@@ -153,6 +173,34 @@ namespace AutoPiano
         public static void ReversetVisual()
         {
 
+        }
+
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.Cyan;
+            }
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.White;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            IsClickChange = !IsClickChange;
+            ChangeMode.Content = (IsClickChange ? "当前：          点击切页" : "当前：          滑动切页");
+        }
+
+        private void AttentiveMode_Click(object sender, RoutedEventArgs e)
+        {
+            IsAutoAttentive = !IsAutoAttentive;
+            AttentiveMode.Content = (IsAutoAttentive ? "当前：          自动模式" : "当前：          手动模式");
         }
     }
 }

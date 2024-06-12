@@ -73,10 +73,8 @@ namespace AutoPiano
                 _data = value;
                 if (Instance != null)
                 {
-                    Instance.SDValuePlay.Maximum = (CurrentSong.notes.Count + 12) * 60;
                     Instance.SongName.Text = _data.Name;
                     _data.Position = 0;
-                    CheckPoint = _data.notes.Count - 14;
                     _data.IsOnPlaying = false;
                     _data.IsStop = false;
                     _data.Model = PlayModel.Preview;
@@ -94,8 +92,6 @@ namespace AutoPiano
 
         public static bool IsAttentive = false;
 
-        public static int CheckPoint = 0;
-
         public static bool IsPreviewSingleOne = false;
 
         public TxtAnalizeVisual()
@@ -106,14 +102,8 @@ namespace AutoPiano
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (CurrentSong.Position < CheckPoint)
-            {
-                TxtNotes.ScrollToHorizontalOffset(e.NewValue - 12 * 60);
-            }
-            else
-            {
-                TxtNotes.ScrollToHorizontalOffset(SDValuePlay.Maximum);
-            }
+            //TxtNotes.ScrollToHorizontalOffset((CurrentSong.notes.Count * e.NewValue - 12) * 60);
+            CurrentSong.Position = (int)(CurrentSong.notes.Count * e.NewValue - 1);
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -284,14 +274,10 @@ namespace AutoPiano
             }
         }
 
-        private void SDValuePlay_PreviewMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            CurrentSong.Position = (int)(SDValuePlay.Value / 60 - 12);
-        }
-
         private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            if (string.IsNullOrEmpty(SongName.Text)) { MessageBox.Show("名称不可为空!"); return; }
             SaveButton.Content = "写入ing……";
             SaveButton.Foreground = Brushes.Lime;
             CurrentSong.Name = SongName.Text;
@@ -380,6 +366,53 @@ namespace AutoPiano
             }
         }
 
+        public static void UnExpendBox()
+        {
+            if (Instance != null && IsAttentive)
+            {
+                DoubleAnimation widthAnimation = new DoubleAnimation();
+                widthAnimation.AccelerationRatio = 1;
+                widthAnimation.From = 1440; // 起始宽度
+                widthAnimation.To = 0;   // 结束宽度
+                widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
+
+                // 创建一个故事板，并将动画对象添加到其中
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(widthAnimation);
+
+                // 将动画应用到按钮的宽度属性
+                Storyboard.SetTarget(widthAnimation, Instance.TimeEdit);
+                Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
+
+                // 启动动画
+                storyboard.Begin();
+                IsAttentive = false;
+            }
+        }
+        public static void ExpendBox()
+        {
+            if (Instance != null && !IsAttentive)
+            {
+                DoubleAnimation widthAnimation = new DoubleAnimation();
+                widthAnimation.AccelerationRatio = 1;
+                widthAnimation.From = 0; // 起始宽度
+                widthAnimation.To = 1440;   // 结束宽度
+                widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
+
+                // 创建一个故事板，并将动画对象添加到其中
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(widthAnimation);
+
+                // 将动画应用到按钮的宽度属性
+                Storyboard.SetTarget(widthAnimation, Instance.TimeEdit);
+                Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
+
+                // 启动动画
+                storyboard.Begin();
+                IsAttentive = true;
+            }
+        }
+
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
             DoubleAnimation widthAnimation = new DoubleAnimation();
@@ -404,8 +437,7 @@ namespace AutoPiano
         public void NewInfo(object target)
         {
             AIndex.Text = CurrentSong.Position.ToString();
-            double result = CurrentSong.Position * 60;
-            SDValuePlay.Value = result;
+            SDValuePlay.Value = (double)(CurrentSong.Position + 1) / CurrentSong.notes.Count;
             if (target is Note note)
             {
                 AKey.Text = note.GetContentWithOutTime();
@@ -447,7 +479,7 @@ namespace AutoPiano
 
         private void Button_Click_8(object sender, RoutedEventArgs e)
         {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            if (CurrentSong.IsOnPlaying || CurrentSong.Position >= CurrentSong.notes.Count) { CurrentSong.Pause(); return; }
             object temp = CurrentSong.notes[CurrentSong.Position];
             if (temp is Note note)
             {
@@ -490,7 +522,7 @@ namespace AutoPiano
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            if (CurrentSong.IsOnPlaying || CurrentSong.Position >= CurrentSong.notes.Count) { CurrentSong.Pause(); return; }
             object temp1 = CurrentSong.notes[CurrentSong.Position];
             if (temp1 is Note note1)
             {
@@ -507,19 +539,6 @@ namespace AutoPiano
             CurrentSong.Position = CurrentSong.Position;
         }
 
-        private void Button_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            Key key = (e.Key == Key.System ? e.SystemKey : e.Key);
-
-            if (key == Key.D0) { CurrentSong.Position = 0; return; }
-
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-            IsPreviewSingleOne = true;
-            CurrentSong.Position++;
-
-            e.Handled = true;
-        }
-
         private void TextBox_MouseEnter(object sender, MouseEventArgs e)
         {
             KeyDArea.Focus();
@@ -528,6 +547,38 @@ namespace AutoPiano
         private void TextBox_MouseLeave(object sender, MouseEventArgs e)
         {
             Keyboard.ClearFocus();
+        }
+
+        private async void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            var result = BinaryObject.DeserializeObject<Song>();
+            if (result.Item1)
+            {
+                if (result.Item2 != null) { CurrentSong = result.Item2; }
+                ReadButton.Content = "完成√";
+                await Task.Delay(2500);
+                ReadButton.Content = "读档";
+                ReadButton.Foreground = Brushes.White;
+            }
+            else
+            {
+                ReadButton.Foreground = Brushes.Red;
+                ReadButton.Content = "⚠失败";
+                await Task.Delay(2500);
+                ReadButton.Content = "读档";
+                ReadButton.Foreground = Brushes.White;
+            }
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_12(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

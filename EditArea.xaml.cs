@@ -110,17 +110,17 @@ namespace AutoPiano
                 widthAnimation1.AccelerationRatio = 1;
                 widthAnimation1.From = 1440; // 起始宽度
                 widthAnimation1.To = 300;   // 结束宽度
-                widthAnimation1.Duration = new Duration(TimeSpan.FromSeconds(2)); // 持续时间
+                widthAnimation1.Duration = new Duration(TimeSpan.FromSeconds(1)); // 持续时间
                 DoubleAnimation widthAnimation2 = new DoubleAnimation();
                 widthAnimation2.AccelerationRatio = 1;
                 widthAnimation2.From = 1440; // 起始宽度
                 widthAnimation2.To = 300;   // 结束宽度
-                widthAnimation2.Duration = new Duration(TimeSpan.FromSeconds(2)); // 持续时间
+                widthAnimation2.Duration = new Duration(TimeSpan.FromSeconds(1)); // 持续时间
                 DoubleAnimation widthAnimation3 = new DoubleAnimation();
                 widthAnimation3.AccelerationRatio = 1;
                 widthAnimation3.From = 1440; // 起始宽度
                 widthAnimation3.To = 300;   // 结束宽度
-                widthAnimation3.Duration = new Duration(TimeSpan.FromSeconds(2)); // 持续时间
+                widthAnimation3.Duration = new Duration(TimeSpan.FromSeconds(1)); // 持续时间
 
 
                 // 创建一个故事板，并将动画对象添加到其中

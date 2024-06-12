@@ -23,8 +23,6 @@ namespace AutoPiano
     {
         public static bool IsSideBarOpen = false;
 
-        public static bool IsClickMode = true;//是否为点击切换页面模式
-
         public SuperMenu()
         {
             InitializeComponent();
@@ -97,7 +95,7 @@ namespace AutoPiano
 
         private void MenuBox2_Click(object sender, RoutedEventArgs e)
         {
-            if (IsClickMode && EditArea.Instance != null)
+            if (HotKeySet.IsClickChange && EditArea.Instance != null)
             {
                 EditArea.PageType = PageTypes.TxtAnalize;
             }
@@ -105,7 +103,7 @@ namespace AutoPiano
 
         private void MenuBox3_Click(object sender, RoutedEventArgs e)
         {
-            if (IsClickMode && EditArea.Instance != null)
+            if (HotKeySet.IsClickChange && EditArea.Instance != null)
             {
                 EditArea.PageType = PageTypes.NMNAnalize;
             }
@@ -113,7 +111,7 @@ namespace AutoPiano
 
         private void MenuBox4_Click(object sender, RoutedEventArgs e)
         {
-            if (IsClickMode && EditArea.Instance != null)
+            if (HotKeySet.IsClickChange && EditArea.Instance != null)
             {
                 EditArea.PageType = PageTypes.HotKeySet;
             }
@@ -149,7 +147,7 @@ namespace AutoPiano
             {
                 button.Foreground = Brushes.Cyan;
             }
-            if (EditArea.Instance != null && !IsClickMode)
+            if (EditArea.Instance != null && !HotKeySet.IsClickChange)
             {
                 EditArea.PageType = PageTypes.TxtAnalize;
             }
@@ -162,7 +160,7 @@ namespace AutoPiano
             {
                 button.Foreground = Brushes.Cyan;
             }
-            if (EditArea.Instance != null && !IsClickMode)
+            if (EditArea.Instance != null && !HotKeySet.IsClickChange)
             {
                 EditArea.PageType = PageTypes.NMNAnalize;
             }
@@ -175,7 +173,7 @@ namespace AutoPiano
             {
                 button.Foreground = Brushes.Cyan;
             }
-            if (EditArea.Instance != null && !IsClickMode)
+            if (EditArea.Instance != null && !HotKeySet.IsClickChange)
             {
                 EditArea.PageType = PageTypes.HotKeySet;
             }

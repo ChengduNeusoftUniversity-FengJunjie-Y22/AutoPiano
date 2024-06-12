@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AutoPiano"
       mc:Ignorable="d" 
+      xmlns:ed="clr-namespace:Microsoft.Expression.Shapes;assembly=Microsoft.Expression.Drawing"
       d:DesignHeight="740" d:DesignWidth="1440"
       Title="TxtAnalizeVisual">
     <Page.Resources>
@@ -186,7 +187,7 @@
 
         <Border Width="1440" HorizontalAlignment="Center" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,497,0,0"/>
 
-        <TextBox Name="KeyDArea" Grid.ZIndex="2" Margin="10,497,10,48" PreviewKeyDown="Button_PreviewKeyDown" Background="Transparent" IsReadOnly="True" MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" BorderThickness="0"/>
+        <TextBox Name="KeyDArea" Grid.ZIndex="2" Margin="10,497,10,48" Background="Transparent" IsReadOnly="True" MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" BorderThickness="0"/>
 
         <Border Width="1386" Height="170" HorizontalAlignment="Center" BorderThickness="0,0,0,0" BorderBrush="White" Margin="0,517,0,53">
             <ScrollViewer x:Name="TxtNotes" Height="190" Width="1460" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Visible">
@@ -195,7 +196,7 @@
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        <Slider Name="SDValuePlay" Style="{StaticResource BeautifySliderStyle}" Width="NaN" Height="2" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" PreviewMouseUp="SDValuePlay_PreviewMouseUp">
+        <Slider Name="SDValuePlay" Width="NaN" Height="15" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" Maximum="1" Value="0" SmallChange="0.001">
         </Slider>
         <Border Width="1135" HorizontalAlignment="Left" BorderThickness="4,1,4,1" BorderBrush="White" Margin="0,264,0,296">
             <Grid>
@@ -215,6 +216,27 @@
         <Border Name="TimeEdit" Width="1440" HorizontalAlignment="Left" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,60,0,290">
             <Grid Width="1440" Grid.ZIndex="2" Background="#1e1e1e">
 
+                <Border CornerRadius="10" Margin="425,58,911,279" BorderBrush="White" BorderThickness="1">
+                    <Button Content="替换" FontSize="35" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_10"/>
+                </Border>
+                <Border CornerRadius="10" Margin="572,58,764,279" BorderBrush="White" BorderThickness="1">
+                    <Button Content="清除" FontSize="35" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
+                </Border>
+
+                <Border CornerRadius="10" Margin="425,168,911,169" BorderBrush="White" BorderThickness="1">
+                    <Button Content="加速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_8"/>
+                </Border>
+                <Border CornerRadius="10" Margin="572,168,764,168" BorderBrush="White" BorderThickness="1">
+                    <Button Content="降速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_9"/>
+                </Border>
+
+                <Border CornerRadius="10" Margin="425,278,911,59" BorderBrush="White" BorderThickness="1">
+                    <Button Content="向左" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_6"/>
+                </Border>
+                <Border CornerRadius="10" Margin="572,277,764,59" BorderBrush="White" BorderThickness="1">
+                    <Button Content="向右" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_7"/>
+                </Border>
+
                 <TextBlock Text="索引" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,279,0,0"/>
                 <TextBlock Text="按键" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,58,0,0"/>
                 <TextBlock Text="时值" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="35,0,0,0"/>
@@ -223,13 +245,9 @@
                 <TextBlock Name="AKey" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,58,0,0"/>
                 <TextBlock Name="ATime" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="198,0,0,0"/>
 
-                <Button Margin="572,279,720,58" Content="下一个" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_7"/>
-                <Button Margin="425,279,868,58" Content="上一个" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_6"/>
-
-                <Button Margin="387,168,868,168" Content="加速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_8"/>
-                <Button Margin="572,168,686,168" Content="降速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_9"/>
-
                 <Button Background="Transparent" Foreground="White" FontSize="30" Content="退出专注" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,35,0" Width="151" Height="43" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_5"/>
+
+                <local:ProgressX x:Name="ProcessShow" FontSize="60" Width="300" Height="300" Margin="848,44,292,44" local:ForeColor="Cyan" local:BackColor="Gray"/>
             </Grid>
         </Border>
 

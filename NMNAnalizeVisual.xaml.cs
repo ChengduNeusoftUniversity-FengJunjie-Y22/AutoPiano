@@ -44,12 +44,56 @@ namespace AutoPiano
                 _ms = value;
                 _ms.Update();
                 SongBox.Content = _ms;
+                ScrollControl.Maximum = _ms.Paragraphs.Count * 50;
             }
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SongBox.ScrollToHorizontalOffset(e.NewValue);
+        }
+
+        private void MouEnter(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Focus();
+                button.Foreground = Brushes.Cyan;
+                return;
+            }
+            if (sender is TextBox textBox)
+            {
+                textBox.Focus();
+                textBox.Foreground = Brushes.Violet;
+                return;
+            }
+        }
+        private void MouLeave(object sender, RoutedEventArgs e)
+        {
+            Keyboard.ClearFocus();
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.White;
+                return;
+            }
+            if (sender is TextBox textBox)
+            {
+                textBox.Focus();
+                textBox.Foreground = Brushes.White;
+                return;
+            }
+        }
+
+        private void WhileInput(object sender, TextCompositionEventArgs e)
+        {
+            foreach (var ch in e.Text)
+            {
+                if (!char.IsDigit(ch))
+                {
+                    e.Handled = true; // 阻止非数字字符的输入
+                    break;
+                }
+            }
         }
     }
 }

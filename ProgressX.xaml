@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="AutoPiano.ProgressX"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AutoPiano"
+             xmlns:ed="clr-namespace:Microsoft.Expression.Shapes;assembly=Microsoft.Expression.Drawing"
+             mc:Ignorable="d" Width="100" Height="100">
+    <ProgressBar Name="Bar"
+                 Background="Gray"
+                 Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}"
+                 Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=Width}"
+                 Foreground="Cyan"
+                 Maximum="1"
+                 Minimum="0"
+                 Value="0">
+        <ProgressBar.Template>
+            <ControlTemplate TargetType="ProgressBar">
+                <ControlTemplate.Resources>
+                    <local:ProcessConvertor x:Key="ProcessConvert"/>
+                </ControlTemplate.Resources>
+                <Grid>
+                    <TextBlock Foreground="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Foreground}" Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Value,StringFormat=p0}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <ed:Arc StartAngle="0" EndAngle="360" ArcThickness="10" Stretch="None" Fill="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Background}"/>
+                    <ed:Arc StartAngle="0" EndAngle="{TemplateBinding Value,Converter={StaticResource ProcessConvert}}" ArcThicknessUnit="Pixel" ArcThickness="10" Stretch="None" Fill="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Foreground}"/>
+                </Grid>
+            </ControlTemplate>
+        </ProgressBar.Template>
+    </ProgressBar>
+</UserControl>

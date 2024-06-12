@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
 
@@ -19,6 +20,12 @@ namespace AutoPiano
     [Serializable]
     public class Song : BinaryObject
     {
+        /// <summary>
+        /// 正在播放中的
+        /// </summary>
+        public static Song CurrentPlayingOne = new Song();
+        public static Song NullSong = new Song();
+
         public string Name = "None";
 
         public static DataTypes Type = DataTypes.Simple;
@@ -35,7 +42,10 @@ namespace AutoPiano
         public bool IsOnPlaying
         {
             get { return _isOnPlaying; }
-            set { _isOnPlaying = value; }
+            set
+            {
+                _isOnPlaying = value;
+            }
         }
 
         private bool _isStop = false;
@@ -67,22 +77,37 @@ namespace AutoPiano
                 {
                     _position = 0;
                 }
+                //同步坐标
+
+
+                TxtAnalizeVisual.Instance?.ProcessShow.SetValue(Position == notes.Count - 1 ? 1f : (double)Position / (notes.Count - 1) - 0.006f);
+                //同步进度比率
+
+
                 if (Model == PlayModel.Preview)
                 {
                     if (_position < notes.Count) { TxtAnalizeVisual.Instance?.NewInfo(notes[_position]); }
                     if (!IsOnPlaying) { TxtAnalizeVisual.WhiteColor(_position, Brushes.Red); }
                 }
+                //同步控件提示色
             }
         }
 
         public async void Start()
         {
-            if (IsOnPlaying) return;
+            if (CurrentPlayingOne == this) return;
+            CurrentPlayingOne.Stop();
+            CurrentPlayingOne = this;
+            if (EditArea.PageType == PageTypes.TxtAnalize && HotKeySet.IsAutoAttentive)
+            {
+                TxtAnalizeVisual.ExpendBox();
+            }
             IsOnPlaying = true;
             for (int i = Position; i < notes.Count; i++)
             {
                 if (IsStop)
                 {
+                    CurrentPlayingOne = NullSong;
                     IsStop = false;
                     IsOnPlaying = false;
                     Position--;
@@ -109,6 +134,7 @@ namespace AutoPiano
                 }
                 Position++;
             }
+            CurrentPlayingOne = NullSong;
             IsOnPlaying = false;
             Position = 0;
         }
