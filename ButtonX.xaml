@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="AutoPiano.ButtonX"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AutoPiano"
+             mc:Ignorable="d" 
+             Width="200"
+             Height="100"            
+             >
+    <Button Name="BT"
+            BorderThickness="0,0,0,1"
+            MouseEnter="WhileMouseEnter"
+            MouseLeave="WhileMouseLeave"
+            BorderBrush="Cyan">
+        <Button.Template>
+            <ControlTemplate TargetType="Button">
+                <ControlTemplate.Resources>
+                    <local:LeftBorderConvertor x:Key="Lcvt"/>
+                    <local:TopBorderConvertor x:Key="Tcvt"/>
+                    <local:RightBorderConvertor x:Key="Rcvt"/>
+                    <local:ButtomBorderConvertor x:Key="Bcvt"/>
+                </ControlTemplate.Resources>
+                <Grid>
+                    <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Content}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Foreground}"/>
+                    <Border Name="BottomBorder" BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness,Converter={StaticResource Bcvt}}" BorderBrush="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderBrush}" Width="0" Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                    <Border Name="TopBorder" BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness,Converter={StaticResource Tcvt}}" BorderBrush="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderBrush}" Width="0" Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                    <Border Name="LeftBorder" BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness,Converter={StaticResource Lcvt}}" BorderBrush="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderBrush}" Height="0" Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Width}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Border Name="RightBorder" BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness,Converter={StaticResource Rcvt}}" BorderBrush="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderBrush}" Height="0" Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Width}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                </Grid>
+            </ControlTemplate>
+        </Button.Template>
+    </Button>
+</UserControl>

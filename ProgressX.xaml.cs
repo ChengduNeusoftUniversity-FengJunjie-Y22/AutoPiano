@@ -31,7 +31,7 @@ namespace AutoPiano
         /// 进度比率 0~1 => 1%~100%
         /// <para>若想传入参数,请调用SetProgressValue</para>
         /// </summary>
-        public double ProcessRate
+        public double ProgressRate
         {
             get => Bar.Value;
         }

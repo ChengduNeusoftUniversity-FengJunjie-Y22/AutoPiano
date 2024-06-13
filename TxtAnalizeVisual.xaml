@@ -5,7 +5,6 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AutoPiano"
       mc:Ignorable="d" 
-      xmlns:ed="clr-namespace:Microsoft.Expression.Shapes;assembly=Microsoft.Expression.Drawing"
       d:DesignHeight="740" d:DesignWidth="1440"
       Title="TxtAnalizeVisual">
     <Page.Resources>
@@ -196,8 +195,9 @@
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        <Slider Name="SDValuePlay" Width="NaN" Height="15" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" Maximum="1" Value="0" SmallChange="0.001">
-        </Slider>
+        
+        <Slider Name="SDValuePlay" Width="NaN" Height="15" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" Maximum="1" Value="0" SmallChange="0.00001" MouseDown="SliderMouseDown" MouseUp="SliderMouseUp"/>
+
         <Border Width="1135" HorizontalAlignment="Left" BorderThickness="4,1,4,1" BorderBrush="White" Margin="0,264,0,296">
             <Grid>
                 <TextBlock Background="Transparent" Foreground="White" FontSize="40" Text="曲名" Margin="1025,19,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
@@ -217,7 +217,7 @@
             <Grid Width="1440" Grid.ZIndex="2" Background="#1e1e1e">
 
                 <Border CornerRadius="10" Margin="425,58,911,279" BorderBrush="White" BorderThickness="1">
-                    <Button Content="替换" FontSize="35" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_10"/>
+                    <Button Content="替换" FontSize="35" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="AddNewParagraph"/>
                 </Border>
                 <Border CornerRadius="10" Margin="572,58,764,279" BorderBrush="White" BorderThickness="1">
                     <Button Content="清除" FontSize="35" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
@@ -245,9 +245,8 @@
                 <TextBlock Name="AKey" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,58,0,0"/>
                 <TextBlock Name="ATime" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="198,0,0,0"/>
 
-                <Button Background="Transparent" Foreground="White" FontSize="30" Content="退出专注" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,35,0" Width="151" Height="43" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_5"/>
-
                 <local:ProgressX x:Name="ProcessShow" FontSize="60" Width="300" Height="300" Margin="848,44,292,44" local:ForeColor="Cyan" local:BackColor="Gray"/>
+                <local:ButtonX local:ButtonText="退出专注" local:ButtonTextColor="White" local:ButtonTextSize="30" local:Click="Close" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.5" BorderAnimationAccelerationRatio="1" Margin="1261,10,39,328"/>
             </Grid>
         </Border>
 

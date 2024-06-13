@@ -149,25 +149,25 @@ namespace AutoPiano
 
         public static void PlayInEdit()
         {
-            Stop();
-            if (TxtAnalizeVisual.CurrentSong != null) { TxtAnalizeVisual.CurrentSong.Start(); }
+            Pause();
+            TxtAnalizeVisual.CurrentSong.Model = PlayModel.Preview;
+            TxtAnalizeVisual.CurrentSong.Start();
         }
         public static void PlayOutEdit()
         {
-            Stop();
-            if (!MainWindow.AutoTarget.IsOnPlaying) { MainWindow.AutoTarget.Start(); }
+            Pause();
+            TxtAnalizeVisual.CurrentSong.Model = PlayModel.Auto;
+            TxtAnalizeVisual.CurrentSong.Start();
         }
 
         public static void Pause()
         {
             TxtAnalizeVisual.CurrentSong.Pause();
-            MainWindow.AutoTarget.Pause();
             NMNAnalizeVisual.Instance?.MusicScore.Stop();
         }
         public static void Stop()
         {
             TxtAnalizeVisual.CurrentSong.Stop();
-            MainWindow.AutoTarget.Stop();
             NMNAnalizeVisual.Instance?.MusicScore.Stop();
         }
         public static void ReversetVisual()

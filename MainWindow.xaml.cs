@@ -28,8 +28,6 @@ namespace AutoPiano
     {
         public static MainWindow? Instance;
 
-        public static Song AutoTarget = new Song();
-
         public MainWindow()
         {
             InitializeComponent();

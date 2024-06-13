@@ -74,9 +74,6 @@ namespace AutoPiano
                 if (Instance != null)
                 {
                     Instance.SongName.Text = _data.Name;
-                    _data.Position = 0;
-                    _data.IsOnPlaying = false;
-                    _data.IsStop = false;
                     _data.Model = PlayModel.Preview;
                     Instance.TimeValue.Text = string.Empty;
                     Instance.Notes.Children.Clear();
@@ -84,8 +81,12 @@ namespace AutoPiano
                     {
                         Instance.Notes.Children.Add(textBlock);
                     }
-                    MainWindow.AutoTarget = Song.Copy(CurrentSong);
-                    MainWindow.AutoTarget.Model = PlayModel.Auto;
+                    Instance.ProcessShow.AfterSetValue = null;
+                    Instance.ProcessShow.AfterSetValue += Instance.NewSliderValue;
+                    _data.Pause();
+                    _data.Position = 0;
+                    _data.IsOnPlaying = false;
+                    _data.IsStop = false;
                 }
             }
         }
@@ -100,11 +101,36 @@ namespace AutoPiano
             Instance = this;
         }
 
+
+        #region 拖条处理
+        private bool IsMousePress = false;
+        private void NewSliderValue(ProgressX progressX)
+        {
+            if (IsMousePress)
+            {
+                SDValuePlay.Value = progressX.ProgressRate;
+            }
+        }
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //TxtNotes.ScrollToHorizontalOffset((CurrentSong.notes.Count * e.NewValue - 12) * 60);
-            CurrentSong.Position = (int)(CurrentSong.notes.Count * e.NewValue - 1);
+            if (IsMousePress)
+            {
+                CurrentSong.Pause();
+                int temp = (int)(e.NewValue * (CurrentSong.notes.Count - 1));
+                CurrentSong.Position = temp;
+                KeyDArea.ScrollToHorizontalOffset((CurrentSong.Position - 12) * 60f);
+            }
         }
+        private void SliderMouseUp(object sender, MouseEventArgs e)
+        {
+            IsMousePress = false;
+        }
+        private void SliderMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            IsMousePress = true;
+        }
+        #endregion
+
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -413,7 +439,7 @@ namespace AutoPiano
             }
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void Close(object sender, RoutedEventArgs e)
         {
             DoubleAnimation widthAnimation = new DoubleAnimation();
             widthAnimation.AccelerationRatio = 1;
@@ -437,7 +463,6 @@ namespace AutoPiano
         public void NewInfo(object target)
         {
             AIndex.Text = CurrentSong.Position.ToString();
-            SDValuePlay.Value = (double)(CurrentSong.Position + 1) / CurrentSong.notes.Count;
             if (target is Note note)
             {
                 AKey.Text = note.GetContentWithOutTime();
@@ -462,19 +487,6 @@ namespace AutoPiano
                 if (IsPreviewSingleOne) { nunote.Preview(); IsPreviewSingleOne = false; }
                 return;
             }
-        }
-
-        private void Button_Click_6(object sender, RoutedEventArgs e)
-        {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-            CurrentSong.Position--;
-        }
-
-        private void Button_Click_7(object sender, RoutedEventArgs e)
-        {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-            IsPreviewSingleOne = true;
-            CurrentSong.Position++;
         }
 
         private void Button_Click_8(object sender, RoutedEventArgs e)
@@ -549,7 +561,7 @@ namespace AutoPiano
             Keyboard.ClearFocus();
         }
 
-        private async void Button_Click_10(object sender, RoutedEventArgs e)
+        private async void AddNewParagraph(object sender, RoutedEventArgs e)
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
             var result = BinaryObject.DeserializeObject<Song>();
@@ -571,14 +583,17 @@ namespace AutoPiano
             }
         }
 
-        private void Button_Click_11(object sender, RoutedEventArgs e)
+        private void Button_Click_7(object sender, MouseButtonEventArgs e)
         {
-
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            IsPreviewSingleOne = true;
+            CurrentSong.Position++;
         }
 
-        private void Button_Click_12(object sender, RoutedEventArgs e)
+        private void Button_Click_6(object sender, MouseButtonEventArgs e)
         {
-
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            CurrentSong.Position--;
         }
     }
 }
