@@ -180,12 +180,12 @@
             <Grid>
                 <TextBlock Foreground="White" FontSize="40" VerticalAlignment="Top" Text="微调尺度" HorizontalAlignment="Right" Margin="0,10,10,0"/>
                 <TextBlock Name="AdjustValue" Foreground="White" FontSize="40" VerticalAlignment="Top" Text="当前 : " HorizontalAlignment="Right" Margin="0,10,809,0" Width="312"/>
-                <Slider Style="{StaticResource BeautifySliderStyle}" Width="576" Height="2" HorizontalAlignment="Left" Margin="344,22,0,22" ValueChanged="Slider_ValueChanged_2" Maximum="100" Minimum="1" Value="70"/>
+                <Slider x:Name="LittelChange" Style="{StaticResource BeautifySliderStyle}" Width="576" Height="2" HorizontalAlignment="Left" Margin="344,22,0,22" ValueChanged="Slider_ValueChanged_2" Maximum="100" Minimum="1" Value="50"/>
             </Grid>
         </Border>
 
+        <!--音符可视框-->
         <Border Width="1440" HorizontalAlignment="Center" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,497,0,0"/>
-
         <Border Width="1386" Height="170" HorizontalAlignment="Center" BorderThickness="0,0,0,0" BorderBrush="White" Margin="0,517,0,53">
             <ScrollViewer x:Name="NotesBox" Height="190" Width="1460" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Visible">
                 <StackPanel x:Name="Notes" Height="170" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -193,26 +193,30 @@
                 </StackPanel>
             </ScrollViewer>
         </Border>
-
         <Slider Name="ProgressSlider" Width="NaN" Height="15" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" Maximum="1" Value="0" SmallChange="0.00001" MouseEnter="PSliderMouseEnter" MouseLeave="PSliderMouseLeave"/>
 
+        <!--音乐信息栏-->
         <Border Width="1135" HorizontalAlignment="Left" BorderThickness="4,1,4,1" BorderBrush="White" Margin="0,264,0,296">
             <Grid>
+                <!--曲名-->
                 <TextBlock Background="Transparent" Foreground="White" FontSize="40" Text="曲名" Margin="1025,19,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 <Border BorderBrush="White" Background="Transparent" CornerRadius="15" BorderThickness="1" Margin="36,16,130,105">
                     <TextBox Name="SongName" BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="30" Foreground="Cyan"/>
                 </Border>
 
+                <!--乐器类型-->
                 <TextBlock Background="Transparent" Foreground="White" FontSize="40" Text="音色" Margin="1025,107,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 <TextBlock x:Name="AudioType" Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="40" Foreground="Cyan" Margin="0,107,130,0" Text="风物之诗琴"/>
-                <Button Background="Transparent" Foreground="White" FontSize="40" Content="🔍" Margin="401,89,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" MouseEnter="MouEnter" MouseLeave="MouLeave" Width="254" Height="79" Click="Button_Click_4"/>
-                <TextBlock x:Name="TimeValue" Background="Transparent" Foreground="Cyan" FontSize="40" Margin="0,107,731,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+
+                <!--专注模式-->
+                <local:ButtonX local:ButtonText="专注模式" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="Button_Click_4" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="369,108,558,20"/>
+                <TextBlock x:Name="TimeValue" Background="Transparent" Foreground="Cyan" FontSize="40" Margin="0,117,763,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
 
             </Grid>
         </Border>
 
         <!--时值编辑器（专注模式）-->
-        <Border Name="TimeEdit" Width="1440" HorizontalAlignment="Left" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,60,0,290">
+        <Border Name="TimeEdit" Width="00" HorizontalAlignment="Left" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,60,0,290">
             <Grid Width="1440" Grid.ZIndex="2" Background="#1e1e1e">
 
                 <!--编辑相关功能按钮-->

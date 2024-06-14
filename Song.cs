@@ -153,23 +153,23 @@ namespace AutoPiano
         /// 从当前索引处插入一段新的解析结果，注意不会保留该索引处原有的内容
         /// </summary>
         /// <param name="target"></param>
-        public async void AddParagraph(string target)
+        public static Song AddParagraph(Song oldOne, string targetTxt)
         {
             Song temp1 = new Song();
             Song temp2 = new Song();
-            Song temp3 = new Song();
-            Song result = new Song();
-            for (int i = 0; i < Position; i++)
+            Song temp3 = StringProcessing.SongParse(targetTxt);
+            for (int i = 0; i < oldOne.Position; i++)
             {
-                temp1.notes.Add(notes[i]);
+                temp1.notes.Add(oldOne.notes[i]);
             }
-            for (int i = Position + 1; i < notes.Count; i++)
+            for (int i = oldOne.Position + 1; i < oldOne.notes.Count; i++)
             {
-                temp2.notes.Add(notes[i]);
+                temp2.notes.Add(oldOne.notes[i]);
             }
-            temp3 = await StringProcessing.SongParse(target);
-            result = temp1 + temp3 + temp2;
-            notes = result.notes;
+
+            Song result = temp1 + temp3 + temp2;
+
+            return result;
         }
 
         /// <summary>
@@ -220,8 +220,8 @@ namespace AutoPiano
         public static Song Copy(Song target)
         {
             Song temp = new Song();
-            temp.Name = target.Name;
 
+            temp.Name = target.Name;
             foreach (object s in target.notes)
             {
                 temp.notes.Add(s);

@@ -124,10 +124,13 @@ namespace AutoPiano
             }
         }
 
+        public static bool IsPageLoaded = false;
+
         public TxtAnalizeVisual()
         {
             InitializeComponent();
             Instance = this;
+            IsPageLoaded = true;
         }
 
 
@@ -150,18 +153,18 @@ namespace AutoPiano
 
 
         #region 解析器功能与设置
-        private async void Button_Click(object sender, RoutedEventArgs e)//Txt解析
+        private void Button_Click(object sender, RoutedEventArgs e)//Txt解析
         {
             CurrentSong.Stop();
-            var result = await StringProcessing.SelectThenAnalize();
+            var result = StringProcessing.SelectThenAnalize();
             CurrentSong = result.Item1;
             SongName.Text = result.Item2;
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)//粘贴板解析
+        private void Button_Click_1(object sender, RoutedEventArgs e)//粘贴板解析
         {
             CurrentSong.Stop();
-            CurrentSong = await StringProcessing.SongParse(Clipboard.GetText());
+            CurrentSong = StringProcessing.SongParse(Clipboard.GetText());
             SongName.Text = "? ? ?";
         }
 
@@ -169,6 +172,7 @@ namespace AutoPiano
         {
             SpaceValue.Text = "当前 : " + (int)e.NewValue;
             StringProcessing.BlankSpace = (int)e.NewValue;
+            if (IsPageLoaded) LittelChange.Value = e.NewValue / 8;
         }
 
         private void Slider_ValueChanged_2(object sender, RoutedPropertyChangedEventArgs<double> e)//微调时的变化量
@@ -230,20 +234,20 @@ namespace AutoPiano
         #region 其它可视化区
         private StackPanel[] LoadPanelBoxes()//加载音符显示区
         {
-            StackPanel[] result = new StackPanel[CurrentSong.notes.Count];
-            for (int i = 0; i < CurrentSong.notes.Count; i++)
+            StackPanel[] result = new StackPanel[_data.notes.Count];
+            for (int i = 0; i < _data.notes.Count; i++)
             {
                 string notestr = string.Empty;
 
-                if (CurrentSong.notes[i] is Note note)
+                if (_data.notes[i] is Note note)
                 {
                     notestr = note.GetContentWithOutTime();
                 }
-                else if (CurrentSong.notes[i] is Chord chord)
+                else if (_data.notes[i] is Chord chord)
                 {
                     notestr = chord.GetContentWithOutTime();
                 }
-                else if (CurrentSong.notes[i] is NullNote nullnote)
+                else if (_data.notes[i] is NullNote nullnote)
                 {
                     notestr = nullnote.GetContentWithOutTime();
                 }
@@ -465,8 +469,7 @@ namespace AutoPiano
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
             string result = StringProcessing.SelectThenReadTxt();
 
-            CurrentSong.AddParagraph(result);
-            Song temp = Song.Copy(CurrentSong);
+            Song temp = Song.AddParagraph(CurrentSong, result);
             CurrentSong = temp;
 
             ReadButton.Content = "完成√";
@@ -477,8 +480,7 @@ namespace AutoPiano
         private void ClearNote(object sender, RoutedEventArgs e)//清除当前位置的音符
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-            CurrentSong.AddParagraph(" ");
-            Song temp = Song.Copy(CurrentSong);
+            Song temp = Song.AddParagraph(CurrentSong, " ");
             CurrentSong = temp;
         }
         private void Button_Click_8(object sender, RoutedEventArgs e)//加速
@@ -487,7 +489,7 @@ namespace AutoPiano
             object temp = CurrentSong.notes[CurrentSong.Position];
             if (temp is Note note)
             {
-                int a = note.Span - StringProcessing.BlankSpace / 2;
+                int a = note.Span - StringProcessing.BlankSpace_Re;
                 if (a >= 0)
                 {
                     note.Span = a;
@@ -499,7 +501,7 @@ namespace AutoPiano
             }
             else if (temp is Chord chord)
             {
-                int a = chord.Chords.Last().Span - StringProcessing.BlankSpace / 2;
+                int a = chord.Chords.Last().Span - StringProcessing.BlankSpace_Re;
                 if (a >= 0)
                 {
                     chord.Chords.Last().Span = a;
@@ -511,7 +513,7 @@ namespace AutoPiano
             }
             else if (temp is NullNote nunote)
             {
-                int a = nunote.Span - StringProcessing.BlankSpace / 2;
+                int a = nunote.Span - StringProcessing.BlankSpace_Re;
                 if (a >= 0)
                 {
                     nunote.Span = a;
@@ -529,15 +531,15 @@ namespace AutoPiano
             object temp1 = CurrentSong.notes[CurrentSong.Position];
             if (temp1 is Note note1)
             {
-                note1.Span += StringProcessing.BlankSpace / 2;
+                note1.Span += StringProcessing.BlankSpace_Re;
             }
             else if (temp1 is Chord chord1)
             {
-                chord1.Chords.Last().Span += StringProcessing.BlankSpace / 2;
+                chord1.Chords.Last().Span += StringProcessing.BlankSpace_Re;
             }
             else if (temp1 is NullNote nunote1)
             {
-                nunote1.Span += StringProcessing.BlankSpace / 2;
+                nunote1.Span += StringProcessing.BlankSpace_Re;
             }
             CurrentSong.Position = CurrentSong.Position;
         }

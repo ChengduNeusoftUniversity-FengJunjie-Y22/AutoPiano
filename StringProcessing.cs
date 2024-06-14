@@ -31,7 +31,7 @@ namespace AutoPiano
             }
         }
 
-        public static async Task<Tuple<Song, string>> SelectThenAnalize()
+        public static Tuple<Song, string> SelectThenAnalize()
         {
             Song song = new Song();
             string name = "?";
@@ -46,7 +46,7 @@ namespace AutoPiano
 
                 string fileContent = File.ReadAllText(selectedFilePath);
 
-                song = await SongParse(fileContent);
+                song = SongParse(fileContent);
                 name = System.IO.Path.GetFileNameWithoutExtension(selectedFilePath);
             }
 
@@ -143,13 +143,10 @@ namespace AutoPiano
             }
         }
 
-        public static async Task<Song> SongParse(string text)//将数据解析至Page1的song对象
+        public static Song SongParse(string text)//将数据解析至Page1的song对象
         {
             Song result = new Song();
-            await Task.Run(() =>
-            {
-                RecursivParse(text, false, 0, result);
-            });
+            RecursivParse(text, false, 0, result);
             return result;
         }
 
