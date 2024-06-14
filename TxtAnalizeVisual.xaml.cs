@@ -126,9 +126,9 @@ namespace AutoPiano
 
         public static bool IsPageLoaded = false;//页面是否加载完成
 
-        public static bool IsNormalOutput = false;//是否采用通用协议输出数据
+        public static bool IsNormalOutput = true;//是否采用通用协议输出数据
 
-        public static bool IsNormalInput = false;//是否采用通用协议读取数据
+        public static bool IsNormalInput = true;//是否采用通用协议读取数据
 
         public TxtAnalizeVisual()
         {
@@ -161,33 +161,41 @@ namespace AutoPiano
         {
             CurrentSong.Stop();
 
-            if (IsNormalInput)
+            try
             {
-                CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt());
-                SongName.Text = CurrentSong.Name;
+                if (IsNormalInput)
+                {
+                    CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt());
+                    SongName.Text = CurrentSong.Name;
+                }
+                else
+                {
+                    var result = StringProcessing.SelectThenAnalize(DataTypes.Simple);
+                    CurrentSong = result.Item1;
+                    SongName.Text = result.Item2;
+                }
             }
-            else
-            {
-                var result = StringProcessing.SelectThenAnalize();
-                CurrentSong = result.Item1;
-                SongName.Text = result.Item2;
-            }
+            catch { MessageBox.Show("解析txt失败，请检查文本格式是否正确!"); }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)//粘贴板解析
         {
             CurrentSong.Stop();
 
-            if (IsNormalInput)
+            try
             {
-                CurrentSong = StringProcessing.NormalDataToSong(Clipboard.GetText());
-                SongName.Text = CurrentSong.Name;
+                if (IsNormalInput)
+                {
+                    CurrentSong = StringProcessing.NormalDataToSong(Clipboard.GetText());
+                    SongName.Text = CurrentSong.Name;
+                }
+                else
+                {
+                    CurrentSong = StringProcessing.SongParse(Clipboard.GetText());
+                    SongName.Text = "? ? ?";
+                }
             }
-            else
-            {
-                CurrentSong = StringProcessing.SongParse(Clipboard.GetText());
-                SongName.Text = "? ? ?";
-            }
+            catch { MessageBox.Show("解析粘贴板失败，请检查文本格式是否正确！"); }
         }
 
         private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)//一个空格所代表的时值
@@ -254,10 +262,11 @@ namespace AutoPiano
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
             ReadButton.Content = "读取ing……";
             ReadButton.Foreground = Brushes.Lime;
-            var result = BinaryObject.DeserializeObject<Song>();
-            if (result.Item1)
+
+            if (IsNormalInput)
             {
-                if (result.Item2 != null) { CurrentSong = result.Item2; }
+                CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt());
+                SongName.Text = CurrentSong.Name;
                 ReadButton.Content = "完成√";
                 await Task.Delay(2500);
                 ReadButton.Content = "读档";
@@ -265,11 +274,23 @@ namespace AutoPiano
             }
             else
             {
-                ReadButton.Foreground = Brushes.Red;
-                ReadButton.Content = "⚠失败";
-                await Task.Delay(2500);
-                ReadButton.Content = "读档";
-                ReadButton.Foreground = Brushes.White;
+                var result = BinaryObject.DeserializeObject<Song>(DataTypes.Simple);
+                if (result.Item1)
+                {
+                    if (result.Item2 != null) { CurrentSong = result.Item2; }
+                    ReadButton.Content = "完成√";
+                    await Task.Delay(2500);
+                    ReadButton.Content = "读档";
+                    ReadButton.Foreground = Brushes.White;
+                }
+                else
+                {
+                    ReadButton.Foreground = Brushes.Red;
+                    ReadButton.Content = "⚠失败";
+                    await Task.Delay(2500);
+                    ReadButton.Content = "读档";
+                    ReadButton.Foreground = Brushes.White;
+                }
             }
         }
         #endregion
@@ -478,31 +499,35 @@ namespace AutoPiano
         }
         public void NewInfo(object target)
         {
-            AIndex.Text = CurrentSong.Position.ToString();
-            if (target is Note note)
+            try
             {
-                AKey.Text = note.GetContentWithOutTime();
-                ATime.Text = note.Span.ToString();
-                TimeValue.Text = note.GetContent();
-                if (IsPreviewSingleOne) { note.Preview(); IsPreviewSingleOne = false; }
-                return;
+                AIndex.Text = CurrentSong.Position.ToString();
+                if (target is Note note)
+                {
+                    AKey.Text = note.GetContentWithOutTime();
+                    ATime.Text = note.Span.ToString();
+                    TimeValue.Text = note.GetContent();
+                    if (IsPreviewSingleOne) { note.Preview(); IsPreviewSingleOne = false; }
+                    return;
+                }
+                if (target is Chord chord)
+                {
+                    AKey.Text = chord.GetContentWithOutTime();
+                    ATime.Text = chord.Chords.Last().Span.ToString();
+                    TimeValue.Text = chord.GetContent();
+                    if (IsPreviewSingleOne) { chord.Preview(); IsPreviewSingleOne = false; }
+                    return;
+                }
+                if (target is NullNote nunote)
+                {
+                    AKey.Text = nunote.GetContentWithOutTime();
+                    ATime.Text = nunote.Span.ToString();
+                    TimeValue.Text = nunote.GetContent();
+                    if (IsPreviewSingleOne) { nunote.Preview(); IsPreviewSingleOne = false; }
+                    return;
+                }
             }
-            if (target is Chord chord)
-            {
-                AKey.Text = chord.GetContentWithOutTime();
-                ATime.Text = chord.Chords.Last().Span.ToString();
-                TimeValue.Text = chord.GetContent();
-                if (IsPreviewSingleOne) { chord.Preview(); IsPreviewSingleOne = false; }
-                return;
-            }
-            if (target is NullNote nunote)
-            {
-                AKey.Text = nunote.GetContentWithOutTime();
-                ATime.Text = nunote.Span.ToString();
-                TimeValue.Text = nunote.GetContent();
-                if (IsPreviewSingleOne) { nunote.Preview(); IsPreviewSingleOne = false; }
-                return;
-            }
+            catch { }
         }
         #endregion
 

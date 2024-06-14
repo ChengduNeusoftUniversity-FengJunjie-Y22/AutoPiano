@@ -22,7 +22,7 @@ namespace AutoPiano
     {
         public string Name = "None";
 
-        public static DataTypes Type = DataTypes.Simple;
+        public static DataTypes Type = DataTypes.PublicStruct;
 
         public PlayModel Model = PlayModel.None;
 

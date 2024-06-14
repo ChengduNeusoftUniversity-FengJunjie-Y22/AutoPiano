@@ -24,7 +24,7 @@ namespace AutoPiano
         /// <summary>
         /// 【通用格式的自动播放数据】默认存储到这里
         /// </summary>
-        public static string NormalTypeSongData = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "TXT");
+        public static string NormalTypeSongData = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Data_PublicStruct");
 
         /// <summary>
         /// 检查文本信息文件夹是否完备
@@ -35,15 +35,19 @@ namespace AutoPiano
             {
                 System.IO.Directory.CreateDirectory(DefaultTxtPath);
             }
+            if (!System.IO.Directory.Exists(NormalTypeSongData))
+            {
+                System.IO.Directory.CreateDirectory(NormalTypeSongData);
+            }
         }
 
-        public static Tuple<Song, string> SelectThenAnalize()
+        public static Tuple<Song, string> SelectThenAnalize(DataTypes target)
         {
             Song song = new Song();
             string name = "?";
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = DefaultTxtPath;
+            openFileDialog.InitialDirectory = (target == DataTypes.PublicStruct ? NormalTypeSongData : DefaultTxtPath);
             openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
 
             if (openFileDialog.ShowDialog() == true)
@@ -68,7 +72,7 @@ namespace AutoPiano
             string result = string.Empty;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = DefaultTxtPath;
+            openFileDialog.InitialDirectory = NormalTypeSongData;
             openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
@@ -266,7 +270,7 @@ namespace AutoPiano
             {
                 Filter = "Text Files (*.txt)|*.txt",
                 Title = "输出为【通用】格式的自动演奏数据",
-                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                InitialDirectory = NormalTypeSongData,
                 FileName = $"{target.Name.Replace(" ", string.Empty)}.txt"  // 设置默认文件名为 Song 对象的名称
             };
 
@@ -324,35 +328,41 @@ namespace AutoPiano
 
         public static Song NormalDataToSong(string target)//通用格式数据 => Song数据 
         {
+            if (target.Length == 0) return new Song();
             Song result = new Song();
-            string[] parts = target.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            result.Name = parts[0];
-
-            for (int i = 1; i <= parts.Length - 2; i += 2)
+            try
             {
-                int time = StringToInt(parts[i + 1]);
-                if (parts[i].Length == 1)
+                string[] parts = target.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                result.Name = parts[0];
+
+                for (int i = 1; i <= parts.Length - 2; i += 2)
                 {
-                    if (parts[i][0] == 'P')
+                    int time = StringToInt(parts[i + 1]);
+                    if (parts[i].Length == 1)
                     {
-                        result.notes.Add(new NullNote(time));
+                        if (parts[i][0] == 'P')
+                        {
+                            result.notes.Add(new NullNote(time));
+                        }
+                        else
+                        {
+                            result.notes.Add(new Note(AudioBasic.CharToKeyCode[parts[i][0]], time));
+                        }
                     }
-                    else
+                    else if (parts[i].Length > 1)
                     {
-                        result.notes.Add(new Note(AudioBasic.CharToKeyCode[parts[i][0]], time));
+                        Chord chord = new Chord();
+                        for (int k = 0; k < parts[i].Length; k++)
+                        {
+                            chord.Chords.Add(new Note(AudioBasic.CharToKeyCode[parts[i][k]], (k == parts[i].Length - 1 ? time : 0)));
+                        }
+                        result.notes.Add(chord);
                     }
-                }
-                else if (parts[i].Length > 1)
-                {
-                    Chord chord = new Chord();
-                    for (int k = 0; k < parts[i].Length; k++)
-                    {
-                        chord.Chords.Add(new Note(AudioBasic.CharToKeyCode[parts[i][k]], (k == parts[i].Length - 1 ? time : 0)));
-                    }
-                    result.notes.Add(chord);
                 }
             }
+            catch { return new Song(); }
 
             return result;
         }

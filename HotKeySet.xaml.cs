@@ -29,6 +29,8 @@ namespace AutoPiano
     {
         public static HotKeySet? Instance;
 
+        public bool IsSameDataMode = true;//两种协议间是否自动同步
+
         private static bool _isClickChange = true;
         public static bool IsClickChange
         {
@@ -175,13 +177,29 @@ namespace AutoPiano
         private void AnalizeMode(object sender, RoutedEventArgs e)
         {
             TxtAnalizeVisual.IsNormalInput = !TxtAnalizeVisual.IsNormalInput;
-            ReadMode.ButtonText = (TxtAnalizeVisual.IsNormalInput ? "通用" : "内部");
+            ReadMode.ButtonText = (TxtAnalizeVisual.IsNormalInput ? "Public" : "Private");
+            if (IsSameDataMode)
+            {
+                TxtAnalizeVisual.IsNormalOutput = TxtAnalizeVisual.IsNormalInput;
+                WriteMode.ButtonText = (TxtAnalizeVisual.IsNormalOutput ? "Public" : "Private");
+            }
         }
 
         private void OutputMode(object sender, RoutedEventArgs e)
         {
             TxtAnalizeVisual.IsNormalOutput = !TxtAnalizeVisual.IsNormalOutput;
-            WriteMode.ButtonText = (TxtAnalizeVisual.IsNormalOutput ? "通用" : "内部");
+            WriteMode.ButtonText = (TxtAnalizeVisual.IsNormalOutput ? "Public" : "Private");
+            if (IsSameDataMode)
+            {
+                TxtAnalizeVisual.IsNormalInput = TxtAnalizeVisual.IsNormalOutput;
+                ReadMode.ButtonText = (TxtAnalizeVisual.IsNormalInput ? "Public" : "Private");
+            }
+        }
+
+        private void SameDMode(object sender, RoutedEventArgs e)
+        {
+            IsSameDataMode = !IsSameDataMode;
+            SameDM.ButtonText = (IsSameDataMode ? "On" : "OFF");
         }
     }
 }

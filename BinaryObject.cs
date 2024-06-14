@@ -16,7 +16,8 @@ using System.Xml.XPath;
 public enum DataTypes
 {
     Simple,
-    Complex_NMN
+    Complex_NMN,
+    PublicStruct
 }
 
 namespace AutoPiano
@@ -57,13 +58,13 @@ namespace AutoPiano
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static string? SelectFilePath<T>() where T : BinaryObject
+        public static string? SelectFilePath<T>(DataTypes? type) where T : BinaryObject
         {
             FieldInfo? fieldInfo = typeof(T).GetField("Type", BindingFlags.Static | BindingFlags.Public);
 
             if (fieldInfo != null)
             {
-                DataTypes reuslt = (DataTypes)fieldInfo.GetValue(null);
+                DataTypes reuslt = (type == null ? (DataTypes)fieldInfo.GetValue(null) : (DataTypes)type);
                 string? filePath = null;
 
                 OpenFileDialog folderBrowser = new OpenFileDialog();
@@ -81,6 +82,13 @@ namespace AutoPiano
                         break;
                     case DataTypes.Complex_NMN:
                         folderBrowser.InitialDirectory = ComplexData_NMN;
+                        if (folderBrowser.ShowDialog() == true)
+                        {
+                            filePath = folderBrowser.FileName;
+                        }
+                        break;
+                    case DataTypes.PublicStruct:
+                        folderBrowser.InitialDirectory = StringProcessing.NormalTypeSongData;
                         if (folderBrowser.ShowDialog() == true)
                         {
                             filePath = folderBrowser.FileName;
@@ -126,9 +134,9 @@ namespace AutoPiano
         /// <summary>
         /// 反序列化存储对象
         /// </summary>
-        public static (bool, T?) DeserializeObject<T>() where T : BinaryObject, new()
+        public static (bool, T?) DeserializeObject<T>(DataTypes? type) where T : BinaryObject, new()
         {
-            string? filePath = SelectFilePath<T>();
+            string? filePath = SelectFilePath<T>(type);
             if (filePath == null) { return (false, null); }
             try
             {
