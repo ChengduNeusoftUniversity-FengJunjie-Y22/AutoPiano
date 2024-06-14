@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using WindowsInput.Native;
 
 namespace AutoPiano
@@ -19,6 +20,11 @@ namespace AutoPiano
         /// 【TXT谱子】默认从这里被选择
         /// </summary>
         public static string DefaultTxtPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "TXT");
+
+        /// <summary>
+        /// 【通用格式的自动播放数据】默认存储到这里
+        /// </summary>
+        public static string NormalTypeSongData = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "TXT");
 
         /// <summary>
         /// 检查文本信息文件夹是否完备
@@ -53,6 +59,10 @@ namespace AutoPiano
             return Tuple.Create(song, name);
         }
 
+        /// <summary>
+        /// 读取指定.txt中的全部文本
+        /// </summary>
+        /// <returns></returns>
         public static string SelectThenReadTxt()
         {
             string result = string.Empty;
@@ -143,7 +153,7 @@ namespace AutoPiano
             }
         }
 
-        public static Song SongParse(string text)//将数据解析至Page1的song对象
+        public static Song SongParse(string text)//将非通用数据解析
         {
             Song result = new Song();
             RecursivParse(text, false, 0, result);
@@ -244,6 +254,117 @@ namespace AutoPiano
                 }
             }
 
+            return result;
+        }
+
+        public static bool SaveSongAsTxt(Song target)
+        {
+            string textToSave = SongToNormalData(target);
+
+            // 使用 SaveFileDialog 选择文件保存路径
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Text Files (*.txt)|*.txt",
+                Title = "输出为【通用】格式的自动演奏数据",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                FileName = $"{target.Name.Replace(" ", string.Empty)}.txt"  // 设置默认文件名为 Song 对象的名称
+            };
+
+            // 如果用户点击了保存按钮
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                try
+                {
+                    // 将文本内容写入文件
+                    File.WriteAllText(filePath, textToSave);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"保存文件失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static string SongToNormalData(Song target)//Song数据 => 通用格式数据
+        {
+            string result = string.Empty;
+
+            result += target.Name.Replace(" ", string.Empty);
+            result += " ";
+
+            foreach (var item in target.notes)
+            {
+                if (item is Note note)
+                {
+                    result += note.GetContentWithOutTime();
+                    result += " ";
+                    result += note.Span;
+                    result += " ";
+                }
+                else if (item is Chord chord)
+                {
+                    result += chord.GetContentWithOutTime();
+                    result += " ";
+                    result += chord.Chords.Last().Span;
+                    result += " ";
+                }
+                else if (item is NullNote nullnote)
+                {
+                    result += "P ";
+                    result += nullnote.Span;
+                    result += " ";
+                }
+            }
+
+            return result;
+        }
+
+        public static Song NormalDataToSong(string target)//通用格式数据 => Song数据 
+        {
+            Song result = new Song();
+            string[] parts = target.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            result.Name = parts[0];
+
+            for (int i = 1; i <= parts.Length - 2; i += 2)
+            {
+                int time = StringToInt(parts[i + 1]);
+                if (parts[i].Length == 1)
+                {
+                    if (parts[i][0] == 'P')
+                    {
+                        result.notes.Add(new NullNote(time));
+                    }
+                    else
+                    {
+                        result.notes.Add(new Note(AudioBasic.CharToKeyCode[parts[i][0]], time));
+                    }
+                }
+                else if (parts[i].Length > 1)
+                {
+                    Chord chord = new Chord();
+                    for (int k = 0; k < parts[i].Length; k++)
+                    {
+                        chord.Chords.Add(new Note(AudioBasic.CharToKeyCode[parts[i][k]], (k == parts[i].Length - 1 ? time : 0)));
+                    }
+                    result.notes.Add(chord);
+                }
+            }
+
+            return result;
+        }
+
+        public static int StringToInt(string target)
+        {
+            int result = 0;
+            bool success = int.TryParse(target, out int temp);
+            if (success)
+            {
+                result = temp;
+            }
             return result;
         }
         #endregion

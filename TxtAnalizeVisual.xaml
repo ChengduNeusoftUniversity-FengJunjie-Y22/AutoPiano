@@ -206,11 +206,11 @@
 
                 <!--乐器类型-->
                 <TextBlock Background="Transparent" Foreground="White" FontSize="40" Text="音色" Margin="1025,107,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-                <TextBlock x:Name="AudioType" Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="40" Foreground="Cyan" Margin="0,107,130,0" Text="风物之诗琴"/>
+                <TextBlock x:Name="AudioType" Background="Transparent" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="40" Foreground="Cyan" Margin="0,108,130,0" Text="风物之诗琴"/>
 
                 <!--专注模式-->
                 <local:ButtonX local:ButtonText="专注模式" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="Button_Click_4" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="369,108,558,20"/>
-                <TextBlock x:Name="TimeValue" Background="Transparent" Foreground="Cyan" FontSize="40" Margin="0,117,763,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                <TextBlock x:Name="TimeValue" Background="Transparent" Foreground="Cyan" FontSize="40" Margin="0,108,786,0" VerticalAlignment="Top" HorizontalAlignment="Right"/>
 
             </Grid>
         </Border>

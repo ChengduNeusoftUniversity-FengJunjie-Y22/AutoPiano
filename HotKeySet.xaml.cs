@@ -39,7 +39,7 @@ namespace AutoPiano
             }
         }
 
-        private static bool _isAutoAttentive = false;
+        private static bool _isAutoAttentive = true;
         public static bool IsAutoAttentive
         {
             get { return _isAutoAttentive; }
@@ -49,21 +49,21 @@ namespace AutoPiano
             }
         }
 
-        KeySelectBox k1 = PrefabComponent.GetComponent<KeySelectBox>();
-        KeySelectBox k2 = PrefabComponent.GetComponent<KeySelectBox>();
+        KeysSelectBox? k1;
+        KeysSelectBox? k2;
+        KeysSelectBox? k3;
+        KeysSelectBox? k4;
+        KeysSelectBox? k5;
 
-        KeySelectBox k3 = PrefabComponent.GetComponent<KeySelectBox>();
-        KeySelectBox k4 = PrefabComponent.GetComponent<KeySelectBox>();
-
-        KeySelectBox k5 = PrefabComponent.GetComponent<KeySelectBox>();
-        KeySelectBox k6 = PrefabComponent.GetComponent<KeySelectBox>();
-
-        KeySelectBox k7 = PrefabComponent.GetComponent<KeySelectBox>();
-        KeySelectBox k8 = PrefabComponent.GetComponent<KeySelectBox>();
-
-        KeySelectBox k9 = PrefabComponent.GetComponent<KeySelectBox>();
-        KeySelectBox k10 = PrefabComponent.GetComponent<KeySelectBox>();
-
+        private static ComponentInfo RoundComponentInfo = new ComponentInfo()
+        //例如,这条组件信息用于获取圆角组件,那你便需要设置以下属性以获取更好的效果
+        {
+            BorderBrush = Brushes.White,
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(10),
+            Background = Brushes.Transparent,
+            Foreground = Brushes.Cyan,
+        };
 
         public HotKeySet()
         {
@@ -81,83 +81,52 @@ namespace AutoPiano
 
         public void LoadHotKeySetPage()
         {
-            b1.Child = k1;
-            b2.Child = k2;
-            b3.Child = k3;
-            b4.Child = k4;
-            b5.Child = k5;
-            b6.Child = k6;
-            b7.Child = k7;
-            b8.Child = k8;
-            b9.Child = k9;
-            b10.Child = k10;
+            k1 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b1, RoundComponentInfo);
+            k2 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b2, RoundComponentInfo);
+            k3 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b3, RoundComponentInfo);
+            k4 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b4, RoundComponentInfo);
+            k5 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b5, RoundComponentInfo);
 
-            k1.IsDefaultColorChange = false;
-            k2.IsDefaultColorChange = false;
-            k3.IsDefaultColorChange = false;
-            k4.IsDefaultColorChange = false;
-            k5.IsDefaultColorChange = false;
-            k6.IsDefaultColorChange = false;
-            k7.IsDefaultColorChange = false;
-            k8.IsDefaultColorChange = false;
-            k9.IsDefaultColorChange = false;
-            k10.IsDefaultColorChange = false;
+            BindingRef.Connect(k1, Play);
+            BindingRef.Connect(k2, Pause);
+            BindingRef.Connect(k3, Stop);
+            BindingRef.Connect(k4, ChangePlayMode);
+            BindingRef.Connect(k5, InsideVisual);
 
-            k1.UseStyleProperty("MyBox");
-            k2.UseStyleProperty("MyBox");
-            k3.UseStyleProperty("MyBox");
-            k4.UseStyleProperty("MyBox");
-            k5.UseStyleProperty("MyBox");
-            k6.UseStyleProperty("MyBox");
-            k7.UseStyleProperty("MyBox");
-            k8.UseStyleProperty("MyBox");
-            k9.UseStyleProperty("MyBox");
-            k10.UseStyleProperty("MyBox");
+            k1.CurrentKeyA = Key.LeftCtrl;
+            k1.CurrentKeyB = Key.A;
 
-            k1.UseFatherSize<Border>();
-            k2.UseFatherSize<Border>();
-            k3.UseFatherSize<Border>();
-            k4.UseFatherSize<Border>();
-            k5.UseFatherSize<Border>();
-            k6.UseFatherSize<Border>();
-            k7.UseFatherSize<Border>();
-            k8.UseFatherSize<Border>();
-            k9.UseFatherSize<Border>();
-            k10.UseFatherSize<Border>();
+            k2.CurrentKeyA = Key.LeftCtrl;
+            k2.CurrentKeyB = Key.S;
 
-            BindingRef.Connect(k1, k6, PlayInEdit);
-            BindingRef.Connect(k2, k7, PlayOutEdit);
-            BindingRef.Connect(k3, k8, Pause);
-            BindingRef.Connect(k4, k9, Stop);
-            BindingRef.Connect(k5, k10, ReversetVisual);
+            k3.CurrentKeyA = Key.LeftCtrl;
+            k3.CurrentKeyB = Key.D;
 
-            k1.CurrentKey = Key.LeftCtrl;
-            k6.CurrentKey = Key.A;
+            k4.CurrentKeyA = Key.LeftAlt;
+            k4.CurrentKeyB = Key.C;
 
-            k2.CurrentKey = Key.LeftAlt;
-            k7.CurrentKey = Key.C;
-
-            k3.CurrentKey = Key.LeftCtrl;
-            k8.CurrentKey = Key.S;
-
-            k4.CurrentKey = Key.LeftCtrl;
-            k9.CurrentKey = Key.D;
-
-            k5.CurrentKey = Key.LeftAlt;
-            k10.CurrentKey = Key.V;
+            k5.CurrentKeyA = Key.LeftAlt;
+            k5.CurrentKeyB = Key.V;
         }
 
-        public static void PlayInEdit()
+        public static void Play()
         {
             Pause();
-            TxtAnalizeVisual.CurrentSong.Model = PlayModel.Preview;
-            TxtAnalizeVisual.CurrentSong.Start();
+            switch (EditArea.PageType)
+            {
+                case PageTypes.TxtAnalize:
+                    TxtAnalizeVisual.CurrentSong.Model = PlayModel.Preview;
+                    TxtAnalizeVisual.CurrentSong.Start();
+                    break;
+                case PageTypes.NMNAnalize:
+                    NMNAnalizeVisual.Instance?.MusicScore.Start();
+                    break;
+            }
         }
-        public static void PlayOutEdit()
+        public static void ChangePlayMode()
         {
             Pause();
-            TxtAnalizeVisual.CurrentSong.Model = PlayModel.Auto;
-            TxtAnalizeVisual.CurrentSong.Start();
+            TxtAnalizeVisual.CurrentSong.Model = (TxtAnalizeVisual.CurrentSong.Model == PlayModel.Auto ? PlayModel.Preview : PlayModel.Auto);
         }
 
         public static void Pause()
@@ -170,7 +139,7 @@ namespace AutoPiano
             TxtAnalizeVisual.CurrentSong.Stop();
             NMNAnalizeVisual.Instance?.MusicScore.Stop();
         }
-        public static void ReversetVisual()
+        public static void InsideVisual()
         {
 
         }
@@ -194,13 +163,25 @@ namespace AutoPiano
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             IsClickChange = !IsClickChange;
-            ChangeMode.Content = (IsClickChange ? "当前：          点击切页" : "当前：          滑动切页");
+            PageChangeMode.ButtonText = (IsClickChange ? "点击" : "滑动");
         }
 
         private void AttentiveMode_Click(object sender, RoutedEventArgs e)
         {
             IsAutoAttentive = !IsAutoAttentive;
-            AttentiveMode.Content = (IsAutoAttentive ? "当前：          自动模式" : "当前：          手动模式");
+            AttentiveChangeMode.ButtonText = (IsAutoAttentive ? "ON" : "OFF");
+        }
+
+        private void AnalizeMode(object sender, RoutedEventArgs e)
+        {
+            TxtAnalizeVisual.IsNormalInput = !TxtAnalizeVisual.IsNormalInput;
+            ReadMode.ButtonText = (TxtAnalizeVisual.IsNormalInput ? "通用" : "内部");
+        }
+
+        private void OutputMode(object sender, RoutedEventArgs e)
+        {
+            TxtAnalizeVisual.IsNormalOutput = !TxtAnalizeVisual.IsNormalOutput;
+            WriteMode.ButtonText = (TxtAnalizeVisual.IsNormalOutput ? "通用" : "内部");
         }
     }
 }

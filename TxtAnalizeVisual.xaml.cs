@@ -97,7 +97,7 @@ namespace AutoPiano
 
         public static bool IsAttentive = false;//是否处于专注
 
-        public static bool IsPreviewSingleOne = false;
+        public static bool IsPreviewSingleOne = false;//切换音符操作需要预览音符效果时，请设为true，生效一次
 
         public static bool IsOnSlider//鼠标是否位于进度拖条上
         {
@@ -124,7 +124,11 @@ namespace AutoPiano
             }
         }
 
-        public static bool IsPageLoaded = false;
+        public static bool IsPageLoaded = false;//页面是否加载完成
+
+        public static bool IsNormalOutput = false;//是否采用通用协议输出数据
+
+        public static bool IsNormalInput = false;//是否采用通用协议读取数据
 
         public TxtAnalizeVisual()
         {
@@ -156,16 +160,34 @@ namespace AutoPiano
         private void Button_Click(object sender, RoutedEventArgs e)//Txt解析
         {
             CurrentSong.Stop();
-            var result = StringProcessing.SelectThenAnalize();
-            CurrentSong = result.Item1;
-            SongName.Text = result.Item2;
+
+            if (IsNormalInput)
+            {
+                CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt());
+                SongName.Text = CurrentSong.Name;
+            }
+            else
+            {
+                var result = StringProcessing.SelectThenAnalize();
+                CurrentSong = result.Item1;
+                SongName.Text = result.Item2;
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)//粘贴板解析
         {
             CurrentSong.Stop();
-            CurrentSong = StringProcessing.SongParse(Clipboard.GetText());
-            SongName.Text = "? ? ?";
+
+            if (IsNormalInput)
+            {
+                CurrentSong = StringProcessing.NormalDataToSong(Clipboard.GetText());
+                SongName.Text = CurrentSong.Name;
+            }
+            else
+            {
+                CurrentSong = StringProcessing.SongParse(Clipboard.GetText());
+                SongName.Text = "? ? ?";
+            }
         }
 
         private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)//一个空格所代表的时值
@@ -188,20 +210,42 @@ namespace AutoPiano
             SaveButton.Content = "写入ing……";
             SaveButton.Foreground = Brushes.Lime;
             CurrentSong.Name = SongName.Text;
-            if (BinaryObject.SerializeObject(CurrentSong, DataTypes.Simple, CurrentSong.Name))
+
+            if (IsNormalOutput)
             {
-                SaveButton.Content = "完成√";
-                await Task.Delay(2500);
-                SaveButton.Content = "存档";
-                SaveButton.Foreground = Brushes.White;
+                if (StringProcessing.SaveSongAsTxt(CurrentSong))
+                {
+                    SaveButton.Content = "完成√";
+                    await Task.Delay(2500);
+                    SaveButton.Content = "存档";
+                    SaveButton.Foreground = Brushes.White;
+                }
+                else
+                {
+                    SaveButton.Foreground = Brushes.Red;
+                    SaveButton.Content = "⚠失败";
+                    await Task.Delay(2500);
+                    SaveButton.Content = "存档";
+                    SaveButton.Foreground = Brushes.White;
+                }
             }
             else
             {
-                SaveButton.Foreground = Brushes.Red;
-                SaveButton.Content = "⚠失败";
-                await Task.Delay(2500);
-                SaveButton.Content = "存档";
-                SaveButton.Foreground = Brushes.White;
+                if (BinaryObject.SerializeObject(CurrentSong, DataTypes.Simple, CurrentSong.Name))
+                {
+                    SaveButton.Content = "完成√";
+                    await Task.Delay(2500);
+                    SaveButton.Content = "存档";
+                    SaveButton.Foreground = Brushes.White;
+                }
+                else
+                {
+                    SaveButton.Foreground = Brushes.Red;
+                    SaveButton.Content = "⚠失败";
+                    await Task.Delay(2500);
+                    SaveButton.Content = "存档";
+                    SaveButton.Foreground = Brushes.White;
+                }
             }
         }
 

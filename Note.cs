@@ -43,9 +43,10 @@ namespace AutoPiano
             PlayWithKeyCode(Key);
         }
 
-        public void Play()
+        public async void Play()
         {
             Simulator.Keyboard.KeyDown(Key);
+            await Task.Delay(Span);
             Simulator.Keyboard.KeyUp(Key);
         }
 

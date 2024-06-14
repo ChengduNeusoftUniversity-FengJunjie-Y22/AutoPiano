@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastHotKeyForWPF_NET6" Version="1.1.5" />
+    <PackageReference Include="FastHotKeyForWPF_NET6" Version="1.1.7" />
     <PackageReference Include="InputSimulator" Version="1.0.4" />
     <PackageReference Include="NetCore5.0.Microsoft.Expression.Drawing" Version="1.0.0" />
   </ItemGroup>
