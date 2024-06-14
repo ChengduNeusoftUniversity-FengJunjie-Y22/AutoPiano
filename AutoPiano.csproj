@@ -14,4 +14,8 @@
     <PackageReference Include="NetCore5.0.Microsoft.Expression.Drawing" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Release\" />
+  </ItemGroup>
+
 </Project>
