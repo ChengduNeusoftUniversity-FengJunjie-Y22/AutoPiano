@@ -186,17 +186,15 @@
 
         <Border Width="1440" HorizontalAlignment="Center" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,497,0,0"/>
 
-        <TextBox Name="KeyDArea" Grid.ZIndex="2" Margin="10,497,10,48" Background="Transparent" IsReadOnly="True" MouseEnter="TextBox_MouseEnter" MouseLeave="TextBox_MouseLeave" BorderThickness="0"/>
-
         <Border Width="1386" Height="170" HorizontalAlignment="Center" BorderThickness="0,0,0,0" BorderBrush="White" Margin="0,517,0,53">
-            <ScrollViewer x:Name="TxtNotes" Height="190" Width="1460" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Visible">
+            <ScrollViewer x:Name="NotesBox" Height="190" Width="1460" VerticalAlignment="Top" HorizontalAlignment="Left" HorizontalScrollBarVisibility="Visible">
                 <StackPanel x:Name="Notes" Height="170" Orientation="Horizontal" HorizontalAlignment="Right">
                     <TextBlock TextWrapping="Wrap" Background="Transparent" Padding="0" LineHeight="0.1" FontSize="30" Width="{Binding RelativeSource={RelativeSource Self},Path=FontSize}" Text="ABC" Foreground="White" VerticalAlignment="Center"/>
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        
-        <Slider Name="SDValuePlay" Width="NaN" Height="15" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" Maximum="1" Value="0" SmallChange="0.00001" MouseDown="SliderMouseDown" MouseUp="SliderMouseUp"/>
+
+        <Slider Name="ProgressSlider" Width="NaN" Height="15" Margin="27,697,25,13" ValueChanged="Slider_ValueChanged" Minimum="0" Maximum="1" Value="0" SmallChange="0.00001" MouseEnter="PSliderMouseEnter" MouseLeave="PSliderMouseLeave"/>
 
         <Border Width="1135" HorizontalAlignment="Left" BorderThickness="4,1,4,1" BorderBrush="White" Margin="0,264,0,296">
             <Grid>
@@ -213,40 +211,29 @@
             </Grid>
         </Border>
 
+        <!--时值编辑器（专注模式）-->
         <Border Name="TimeEdit" Width="1440" HorizontalAlignment="Left" BorderThickness="10,1,10,1" BorderBrush="White" Margin="0,60,0,290">
             <Grid Width="1440" Grid.ZIndex="2" Background="#1e1e1e">
 
-                <Border CornerRadius="10" Margin="425,58,911,279" BorderBrush="White" BorderThickness="1">
-                    <Button Content="替换" FontSize="35" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="AddNewParagraph"/>
-                </Border>
-                <Border CornerRadius="10" Margin="572,58,764,279" BorderBrush="White" BorderThickness="1">
-                    <Button Content="清除" FontSize="35" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
-                </Border>
+                <!--编辑相关功能按钮-->
+                <local:ButtonX local:ButtonText="替换" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="AddNewParagraph" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="389,58,911,280"/>
+                <local:ButtonX local:ButtonText="清除" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="ClearNote" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="624,58,676,280"/>
+                <local:ButtonX local:ButtonText="加速" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="Button_Click_8" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="389,169,911,169"/>
+                <local:ButtonX local:ButtonText="降速" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="Button_Click_9" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="624,169,676,169"/>
+                <local:ButtonX local:ButtonText="向左" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="Button_Click_6" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="389,279,911,59"/>
+                <local:ButtonX local:ButtonText="向右" local:ButtonTextColor="White" local:ButtonTextSize="40" local:Click="Button_Click_7" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="624,279,676,59"/>
+                <local:ButtonX local:ButtonText="退出专注" local:ButtonTextColor="White" local:ButtonTextSize="30" local:Click="Close" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.3" BorderAnimationAccelerationRatio="1" Margin="1261,10,39,328"/>
 
-                <Border CornerRadius="10" Margin="425,168,911,169" BorderBrush="White" BorderThickness="1">
-                    <Button Content="加速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_8"/>
-                </Border>
-                <Border CornerRadius="10" Margin="572,168,764,168" BorderBrush="White" BorderThickness="1">
-                    <Button Content="降速" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_9"/>
-                </Border>
-
-                <Border CornerRadius="10" Margin="425,278,911,59" BorderBrush="White" BorderThickness="1">
-                    <Button Content="向左" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_6"/>
-                </Border>
-                <Border CornerRadius="10" Margin="572,277,764,59" BorderBrush="White" BorderThickness="1">
-                    <Button Content="向右" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewMouseLeftButtonDown="Button_Click_7"/>
-                </Border>
-
-                <TextBlock Text="索引" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,279,0,0"/>
+                <!--音符数据展示区-->
+                <TextBlock Text="索引" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,278,0,0"/>
                 <TextBlock Text="按键" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,58,0,0"/>
                 <TextBlock Text="时值" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="35,0,0,0"/>
-
-                <TextBlock Name="AIndex" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,279,0,0"/>
-                <TextBlock Name="AKey" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,58,0,0"/>
+                <TextBlock Name="AIndex" Background="Transparent" Foreground="White" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,278,0,0"/>
+                <TextBlock Name="AKey" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="198,67,0,0"/>
                 <TextBlock Name="ATime" Background="Transparent" Foreground="Cyan" FontSize="40" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="198,0,0,0"/>
 
+                <!--环形进度条-->
                 <local:ProgressX x:Name="ProcessShow" FontSize="60" Width="300" Height="300" Margin="848,44,292,44" local:ForeColor="Cyan" local:BackColor="Gray"/>
-                <local:ButtonX local:ButtonText="退出专注" local:ButtonTextColor="White" local:ButtonTextSize="30" local:Click="Close" Width="140" Height="50" BorderAnimationSide="1" BorderAnimationTime="0.5" BorderAnimationAccelerationRatio="1" Margin="1261,10,39,328"/>
             </Grid>
         </Border>
 

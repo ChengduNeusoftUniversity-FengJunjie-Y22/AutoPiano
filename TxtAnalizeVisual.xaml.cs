@@ -27,13 +27,16 @@ using System.Reflection;
 namespace AutoPiano
 {
     /// <summary>
-    /// TxtAnalizeVisual.xaml 的交互逻辑
+    /// 文本乐谱的交互界面
     /// </summary>
     public partial class TxtAnalizeVisual : Page
     {
         public static TxtAnalizeVisual? Instance;
 
         public static InstrumentTypes _instrumentType = InstrumentTypes.FWPiano;
+        /// <summary>
+        /// 预览所使用的乐器类型
+        /// </summary>
         public static InstrumentTypes InstrumentType
         {
             get { return _instrumentType; }
@@ -65,6 +68,9 @@ namespace AutoPiano
         }
 
         private static Song _data = new Song();
+        /// <summary>
+        /// 当前界面存放的曲目
+        /// </summary>
         public static Song CurrentSong
         {
             get { return _data; }
@@ -81,8 +87,6 @@ namespace AutoPiano
                     {
                         Instance.Notes.Children.Add(textBlock);
                     }
-                    Instance.ProcessShow.AfterSetValue = null;
-                    Instance.ProcessShow.AfterSetValue += Instance.NewSliderValue;
                     _data.Pause();
                     _data.Position = 0;
                     _data.IsOnPlaying = false;
@@ -91,9 +95,34 @@ namespace AutoPiano
             }
         }
 
-        public static bool IsAttentive = false;
+        public static bool IsAttentive = false;//是否处于专注
 
         public static bool IsPreviewSingleOne = false;
+
+        public static bool IsOnSlider//鼠标是否位于进度拖条上
+        {
+            get
+            {
+                if (Instance != null)
+                {
+                    return Instance.IsMouseInSlider;
+                }
+                return false;
+            }
+        }
+
+        public static Slider Slider
+        {
+            get
+            {
+                if (Instance != null) { return Instance.ProgressSlider; }
+                return new Slider();
+            }
+            set
+            {
+                if (Instance != null) { Instance.ProgressSlider = value; }
+            }
+        }
 
         public TxtAnalizeVisual()
         {
@@ -103,80 +132,105 @@ namespace AutoPiano
 
 
         #region 拖条处理
-        private bool IsMousePress = false;
-        private void NewSliderValue(ProgressX progressX)
-        {
-            if (IsMousePress)
-            {
-                SDValuePlay.Value = progressX.ProgressRate;
-            }
-        }
+        public bool IsMouseInSlider = false;
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (IsMousePress)
-            {
-                CurrentSong.Pause();
-                int temp = (int)(e.NewValue * (CurrentSong.notes.Count - 1));
-                CurrentSong.Position = temp;
-                KeyDArea.ScrollToHorizontalOffset((CurrentSong.Position - 12) * 60f);
-            }
+            if (IsMouseInSlider) { CurrentSong.Position = (int)(e.NewValue * (CurrentSong.notes.Count - 1)); }
         }
-        private void SliderMouseUp(object sender, MouseEventArgs e)
+        private void PSliderMouseEnter(object sender, MouseEventArgs e)
         {
-            IsMousePress = false;
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            IsMouseInSlider = true;
         }
-        private void SliderMouseDown(object sender, MouseButtonEventArgs e)
+        private void PSliderMouseLeave(object sender, MouseEventArgs e)
         {
-            IsMousePress = true;
+            IsMouseInSlider = false;
         }
         #endregion
 
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        #region 解析器功能与设置
+        private async void Button_Click(object sender, RoutedEventArgs e)//Txt解析
         {
             CurrentSong.Stop();
             var result = await StringProcessing.SelectThenAnalize();
             CurrentSong = result.Item1;
             SongName.Text = result.Item2;
-            SDValuePlay.Maximum = CurrentSong.notes.Count * 60;
         }
 
-        private void MouEnter(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                button.Foreground = Brushes.Cyan;
-                Border? father = button.Parent as Border;
-                if (father != null)
-                {
-                    father.BorderBrush = Brushes.Cyan;
-                }
-            }
-        }
-        private void MouLeave(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                button.Foreground = Brushes.White;
-                Border? father = button.Parent as Border;
-                if (father != null)
-                {
-                    father.BorderBrush = Brushes.White;
-                }
-            }
-        }
-
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)//粘贴板解析
         {
             CurrentSong.Stop();
             CurrentSong = await StringProcessing.SongParse(Clipboard.GetText());
             SongName.Text = "? ? ?";
         }
 
-        private StackPanel[] LoadPanelBoxes()
+        private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)//一个空格所代表的时值
+        {
+            SpaceValue.Text = "当前 : " + (int)e.NewValue;
+            StringProcessing.BlankSpace = (int)e.NewValue;
+        }
+
+        private void Slider_ValueChanged_2(object sender, RoutedPropertyChangedEventArgs<double> e)//微调时的变化量
+        {
+            AdjustValue.Text = "当前 : " + (int)e.NewValue;
+            StringProcessing.BlankSpace_Re = (int)e.NewValue;
+        }
+
+        private async void Button_Click_2(object sender, RoutedEventArgs e)//存档
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            if (string.IsNullOrEmpty(SongName.Text)) { MessageBox.Show("名称不可为空!"); return; }
+            SaveButton.Content = "写入ing……";
+            SaveButton.Foreground = Brushes.Lime;
+            CurrentSong.Name = SongName.Text;
+            if (BinaryObject.SerializeObject(CurrentSong, DataTypes.Simple, CurrentSong.Name))
+            {
+                SaveButton.Content = "完成√";
+                await Task.Delay(2500);
+                SaveButton.Content = "存档";
+                SaveButton.Foreground = Brushes.White;
+            }
+            else
+            {
+                SaveButton.Foreground = Brushes.Red;
+                SaveButton.Content = "⚠失败";
+                await Task.Delay(2500);
+                SaveButton.Content = "存档";
+                SaveButton.Foreground = Brushes.White;
+            }
+        }
+
+        private async void Button_Click_3(object sender, RoutedEventArgs e)//读档
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            ReadButton.Content = "读取ing……";
+            ReadButton.Foreground = Brushes.Lime;
+            var result = BinaryObject.DeserializeObject<Song>();
+            if (result.Item1)
+            {
+                if (result.Item2 != null) { CurrentSong = result.Item2; }
+                ReadButton.Content = "完成√";
+                await Task.Delay(2500);
+                ReadButton.Content = "读档";
+                ReadButton.Foreground = Brushes.White;
+            }
+            else
+            {
+                ReadButton.Foreground = Brushes.Red;
+                ReadButton.Content = "⚠失败";
+                await Task.Delay(2500);
+                ReadButton.Content = "读档";
+                ReadButton.Foreground = Brushes.White;
+            }
+        }
+        #endregion
+
+
+        #region 其它可视化区
+        private StackPanel[] LoadPanelBoxes()//加载音符显示区
         {
             StackPanel[] result = new StackPanel[CurrentSong.notes.Count];
-            SDValuePlay.Maximum = CurrentSong.notes.Count * 60;
             for (int i = 0; i < CurrentSong.notes.Count; i++)
             {
                 string notestr = string.Empty;
@@ -235,19 +289,6 @@ namespace AutoPiano
 
             return result;
         }
-
-        private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            SpaceValue.Text = "当前 : " + (int)e.NewValue;
-            StringProcessing.BlankSpace = (int)e.NewValue;
-        }
-
-        private void Slider_ValueChanged_2(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            AdjustValue.Text = "当前 : " + (int)e.NewValue;
-            StringProcessing.BlankSpace_Re = (int)e.NewValue;
-        }
-
         public static async void ColorChange(int index, int time, string info)
         {
             if (Instance != null)
@@ -279,7 +320,6 @@ namespace AutoPiano
                 }
             }
         }
-
         public static void WhiteColor(int target, SolidColorBrush color)
         {
             if (Instance != null && target < CurrentSong.notes.Count)
@@ -299,55 +339,6 @@ namespace AutoPiano
                 }
             }
         }
-
-        private async void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
-            if (string.IsNullOrEmpty(SongName.Text)) { MessageBox.Show("名称不可为空!"); return; }
-            SaveButton.Content = "写入ing……";
-            SaveButton.Foreground = Brushes.Lime;
-            CurrentSong.Name = SongName.Text;
-            if (BinaryObject.SerializeObject(CurrentSong, DataTypes.Simple, CurrentSong.Name))
-            {
-                SaveButton.Content = "完成√";
-                await Task.Delay(2500);
-                SaveButton.Content = "存档";
-                SaveButton.Foreground = Brushes.White;
-            }
-            else
-            {
-                SaveButton.Foreground = Brushes.Red;
-                SaveButton.Content = "⚠失败";
-                await Task.Delay(2500);
-                SaveButton.Content = "存档";
-                SaveButton.Foreground = Brushes.White;
-            }
-        }
-
-        private async void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
-            ReadButton.Content = "读取ing……";
-            ReadButton.Foreground = Brushes.Lime;
-            var result = BinaryObject.DeserializeObject<Song>();
-            if (result.Item1)
-            {
-                if (result.Item2 != null) { CurrentSong = result.Item2; }
-                ReadButton.Content = "完成√";
-                await Task.Delay(2500);
-                ReadButton.Content = "读档";
-                ReadButton.Foreground = Brushes.White;
-            }
-            else
-            {
-                ReadButton.Foreground = Brushes.Red;
-                ReadButton.Content = "⚠失败";
-                await Task.Delay(2500);
-                ReadButton.Content = "读档";
-                ReadButton.Foreground = Brushes.White;
-            }
-        }
-
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             if (IsAttentive)
@@ -391,7 +382,6 @@ namespace AutoPiano
                 IsAttentive = true;
             }
         }
-
         public static void UnExpendBox()
         {
             if (Instance != null && IsAttentive)
@@ -438,28 +428,6 @@ namespace AutoPiano
                 IsAttentive = true;
             }
         }
-
-        private void Close(object sender, RoutedEventArgs e)
-        {
-            DoubleAnimation widthAnimation = new DoubleAnimation();
-            widthAnimation.AccelerationRatio = 1;
-            widthAnimation.From = 1440; // 起始宽度
-            widthAnimation.To = 0;   // 结束宽度
-            widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
-
-            // 创建一个故事板，并将动画对象添加到其中
-            Storyboard storyboard = new Storyboard();
-            storyboard.Children.Add(widthAnimation);
-
-            // 将动画应用到按钮的宽度属性
-            Storyboard.SetTarget(widthAnimation, TimeEdit);
-            Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
-
-            // 启动动画
-            storyboard.Begin();
-            IsAttentive = false;
-        }
-
         public void NewInfo(object target)
         {
             AIndex.Text = CurrentSong.Position.ToString();
@@ -488,10 +456,34 @@ namespace AutoPiano
                 return;
             }
         }
+        #endregion
 
-        private void Button_Click_8(object sender, RoutedEventArgs e)
+
+        #region 按钮事件--时值编辑器
+        private async void AddNewParagraph(object sender, RoutedEventArgs e)//从当前位置替换一段新的解析结果
         {
-            if (CurrentSong.IsOnPlaying || CurrentSong.Position >= CurrentSong.notes.Count) { CurrentSong.Pause(); return; }
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
+            string result = StringProcessing.SelectThenReadTxt();
+
+            CurrentSong.AddParagraph(result);
+            Song temp = Song.Copy(CurrentSong);
+            CurrentSong = temp;
+
+            ReadButton.Content = "完成√";
+            await Task.Delay(2500);
+            ReadButton.Content = "读档";
+            ReadButton.Foreground = Brushes.White;
+        }
+        private void ClearNote(object sender, RoutedEventArgs e)//清除当前位置的音符
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+            CurrentSong.AddParagraph(" ");
+            Song temp = Song.Copy(CurrentSong);
+            CurrentSong = temp;
+        }
+        private void Button_Click_8(object sender, RoutedEventArgs e)//加速
+        {
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
             object temp = CurrentSong.notes[CurrentSong.Position];
             if (temp is Note note)
             {
@@ -531,10 +523,9 @@ namespace AutoPiano
             }
             CurrentSong.Position = CurrentSong.Position;
         }
-
-        private void Button_Click_9(object sender, RoutedEventArgs e)
+        private void Button_Click_9(object sender, RoutedEventArgs e)//降速
         {
-            if (CurrentSong.IsOnPlaying || CurrentSong.Position >= CurrentSong.notes.Count) { CurrentSong.Pause(); return; }
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
             object temp1 = CurrentSong.notes[CurrentSong.Position];
             if (temp1 is Note note1)
             {
@@ -550,50 +541,65 @@ namespace AutoPiano
             }
             CurrentSong.Position = CurrentSong.Position;
         }
-
-        private void TextBox_MouseEnter(object sender, MouseEventArgs e)
-        {
-            KeyDArea.Focus();
-        }
-
-        private void TextBox_MouseLeave(object sender, MouseEventArgs e)
-        {
-            Keyboard.ClearFocus();
-        }
-
-        private async void AddNewParagraph(object sender, RoutedEventArgs e)
-        {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
-            var result = BinaryObject.DeserializeObject<Song>();
-            if (result.Item1)
-            {
-                if (result.Item2 != null) { CurrentSong = result.Item2; }
-                ReadButton.Content = "完成√";
-                await Task.Delay(2500);
-                ReadButton.Content = "读档";
-                ReadButton.Foreground = Brushes.White;
-            }
-            else
-            {
-                ReadButton.Foreground = Brushes.Red;
-                ReadButton.Content = "⚠失败";
-                await Task.Delay(2500);
-                ReadButton.Content = "读档";
-                ReadButton.Foreground = Brushes.White;
-            }
-        }
-
-        private void Button_Click_7(object sender, MouseButtonEventArgs e)
+        private void Button_Click_7(object sender, RoutedEventArgs e)//下一个音符
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
             IsPreviewSingleOne = true;
             CurrentSong.Position++;
         }
-
-        private void Button_Click_6(object sender, MouseButtonEventArgs e)
+        private void Button_Click_6(object sender, RoutedEventArgs e)//上一个音符
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
             CurrentSong.Position--;
         }
+        private void Close(object sender, RoutedEventArgs e)//退出专注
+        {
+            DoubleAnimation widthAnimation = new DoubleAnimation();
+            widthAnimation.AccelerationRatio = 1;
+            widthAnimation.From = 1440; // 起始宽度
+            widthAnimation.To = 0;   // 结束宽度
+            widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
+
+            // 创建一个故事板，并将动画对象添加到其中
+            Storyboard storyboard = new Storyboard();
+            storyboard.Children.Add(widthAnimation);
+
+            // 将动画应用到按钮的宽度属性
+            Storyboard.SetTarget(widthAnimation, TimeEdit);
+            Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
+
+            // 启动动画
+            storyboard.Begin();
+            IsAttentive = false;
+        }
+        #endregion
+
+
+        #region 共用事件
+        private void MouEnter(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.Cyan;
+                Border? father = button.Parent as Border;
+                if (father != null)
+                {
+                    father.BorderBrush = Brushes.Cyan;
+                }
+            }
+        }
+        private void MouLeave(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Foreground = Brushes.White;
+                Border? father = button.Parent as Border;
+                if (father != null)
+                {
+                    father.BorderBrush = Brushes.White;
+                }
+            }
+        }
+        #endregion
     }
 }

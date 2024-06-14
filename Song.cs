@@ -70,10 +70,19 @@ namespace AutoPiano
                 }
                 //同步坐标
 
+                double temprate = (Position == notes.Count - 1 ? 1f : (double)Position / (notes.Count - 1) - 0.006f);
 
-                TxtAnalizeVisual.Instance?.ProcessShow.SetValue(Position == notes.Count - 1 ? 1f : (double)Position / (notes.Count - 1) - 0.006f);
-                //同步进度比率
+                if (TxtAnalizeVisual.Instance != null)
+                {
+                    TxtAnalizeVisual.Instance.ProcessShow.SetValue(temprate);
+                    //同步进度比率
 
+                    TxtAnalizeVisual.Instance.NotesBox.ScrollToHorizontalOffset(Position < notes.Count - 11 ? (Position - 11) * 60f : (Position + 1) * 60);
+                    //同步文本音符可视区
+                }
+
+                if (!TxtAnalizeVisual.IsOnSlider) { TxtAnalizeVisual.Slider.Value = temprate; }
+                //同步进度拖条
 
                 if (Model == PlayModel.Preview)
                 {

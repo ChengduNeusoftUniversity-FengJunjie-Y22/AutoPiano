@@ -53,6 +53,21 @@ namespace AutoPiano
             return Tuple.Create(song, name);
         }
 
+        public static string SelectThenReadTxt()
+        {
+            string result = string.Empty;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = DefaultTxtPath;
+            openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                result = File.ReadAllText(openFileDialog.FileName);
+            }
+
+            return result;
+        }
+
         #region 文本谱解析工具
         /// <summary>
         /// 筛选条件: 单音符、和弦、间断都将被囊括(用于初步筛选)
