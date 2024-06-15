@@ -48,6 +48,11 @@ namespace AutoPiano
             set => BT.Click += value;
         }
 
+        public SolidColorBrush BorderAnimationColor
+        {
+            set => BT.BorderBrush = value;
+        }
+
         /// <summary>
         /// 决定哪些边框需要动画效果
         /// </summary>

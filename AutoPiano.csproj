@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="Release\" />
+    <Folder Include="OldDataConverter\" />
   </ItemGroup>
 
 </Project>

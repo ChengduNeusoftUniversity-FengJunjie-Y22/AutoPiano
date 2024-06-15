@@ -130,11 +130,28 @@ namespace AutoPiano
 
         public static bool IsNormalInput = true;//是否采用通用协议读取数据
 
+        public static PopupX PopupX
+        {
+            get
+            {
+                if (Instance != null) { return Instance.VisualInGame; }
+                return new PopupX();
+            }
+            set
+            {
+                if (Instance != null) { Instance.VisualInGame = value; }
+            }
+        }
+
         public TxtAnalizeVisual()
         {
             InitializeComponent();
             Instance = this;
             IsPageLoaded = true;
+            ProcessShow.AfterSetValue += (progressX) =>
+            {
+                VisualInGame.UpdateProgress(ProcessShow.ProgressRate);
+            };
         }
 
 
@@ -647,7 +664,7 @@ namespace AutoPiano
 
 
         #region 共用事件
-        private void MouEnter(object sender, RoutedEventArgs e)
+        private void MouEnter(object sender, RoutedEventArgs e)//进入变色
         {
             if (sender is Button button)
             {
@@ -659,7 +676,7 @@ namespace AutoPiano
                 }
             }
         }
-        private void MouLeave(object sender, RoutedEventArgs e)
+        private void MouLeave(object sender, RoutedEventArgs e)//离开变色
         {
             if (sender is Button button)
             {
@@ -670,6 +687,18 @@ namespace AutoPiano
                     father.BorderBrush = Brushes.White;
                 }
             }
+        }
+        #endregion
+
+
+        #region 弹窗组件
+        private void PopupNext(object sender, RoutedEventArgs e)//切换至下一首歌
+        {
+
+        }
+        private void PopupLast(object sender, RoutedEventArgs e)//切换至上一首歌
+        {
+
         }
         #endregion
     }

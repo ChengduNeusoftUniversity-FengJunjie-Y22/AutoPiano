@@ -152,6 +152,9 @@
         </Style>
     </Page.Resources>
     <Grid>
+        <Popup x:Name="VisualBox" VerticalOffset="-10000" HorizontalOffset="-10000" IsOpen="True">
+            <local:PopupX x:Name="VisualInGame"/>
+        </Popup>
         <Border x:Name="ModeTXT" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
 
         </Border>

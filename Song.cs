@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml.Serialization;
+using WindowsInput.Native;
 
 public enum PlayModel
 {
@@ -84,11 +85,9 @@ namespace AutoPiano
                 if (!TxtAnalizeVisual.IsOnSlider) { TxtAnalizeVisual.Slider.Value = temprate; }
                 //同步进度拖条
 
-                if (Model == PlayModel.Preview)
-                {
-                    if (Position < notes.Count) { TxtAnalizeVisual.Instance?.NewInfo(notes[Position]); }
-                    if (!IsOnPlaying) { TxtAnalizeVisual.WhiteColor(Position, Brushes.Red); }
-                }
+
+                if (Position < notes.Count) { TxtAnalizeVisual.Instance?.NewInfo(notes[Position]); }
+                if (!IsOnPlaying) { TxtAnalizeVisual.WhiteColor(Position, Brushes.Red); }
                 //同步控件提示色
             }
         }
@@ -115,6 +114,9 @@ namespace AutoPiano
                     if (Model == PlayModel.Preview) { note.Preview(); }
                     else if (Model == PlayModel.Auto) { note.Play(); }
                     TxtAnalizeVisual.ColorChange(Position, note.Span, note.GetContent());
+
+                    UpdateGameVisual(note.Key, note.Span);
+
                     await Task.Delay(note.Span);
                 }
                 else if (notes[i] is Chord chord)
@@ -122,6 +124,13 @@ namespace AutoPiano
                     if (Model == PlayModel.Preview) { chord.Preview(); }
                     else if (Model == PlayModel.Auto) { chord.Play(); }
                     TxtAnalizeVisual.ColorChange(Position, chord.Chords.Last().Span, chord.GetContent());
+
+                    int temptime = chord.Chords.Last().Span;
+                    foreach (Note item in chord.Chords)
+                    {
+                        UpdateGameVisual(item.Key, temptime);
+                    }
+
                     await Task.Delay(chord.Chords.Last().Span);
                 }
                 else if (notes[i] is NullNote nunote)
@@ -132,6 +141,7 @@ namespace AutoPiano
                 Position++;
             }
             IsOnPlaying = false;
+            Position = 0;
         }
         public void Stop()
         {
@@ -228,6 +238,11 @@ namespace AutoPiano
             }
 
             return temp;
+        }
+
+        private void UpdateGameVisual(VirtualKeyCode key, int time)
+        {
+            TxtAnalizeVisual.PopupX.UpdateAnimation(key, time);
         }
     }
 }
