@@ -92,7 +92,7 @@ namespace AutoPiano
             BindingRef.Connect(k1, Play);
             BindingRef.Connect(k2, Pause);
             BindingRef.Connect(k3, Stop);
-            BindingRef.Connect(k4, ChangePlayMode);
+            BindingRef.Connect(k4, SaveSets);
             BindingRef.Connect(k5, InsideVisual);
 
             k1.CurrentKeyA = Key.LeftCtrl;
@@ -124,10 +124,9 @@ namespace AutoPiano
                     break;
             }
         }
-        public static void ChangePlayMode()
+        public static void SaveSets()
         {
             Pause();
-            TxtAnalizeVisual.CurrentPlayModel = (TxtAnalizeVisual.CurrentPlayModel == PlayModel.Auto ? PlayModel.Preview : PlayModel.Auto);
         }
 
         public static void Pause()

@@ -95,8 +95,8 @@
 
 
             <!--功能按钮-->
-            <local:ButtonX x:Name="ClosePopup" Height="50" Width="80" local:ButtonText="隐藏" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="30" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="908,10,10,138"/>
-            <local:ButtonX x:Name="SelectButton" Height="50" Width="80" local:ButtonText="读档" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="30" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="908,134,10,14"/>
+            <local:ButtonX x:Name="ClosePopup" Height="30" Width="70" local:ButtonText="隐藏" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="20" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="913,4,15,164"/>
+            <local:ButtonX Width="70" Height="40" x:Name="SelectButton" local:ButtonText="读档" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="25" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="913,144,15,14"/>
         </Grid>
     </Border>
 </UserControl>

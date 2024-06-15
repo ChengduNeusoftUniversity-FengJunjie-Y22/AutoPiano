@@ -63,23 +63,21 @@ namespace AutoPiano
             return Tuple.Create(song, name);
         }
 
-        /// <summary>
-        /// 读取指定.txt中的全部文本
-        /// </summary>
-        /// <returns></returns>
-        public static string SelectThenReadTxt()
+        public static string SelectThenReadTxt(DataTypes target)
         {
-            string result = string.Empty;
+            string fileContent = string.Empty;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = NormalTypeSongData;
+            openFileDialog.InitialDirectory = (target == DataTypes.PublicStruct ? NormalTypeSongData : DefaultTxtPath);
             openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
-                result = File.ReadAllText(openFileDialog.FileName);
+                string selectedFilePath = openFileDialog.FileName;
+
+                fileContent = File.ReadAllText(selectedFilePath);
             }
 
-            return result;
+            return fileContent;
         }
 
         #region 文本谱解析工具

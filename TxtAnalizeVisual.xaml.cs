@@ -34,6 +34,8 @@ namespace AutoPiano
     {
         public static TxtAnalizeVisual? Instance;
 
+        public static double SpeedChangeRate = 0.1;
+
         public static InstrumentTypes _instrumentType = InstrumentTypes.FWPiano;
         /// <summary>
         /// 预览所使用的乐器类型
@@ -231,7 +233,7 @@ namespace AutoPiano
             {
                 if (IsNormalInput)
                 {
-                    CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt());
+                    CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt(DataTypes.PublicStruct));
                     SongName.Text = CurrentSong.Name;
                 }
                 else
@@ -331,7 +333,7 @@ namespace AutoPiano
 
             if (IsNormalInput)
             {
-                CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt());
+                CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt(DataTypes.PublicStruct));
                 SongName.Text = CurrentSong.Name;
                 ReadButton.Content = "完成√";
                 await Task.Delay(2500);
@@ -599,18 +601,22 @@ namespace AutoPiano
 
 
         #region 按钮事件--时值编辑器
-        private async void AddNewParagraph(object sender, RoutedEventArgs e)//从当前位置替换一段新的解析结果
+        private void AddNewParagraph(object sender, RoutedEventArgs e)//从当前位置替换一段新的解析结果
         {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
-            string result = StringProcessing.SelectThenReadTxt();
+            if (CurrentSong.IsOnPlaying) { CurrentSong.Stop(); }
 
-            Song temp = Song.AddParagraph(CurrentSong, result);
-            CurrentSong = temp;
-
-            ReadButton.Content = "完成√";
-            await Task.Delay(2500);
-            ReadButton.Content = "读档";
-            ReadButton.Foreground = Brushes.White;
+            if (IsNormalInput)
+            {
+                string result = StringProcessing.SelectThenReadTxt(DataTypes.PublicStruct);
+                Song temp = Song.AddParagraph(CurrentSong, result);
+                CurrentSong = temp;
+            }
+            else
+            {
+                var result = StringProcessing.SelectThenReadTxt(DataTypes.Simple);
+                Song temp = Song.AddParagraph(CurrentSong, result);
+                CurrentSong = temp;
+            }
         }
         private void ClearNote(object sender, RoutedEventArgs e)//清除当前位置的音符
         {
@@ -620,63 +626,71 @@ namespace AutoPiano
         }
         private void Button_Click_8(object sender, RoutedEventArgs e)//加速
         {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-            object temp = CurrentSong.notes[CurrentSong.Position];
-            if (temp is Note note)
+            try
             {
-                int a = note.Span - StringProcessing.BlankSpace_Re;
-                if (a >= 0)
+                if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+                object temp = CurrentSong.notes[CurrentSong.Position];
+                if (temp is Note note)
                 {
-                    note.Span = a;
+                    int a = note.Span - StringProcessing.BlankSpace_Re;
+                    if (a >= 0)
+                    {
+                        note.Span = a;
+                    }
+                    else
+                    {
+                        note.Span = 0;
+                    }
                 }
-                else
+                else if (temp is Chord chord)
                 {
-                    note.Span = 0;
+                    int a = chord.Chords.Last().Span - StringProcessing.BlankSpace_Re;
+                    if (a >= 0)
+                    {
+                        chord.Chords.Last().Span = a;
+                    }
+                    else
+                    {
+                        chord.Chords.Last().Span = 0;
+                    }
                 }
+                else if (temp is NullNote nunote)
+                {
+                    int a = nunote.Span - StringProcessing.BlankSpace_Re;
+                    if (a >= 0)
+                    {
+                        nunote.Span = a;
+                    }
+                    else
+                    {
+                        nunote.Span = 0;
+                    }
+                }
+                CurrentSong.Position = CurrentSong.Position;
             }
-            else if (temp is Chord chord)
-            {
-                int a = chord.Chords.Last().Span - StringProcessing.BlankSpace_Re;
-                if (a >= 0)
-                {
-                    chord.Chords.Last().Span = a;
-                }
-                else
-                {
-                    chord.Chords.Last().Span = 0;
-                }
-            }
-            else if (temp is NullNote nunote)
-            {
-                int a = nunote.Span - StringProcessing.BlankSpace_Re;
-                if (a >= 0)
-                {
-                    nunote.Span = a;
-                }
-                else
-                {
-                    nunote.Span = 0;
-                }
-            }
-            CurrentSong.Position = CurrentSong.Position;
+            catch { }
         }
         private void Button_Click_9(object sender, RoutedEventArgs e)//降速
         {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-            object temp1 = CurrentSong.notes[CurrentSong.Position];
-            if (temp1 is Note note1)
+            try
             {
-                note1.Span += StringProcessing.BlankSpace_Re;
+                if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+                object temp1 = CurrentSong.notes[CurrentSong.Position];
+                if (temp1 is Note note1)
+                {
+                    note1.Span += StringProcessing.BlankSpace_Re;
+                }
+                else if (temp1 is Chord chord1)
+                {
+                    chord1.Chords.Last().Span += StringProcessing.BlankSpace_Re;
+                }
+                else if (temp1 is NullNote nunote1)
+                {
+                    nunote1.Span += StringProcessing.BlankSpace_Re;
+                }
+                CurrentSong.Position = CurrentSong.Position;
             }
-            else if (temp1 is Chord chord1)
-            {
-                chord1.Chords.Last().Span += StringProcessing.BlankSpace_Re;
-            }
-            else if (temp1 is NullNote nunote1)
-            {
-                nunote1.Span += StringProcessing.BlankSpace_Re;
-            }
-            CurrentSong.Position = CurrentSong.Position;
+            catch { }
         }
         private void Button_Click_7(object sender, RoutedEventArgs e)//下一个音符
         {
@@ -736,6 +750,14 @@ namespace AutoPiano
                     father.BorderBrush = Brushes.White;
                 }
             }
+        }
+        public void RateFaster(object sender, RoutedEventArgs e)//比率加速
+        {
+            CurrentSong *= (1 - SpeedChangeRate);
+        }
+        public void RateSlower(object sender, RoutedEventArgs e)//比率降速
+        {
+            CurrentSong *= (1 + SpeedChangeRate);
         }
         #endregion
 

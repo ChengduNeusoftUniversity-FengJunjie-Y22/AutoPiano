@@ -22,6 +22,7 @@
                     <local:ButtomBorderConvertor x:Key="Bcvt"/>
                 </ControlTemplate.Resources>
                 <Grid>
+                    <Grid Name="BackGrid" Background="Violet" Opacity="0"/>
                     <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Content}" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Foreground}"/>
                     <Border Name="BottomBorder" BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness,Converter={StaticResource Bcvt}}" BorderBrush="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderBrush}" Width="0" Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                     <Border Name="TopBorder" BorderThickness="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderThickness,Converter={StaticResource Tcvt}}" BorderBrush="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=BorderBrush}" Width="0" Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}" HorizontalAlignment="Right" VerticalAlignment="Top"/>

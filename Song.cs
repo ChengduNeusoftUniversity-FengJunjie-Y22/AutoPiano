@@ -167,7 +167,8 @@ namespace AutoPiano
         {
             Song temp1 = new Song();
             Song temp2 = new Song();
-            Song temp3 = StringProcessing.SongParse(targetTxt);
+            Song temp3;
+            temp3 = TxtAnalizeVisual.IsNormalInput ? StringProcessing.NormalDataToSong(targetTxt) : StringProcessing.SongParse(targetTxt);
             for (int i = 0; i < oldOne.Position; i++)
             {
                 temp1.notes.Add(oldOne.notes[i]);
