@@ -29,6 +29,8 @@ namespace AutoPiano
 
         public Song() { }
 
+        public bool IsDestroyed = false;
+
         /// <summary>
         /// 存放音符对象，可以是单音、和弦、占位符
         /// </summary>
@@ -64,6 +66,8 @@ namespace AutoPiano
             }
             set
             {
+                if (IsDestroyed) { return; }
+
                 if (value < notes.Count && value >= 0)
                 {
                     TxtAnalizeVisual.WhiteColor(Position, Brushes.White);

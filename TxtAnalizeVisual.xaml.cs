@@ -112,8 +112,11 @@ namespace AutoPiano
             get { return _data == null ? new Song() : _data; }
             set
             {
-                CurrentSong.Pause();
+                if (_data == null) { return; }
+                _data.Pause();
+                _data.IsDestroyed = true;
                 _data = null;
+
                 _data = value;
                 if (Instance != null)
                 {
@@ -122,13 +125,12 @@ namespace AutoPiano
                     {
                         Instance.Notes.Children.Add(textBlock);
                     }
-                    CurrentSong.Model = CurrentPlayModel;
-
-                    Instance.ProcessShow.SetValue(0);
-
+                    _data.Model = CurrentPlayModel;
                     Instance.TimeValue.Text = string.Empty;
                     Instance.SongName.Text = _data.Name;
                     Instance.VisualInGame.SongInfo.Text = "《 " + _data.Name + " 》";
+
+                    Instance.ProcessShow.SetValue(0);
                 }
             }
         }
@@ -807,6 +809,7 @@ namespace AutoPiano
                 if (result.Item1 && result.Item2 != null)
                 {
                     CurrentSong = result.Item2;
+                    CurrentSong.Position = 0;
                 }
 
                 CloseFilesBox();
