@@ -363,5 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 !Release/
+!Release/*.pdb
 
 !OldDataConverter/
+!OldDataConverter/*.pdb
