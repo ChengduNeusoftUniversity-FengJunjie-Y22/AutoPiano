@@ -58,7 +58,7 @@ namespace AutoPiano
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static string? SelectFilePath<T>(DataTypes? type) where T : BinaryObject
+        public static string? SelectFilePath<T>(DataTypes type) where T : BinaryObject
         {
             FieldInfo? fieldInfo = typeof(T).GetField("Type", BindingFlags.Static | BindingFlags.Public);
 
@@ -132,9 +132,9 @@ namespace AutoPiano
         }
 
         /// <summary>
-        /// 反序列化存储对象
+        /// 反序列化存储对象【需要用户选择文件】
         /// </summary>
-        public static (bool, T?) DeserializeObject<T>(DataTypes? type) where T : BinaryObject, new()
+        public static (bool, T?) DeserializeObject<T>(DataTypes type) where T : BinaryObject, new()
         {
             string? filePath = SelectFilePath<T>(type);
             if (filePath == null) { return (false, null); }
@@ -148,6 +148,32 @@ namespace AutoPiano
                 }
             }
             catch { return (false, null); }
+        }
+
+        /// <summary>
+        /// 反序列化存储对象【无需用户操作，留给后端使用的】
+        /// </summary>
+        public static (bool, Song) DeserializeObject(DataTypes type, string filePath)
+        {
+            if (type == DataTypes.Simple)
+            {
+                if (filePath == null) { return (false, new Song()); }
+                try
+                {
+                    byte[] bytes = File.ReadAllBytes(filePath);
+                    using (MemoryStream memoryStream = new MemoryStream(bytes))
+                    {
+                        BinaryFormatter binaryFormatter = new BinaryFormatter();
+                        return (true, (Song)binaryFormatter.Deserialize(memoryStream));
+                    }
+                }
+                catch { return (false, new Song()); }
+            }
+            else if (type == DataTypes.PublicStruct)
+            {
+                return (true, StringProcessing.NormalDataToSong(File.ReadAllText(filePath)));
+            }
+            return (false, new Song());
         }
     }
 }

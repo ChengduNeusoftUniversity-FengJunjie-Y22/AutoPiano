@@ -155,6 +155,17 @@
         <Popup x:Name="VisualBox" VerticalOffset="-10000" HorizontalOffset="-10000" IsOpen="False">
             <local:PopupX x:Name="VisualInGame"/>
         </Popup>
+        <Popup x:Name="FileSelectInGame" VerticalOffset="-10000" HorizontalOffset="10000" IsOpen="False" AllowsTransparency="True">
+            <Border BorderBrush="White" BorderThickness="1">
+                <Grid Width="300" Height="800" Background="#1e1e1e">
+                    <ScrollViewer Height="800" Width="320" HorizontalAlignment="Left">
+                        <StackPanel x:Name="FileInfos">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Popup>
         <Border x:Name="ModeTXT" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0">
 
         </Border>

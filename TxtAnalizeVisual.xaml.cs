@@ -177,20 +177,23 @@ namespace AutoPiano
         public static bool IsNormalOutput = true;//是否采用通用协议输出数据
         public static bool IsNormalInput = true;//是否采用通用协议读取数据
 
-
+        public static DataTypes ReadModel
+        {
+            get => IsNormalOutput == true ? DataTypes.PublicStruct : DataTypes.Simple;
+        }
 
         public TxtAnalizeVisual()
         {
             InitializeComponent();
             Instance = this;
             IsPageLoaded = true;
-            VisualInGame.SongSelect = Button_Click_3;
-            VisualInGame.PopupClose = ClosePopup;
+            VisualInGame.SongSelect = LoadFilesBox;
             ProcessShow.AfterSetValue += (progressX) =>
             {
                 VisualInGame.UpdateProgress(ProcessShow.ProgressRate);
             };
         }
+
         public static void OpenPopup()
         {
             if (Instance != null)
@@ -225,7 +228,7 @@ namespace AutoPiano
         #endregion
 
 
-        #region 解析器功能与设置
+        #region 文本解析器
         private void Button_Click(object sender, RoutedEventArgs e)//Txt解析
         {
             CurrentSong.Stop();
@@ -365,7 +368,7 @@ namespace AutoPiano
         #endregion
 
 
-        #region 其它可视化区
+        #region 界面UI变动
         private StackPanel[] LoadPanelBoxes()//加载音符显示区
         {
             StackPanel[] result = new StackPanel[_data.notes.Count];
@@ -601,7 +604,7 @@ namespace AutoPiano
         #endregion
 
 
-        #region 按钮事件--时值编辑器
+        #region 时值编辑器
         private void AddNewParagraph(object sender, RoutedEventArgs e)//从当前位置替换一段新的解析结果
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Stop(); }
@@ -763,14 +766,68 @@ namespace AutoPiano
         #endregion
 
 
-        #region 弹窗组件
-        private void PopupNext(object sender, RoutedEventArgs e)//切换至下一首歌
+        #region 文件选择视窗
+        public static void LoadFilesBox(object sender, RoutedEventArgs e)
         {
+            if (Instance != null)
+            {
+                Instance.FileInfos.Children.Clear();
 
+                var result = StringProcessing.GetFilesInfo(ReadModel);
+
+                for (int i = 0; i < result.Item1.Count; i++)
+                {
+                    FileButton temp = new FileButton();
+                    temp.Name = result.Item1[i];
+                    temp.Content = result.Item1[i];
+                    temp.Foreground = Brushes.White;
+                    temp.Background = Brushes.Transparent;
+                    temp.FontSize = 26;
+                    temp.Path = result.Item2[i];
+                    Instance.FileInfos.Children.Add(temp);
+                }
+
+                Instance.FileSelectInGame.IsOpen = true;
+            }
         }
-        private void PopupLast(object sender, RoutedEventArgs e)//切换至上一首歌
+        public static void CloseFilesBox()
         {
+            if (Instance != null)
+            {
+                Instance.FileSelectInGame.IsOpen = false;
+            }
+        }
+        public class FileButton : Button
+        {
+            public FileButton()
+            {
+                Width = 300;
+                Height = 40;
+                BorderThickness = new Thickness(0);
+                Click += GuidToSong;
+                MouseEnter += (sender, e) =>
+                {
+                    Foreground = Brushes.Red;
+                };
+                MouseLeave += (sender, e) =>
+                {
+                    Foreground = Brushes.White;
+                };
+            }
+            public string Name = "None";
+            public string Path = "None";
+            public void GuidToSong(object sender, RoutedEventArgs e)
+            {
+                if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
 
+                var result = BinaryObject.DeserializeObject(ReadModel, Path);
+                if (result.Item1 && result.Item2 != null)
+                {
+                    CurrentSong = result.Item2;
+                }
+
+                CloseFilesBox();
+            }
         }
         #endregion
     }

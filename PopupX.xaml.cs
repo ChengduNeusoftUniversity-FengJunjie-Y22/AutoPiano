@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -21,6 +22,7 @@ namespace AutoPiano
     /// </summary>
     public partial class PopupX : UserControl
     {
+        public bool IsHide = false;
         public PopupX()
         {
             InitializeComponent();
@@ -47,13 +49,6 @@ namespace AutoPiano
             KEYT.Key = VirtualKeyCode.VK_T;
             KEYY.Key = VirtualKeyCode.VK_Y;
             KEYU.Key = VirtualKeyCode.VK_U;
-        }
-        public RoutedEventHandler PopupClose
-        {
-            set
-            {
-                ClosePopup.SetButtonClick(value);
-            }
         }
         public RoutedEventHandler SongSelect
         {
@@ -91,6 +86,18 @@ namespace AutoPiano
             KEYB.FillAnimation(target, time);
             KEYN.FillAnimation(target, time);
             KEYM.FillAnimation(target, time);
+        }
+        public void HideControl()
+        {
+            IsHide = !IsHide;
+            if (IsHide)
+            {
+                Width = 0;
+            }
+            else
+            {
+                Width = 1000;
+            }
         }
     }
 }

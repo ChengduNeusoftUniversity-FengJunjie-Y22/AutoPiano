@@ -92,7 +92,7 @@ namespace AutoPiano
             BindingRef.Connect(k1, Play);
             BindingRef.Connect(k2, Pause);
             BindingRef.Connect(k3, Stop);
-            BindingRef.Connect(k4, SaveSets);
+            BindingRef.Connect(k4, HideGameVisual);
             BindingRef.Connect(k5, InsideVisual);
 
             k1.CurrentKeyA = Key.LeftCtrl;
@@ -124,9 +124,9 @@ namespace AutoPiano
                     break;
             }
         }
-        public static void SaveSets()
+        public static void HideGameVisual()
         {
-            Pause();
+            TxtAnalizeVisual.PopupX.HideControl();
         }
 
         public static void Pause()

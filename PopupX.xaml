@@ -10,10 +10,12 @@
         BorderBrush="White"
         Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Width}"
         Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}">
-        <Grid Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Width}"
+        <Grid x:Name="BackGrid"
+              Width="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Width}"
               Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}">
 
             <!--文本提示区-->
+            <TextBlock Text="视窗-游戏内" FontSize="25" Foreground="White" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,10,0"/>
             <TextBlock Text="当前 : " FontSize="30" Foreground="White" VerticalAlignment="Top" Margin="10,0,905,0"/>
             <TextBlock Name="SongInfo" Text="" FontSize="30" Foreground="White" VerticalAlignment="Top" Margin="100,0,0,0" HorizontalAlignment="Left"/>
 
@@ -95,8 +97,7 @@
 
 
             <!--功能按钮-->
-            <local:ButtonX x:Name="ClosePopup" Height="30" Width="70" local:ButtonText="隐藏" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="20" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="913,4,15,164"/>
-            <local:ButtonX Width="70" Height="40" x:Name="SelectButton" local:ButtonText="读档" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="25" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="913,144,15,14"/>
+            <local:ButtonX x:Name="SelectButton" Width="70" Height="40" local:ButtonText="读档" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="25" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="918,144,10,14"/>
         </Grid>
     </Border>
 </UserControl>

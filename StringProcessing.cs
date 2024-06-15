@@ -375,6 +375,36 @@ namespace AutoPiano
             }
             return result;
         }
+
+        public static Tuple<List<string>, List<string>> GetFilesInfo(DataTypes target)
+        {
+            string folderPath = target == DataTypes.PublicStruct ? NormalTypeSongData : DefaultTxtPath;
+
+            List<string> fileNames = new List<string>();
+            List<string> filePaths = new List<string>();
+
+            try
+            {
+                // 获取指定文件夹内的所有文件路径
+                string[] files = Directory.GetFiles(folderPath);
+
+                foreach (string file in files)
+                {
+                    // 获取文件名（不含后缀）
+                    string fileName = Path.GetFileNameWithoutExtension(file);
+                    // 获取文件的绝对路径
+                    string fullPath = Path.GetFullPath(file);
+
+                    // 添加到列表中
+                    fileNames.Add(fileName);
+                    filePaths.Add(fullPath);
+                }
+            }
+            catch { }
+
+            // 返回Tuple
+            return Tuple.Create(fileNames, filePaths);
+        }
         #endregion
     }
 }
