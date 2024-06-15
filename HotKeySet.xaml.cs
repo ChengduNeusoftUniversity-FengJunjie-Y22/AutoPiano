@@ -117,14 +117,14 @@ namespace AutoPiano
             BindingRef.Connect(k4, HideGameVisual);
             BindingRef.Connect(k5, InsideVisual);
 
-            k1.CurrentKeyA = Key.LeftAlt;
-            k1.CurrentKeyB = Key.Q;
+            k1.CurrentKeyA = Key.LeftCtrl;
+            k1.CurrentKeyB = Key.Left;
 
-            k2.CurrentKeyA = Key.LeftAlt;
-            k2.CurrentKeyB = Key.W;
+            k2.CurrentKeyA = Key.LeftCtrl;
+            k2.CurrentKeyB = Key.Down;
 
-            k3.CurrentKeyA = Key.LeftAlt;
-            k3.CurrentKeyB = Key.E;
+            k3.CurrentKeyA = Key.LeftCtrl;
+            k3.CurrentKeyB = Key.Right;
 
             k4.CurrentKeyA = Key.LeftAlt;
             k4.CurrentKeyB = Key.C;
