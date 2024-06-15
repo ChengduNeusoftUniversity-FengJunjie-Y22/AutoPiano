@@ -23,6 +23,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static AutoPiano.NumberedMusicalNotation;
 using System.Reflection;
+using System.Windows.Controls.Primitives;
 
 namespace AutoPiano
 {
@@ -67,11 +68,43 @@ namespace AutoPiano
             }
         }
 
+        public static PlayModel _currentPlayModel = PlayModel.Preview;
+        public static PlayModel CurrentPlayModel//播放模式
+        {
+            get => _currentPlayModel;
+            set
+            {
+                CurrentSong.Pause();
+                _currentPlayModel = value;
+                CurrentSong.Model = _currentPlayModel;
+            }
+        }
+
+        public static bool PopupControl//弹窗开关
+        {
+            get
+            {
+                if (Instance != null)
+                {
+                    return Instance.VisualBox.IsOpen;
+                }
+                return false;
+            }
+            set
+            {
+                if (Instance != null)
+                {
+                    Instance.VisualBox.IsOpen = value;
+                    CurrentPlayModel = value ? PlayModel.Auto : PlayModel.Preview;
+                }
+            }
+        }
+
         private static Song _data = new Song();
         /// <summary>
         /// 当前界面存放的曲目
         /// </summary>
-        public static Song CurrentSong
+        public static Song CurrentSong//当前播放的音乐
         {
             get { return _data; }
             set
@@ -80,7 +113,8 @@ namespace AutoPiano
                 if (Instance != null)
                 {
                     Instance.SongName.Text = _data.Name;
-                    _data.Model = PlayModel.Preview;
+                    Instance.VisualInGame.SongInfo.Text = "《 " + _data.Name + " 》";
+                    _data.Model = CurrentPlayModel;
                     Instance.TimeValue.Text = string.Empty;
                     Instance.Notes.Children.Clear();
                     foreach (StackPanel textBlock in Instance.LoadPanelBoxes())
@@ -111,7 +145,7 @@ namespace AutoPiano
             }
         }
 
-        public static Slider Slider
+        public static Slider Slider//进度拖条
         {
             get
             {
@@ -123,14 +157,7 @@ namespace AutoPiano
                 if (Instance != null) { Instance.ProgressSlider = value; }
             }
         }
-
-        public static bool IsPageLoaded = false;//页面是否加载完成
-
-        public static bool IsNormalOutput = true;//是否采用通用协议输出数据
-
-        public static bool IsNormalInput = true;//是否采用通用协议读取数据
-
-        public static PopupX PopupX
+        public static PopupX PopupX//弹窗内部组件
         {
             get
             {
@@ -143,15 +170,37 @@ namespace AutoPiano
             }
         }
 
+        public static bool IsPageLoaded = false;//页面是否加载完成
+        public static bool IsNormalOutput = true;//是否采用通用协议输出数据
+        public static bool IsNormalInput = true;//是否采用通用协议读取数据
+
+
+
         public TxtAnalizeVisual()
         {
             InitializeComponent();
             Instance = this;
             IsPageLoaded = true;
+            VisualInGame.SongSelect = Button_Click_3;
+            VisualInGame.PopupClose = ClosePopup;
             ProcessShow.AfterSetValue += (progressX) =>
             {
                 VisualInGame.UpdateProgress(ProcessShow.ProgressRate);
             };
+        }
+        public static void OpenPopup()
+        {
+            if (Instance != null)
+            {
+                Instance.VisualBox.IsOpen = true;
+            }
+        }
+        public static void ClosePopup(object sender, RoutedEventArgs e)
+        {
+            if (Instance != null)
+            {
+                Instance.VisualBox.IsOpen = false;
+            }
         }
 
 

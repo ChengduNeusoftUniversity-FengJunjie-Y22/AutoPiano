@@ -14,8 +14,8 @@
               Height="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},Path=Height}">
 
             <!--文本提示区-->
-            <TextBlock Text="当前:" FontSize="30" Foreground="White" VerticalAlignment="Top" Margin="10,0,0,0"/>
-            <TextBlock Name="SongInfo" Text="" FontSize="30" Foreground="White" VerticalAlignment="Top" Margin="94,0,320,0" HorizontalAlignment="Left"/>
+            <TextBlock Text="当前 : " FontSize="30" Foreground="White" VerticalAlignment="Top" Margin="10,0,905,0"/>
+            <TextBlock Name="SongInfo" Text="" FontSize="30" Foreground="White" VerticalAlignment="Top" Margin="100,0,0,0" HorizontalAlignment="Left"/>
 
 
             <!--中音区-->
@@ -92,11 +92,11 @@
 
             <!--进度条-->
             <local:ProgressX x:Name="PShow" Width="170" Height="170" FontSize="40" Margin="678,14,150,14"/>
-            
-            
+
+
             <!--功能按钮-->
-            <local:ButtonX x:Name="Last" Width="100" Height="50" local:ButtonText="上一个" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="30" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="888,70,10,78"/>
-            <local:ButtonX x:Name="Next" Width="100" Height="50" local:ButtonText="下一个" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="30" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="888,134,10,14"/>
+            <local:ButtonX x:Name="ClosePopup" Height="50" Width="80" local:ButtonText="隐藏" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="30" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="908,10,10,138"/>
+            <local:ButtonX x:Name="SelectButton" Height="50" Width="80" local:ButtonText="读档" local:ButtonTextColor="White" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" local:ButtonTextSize="30" local:BorderAnimationSide="1" local:BorderAnimationTime="0.3" local:BorderAnimationAccelerationRatio="1" Margin="908,134,10,14"/>
         </Grid>
     </Border>
 </UserControl>

@@ -48,6 +48,20 @@ namespace AutoPiano
             KEYY.Key = VirtualKeyCode.VK_Y;
             KEYU.Key = VirtualKeyCode.VK_U;
         }
+        public RoutedEventHandler PopupClose
+        {
+            set
+            {
+                ClosePopup.SetButtonClick(value);
+            }
+        }
+        public RoutedEventHandler SongSelect
+        {
+            set
+            {
+                SelectButton.SetButtonClick(value);
+            }
+        }
         public void UpdateProgress(double progress)
         {
             PShow.SetValue(progress);

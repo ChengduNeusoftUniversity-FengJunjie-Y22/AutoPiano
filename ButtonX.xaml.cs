@@ -131,5 +131,9 @@ namespace AutoPiano
             };
             target.BeginAnimation(dp, animation);
         }
+        public void SetButtonClick(RoutedEventHandler e)
+        {
+            BT.Click += e;
+        }
     }
 }

@@ -117,7 +117,6 @@ namespace AutoPiano
             switch (EditArea.PageType)
             {
                 case PageTypes.TxtAnalize:
-                    TxtAnalizeVisual.CurrentSong.Model = PlayModel.Preview;
                     TxtAnalizeVisual.CurrentSong.Start();
                     break;
                 case PageTypes.NMNAnalize:
@@ -128,7 +127,7 @@ namespace AutoPiano
         public static void ChangePlayMode()
         {
             Pause();
-            TxtAnalizeVisual.CurrentSong.Model = (TxtAnalizeVisual.CurrentSong.Model == PlayModel.Auto ? PlayModel.Preview : PlayModel.Auto);
+            TxtAnalizeVisual.CurrentPlayModel = (TxtAnalizeVisual.CurrentPlayModel == PlayModel.Auto ? PlayModel.Preview : PlayModel.Auto);
         }
 
         public static void Pause()
@@ -143,7 +142,7 @@ namespace AutoPiano
         }
         public static void InsideVisual()
         {
-
+            TxtAnalizeVisual.PopupControl = !TxtAnalizeVisual.PopupControl;
         }
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)

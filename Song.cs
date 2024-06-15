@@ -66,7 +66,7 @@ namespace AutoPiano
             {
                 if (value < notes.Count && value >= 0)
                 {
-                    if (Model == PlayModel.Preview) { TxtAnalizeVisual.WhiteColor(Position, Brushes.White); }
+                    TxtAnalizeVisual.WhiteColor(Position, Brushes.White);
                     _position = value;
                 }
                 //同步坐标
