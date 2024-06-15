@@ -100,6 +100,7 @@ namespace AutoPiano
                 TxtAnalizeVisual.ExpendBox();
             }
             IsOnPlaying = true;
+            IsStop = false;
             for (int i = Position; i < notes.Count; i++)
             {
                 if (IsStop)
@@ -141,6 +142,7 @@ namespace AutoPiano
                 Position++;
             }
             IsOnPlaying = false;
+            IsStop = false;
             Position = 0;
         }
         public void Stop()

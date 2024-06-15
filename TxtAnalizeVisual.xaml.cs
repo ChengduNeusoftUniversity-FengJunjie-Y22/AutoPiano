@@ -78,7 +78,7 @@ namespace AutoPiano
             {
                 CurrentSong.Pause();
                 _currentPlayModel = value;
-                CurrentSong.Model = _currentPlayModel;
+                _data.Model = _currentPlayModel;
             }
         }
 
@@ -96,6 +96,7 @@ namespace AutoPiano
             {
                 if (Instance != null)
                 {
+                    if (value == Instance.VisualBox.IsOpen) { return; }
                     Instance.VisualBox.IsOpen = value;
                     CurrentPlayModel = value ? PlayModel.Auto : PlayModel.Preview;
                 }
@@ -210,11 +211,11 @@ namespace AutoPiano
         public bool IsMouseInSlider = false;
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            if (IsMouseInSlider && CurrentSong.IsOnPlaying) { CurrentSong.Pause(); IsMouseInSlider = false; }
             if (IsMouseInSlider) { CurrentSong.Position = (int)(e.NewValue * (CurrentSong.notes.Count - 1)); }
         }
         private void PSliderMouseEnter(object sender, MouseEventArgs e)
         {
-            if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
             IsMouseInSlider = true;
         }
         private void PSliderMouseLeave(object sender, MouseEventArgs e)
