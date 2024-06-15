@@ -103,31 +103,32 @@ namespace AutoPiano
             }
         }
 
-        private static Song _data = new Song();
+        private static Song? _data = new Song();
         /// <summary>
         /// 当前界面存放的曲目
         /// </summary>
         public static Song CurrentSong//当前播放的音乐
         {
-            get { return _data; }
+            get { return _data == null ? new Song() : _data; }
             set
             {
+                CurrentSong.Pause();
+                _data = null;
                 _data = value;
                 if (Instance != null)
                 {
-                    Instance.SongName.Text = _data.Name;
-                    Instance.VisualInGame.SongInfo.Text = "《 " + _data.Name + " 》";
-                    _data.Model = CurrentPlayModel;
-                    Instance.TimeValue.Text = string.Empty;
                     Instance.Notes.Children.Clear();
                     foreach (StackPanel textBlock in Instance.LoadPanelBoxes())
                     {
                         Instance.Notes.Children.Add(textBlock);
                     }
-                    _data.Pause();
-                    _data.Position = 0;
-                    _data.IsOnPlaying = false;
-                    _data.IsStop = false;
+                    CurrentSong.Model = CurrentPlayModel;
+
+                    Instance.ProcessShow.SetValue(0);
+
+                    Instance.TimeValue.Text = string.Empty;
+                    Instance.SongName.Text = _data.Name;
+                    Instance.VisualInGame.SongInfo.Text = "《 " + _data.Name + " 》";
                 }
             }
         }
@@ -371,20 +372,20 @@ namespace AutoPiano
         #region 界面UI变动
         private StackPanel[] LoadPanelBoxes()//加载音符显示区
         {
-            StackPanel[] result = new StackPanel[_data.notes.Count];
-            for (int i = 0; i < _data.notes.Count; i++)
+            StackPanel[] result = new StackPanel[CurrentSong.notes.Count];
+            for (int i = 0; i < CurrentSong.notes.Count; i++)
             {
                 string notestr = string.Empty;
 
-                if (_data.notes[i] is Note note)
+                if (CurrentSong.notes[i] is Note note)
                 {
                     notestr = note.GetContentWithOutTime();
                 }
-                else if (_data.notes[i] is Chord chord)
+                else if (CurrentSong.notes[i] is Chord chord)
                 {
                     notestr = chord.GetContentWithOutTime();
                 }
-                else if (_data.notes[i] is NullNote nullnote)
+                else if (CurrentSong.notes[i] is NullNote nullnote)
                 {
                     notestr = nullnote.GetContentWithOutTime();
                 }
@@ -709,23 +710,7 @@ namespace AutoPiano
         }
         private void Close(object sender, RoutedEventArgs e)//退出专注
         {
-            DoubleAnimation widthAnimation = new DoubleAnimation();
-            widthAnimation.AccelerationRatio = 1;
-            widthAnimation.From = 1440; // 起始宽度
-            widthAnimation.To = 0;   // 结束宽度
-            widthAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.4)); // 持续时间
-
-            // 创建一个故事板，并将动画对象添加到其中
-            Storyboard storyboard = new Storyboard();
-            storyboard.Children.Add(widthAnimation);
-
-            // 将动画应用到按钮的宽度属性
-            Storyboard.SetTarget(widthAnimation, TimeEdit);
-            Storyboard.SetTargetProperty(widthAnimation, new PropertyPath(WidthProperty));
-
-            // 启动动画
-            storyboard.Begin();
-            IsAttentive = false;
+            UnExpendBox();
         }
         #endregion
 
@@ -778,12 +763,12 @@ namespace AutoPiano
                 for (int i = 0; i < result.Item1.Count; i++)
                 {
                     FileButton temp = new FileButton();
-                    temp.Name = result.Item1[i];
+                    temp.FileName = result.Item1[i];
                     temp.Content = result.Item1[i];
                     temp.Foreground = Brushes.White;
                     temp.Background = Brushes.Transparent;
                     temp.FontSize = 26;
-                    temp.Path = result.Item2[i];
+                    temp.FilePath = result.Item2[i];
                     Instance.FileInfos.Children.Add(temp);
                 }
 
@@ -814,13 +799,11 @@ namespace AutoPiano
                     Foreground = Brushes.White;
                 };
             }
-            public string Name = "None";
-            public string Path = "None";
+            public string FileName = "None";
+            public string FilePath = "None";
             public void GuidToSong(object sender, RoutedEventArgs e)
             {
-                if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
-
-                var result = BinaryObject.DeserializeObject(ReadModel, Path);
+                var result = BinaryObject.DeserializeObject(ReadModel, FilePath);
                 if (result.Item1 && result.Item2 != null)
                 {
                     CurrentSong = result.Item2;

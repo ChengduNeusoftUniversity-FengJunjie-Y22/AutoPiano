@@ -83,6 +83,28 @@ namespace AutoPiano
 
         public void LoadHotKeySetPage()
         {
+            //CTRL保护区
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.A);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.C);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.V);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.X);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.S);
+
+            //ALT保护区
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.S);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.Z);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F1);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F2);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F3);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F4);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F5);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F6);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F7);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F9);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F10);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.F11);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.ALT, NormalKeys.R);
+
             k1 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b1, RoundComponentInfo);
             k2 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b2, RoundComponentInfo);
             k3 = PrefabComponent.SetAsRoundBox<KeysSelectBox>(b3, RoundComponentInfo);
@@ -95,25 +117,30 @@ namespace AutoPiano
             BindingRef.Connect(k4, HideGameVisual);
             BindingRef.Connect(k5, InsideVisual);
 
-            k1.CurrentKeyA = Key.LeftCtrl;
-            k1.CurrentKeyB = Key.A;
+            k1.CurrentKeyA = Key.LeftAlt;
+            k1.CurrentKeyB = Key.Q;
 
-            k2.CurrentKeyA = Key.LeftCtrl;
-            k2.CurrentKeyB = Key.S;
+            k2.CurrentKeyA = Key.LeftAlt;
+            k2.CurrentKeyB = Key.W;
 
-            k3.CurrentKeyA = Key.LeftCtrl;
-            k3.CurrentKeyB = Key.D;
+            k3.CurrentKeyA = Key.LeftAlt;
+            k3.CurrentKeyB = Key.E;
 
             k4.CurrentKeyA = Key.LeftAlt;
             k4.CurrentKeyB = Key.C;
 
             k5.CurrentKeyA = Key.LeftAlt;
             k5.CurrentKeyB = Key.V;
+
+            k1.UseFailureTrigger(FailRegis);
+            k2.UseFailureTrigger(FailRegis);
+            k3.UseFailureTrigger(FailRegis);
+            k4.UseFailureTrigger(FailRegis);
+            k5.UseFailureTrigger(FailRegis);
         }
 
         public static void Play()
         {
-            Pause();
             switch (EditArea.PageType)
             {
                 case PageTypes.TxtAnalize:
@@ -198,6 +225,14 @@ namespace AutoPiano
         {
             IsSameDataMode = !IsSameDataMode;
             SameDM.ButtonText = (IsSameDataMode ? "On" : "OFF");
+        }
+
+        private void FailRegis(object sender)
+        {
+            if (sender is KeysSelectBox e)
+            {
+                e.Text = e.DefaultErrorText;
+            }
         }
     }
 }
