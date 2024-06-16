@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AutoPiano
 {
     [Serializable]
-    public class Chord : BinaryObject
+    public class Chord : AudioBasic
     {
         public Chord() { }
 

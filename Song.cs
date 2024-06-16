@@ -19,7 +19,7 @@ public enum PlayModel
 namespace AutoPiano
 {
     [Serializable]
-    public class Song : BinaryObject
+    public class Song : AudioBasic
     {
         public string Name = "None";
 

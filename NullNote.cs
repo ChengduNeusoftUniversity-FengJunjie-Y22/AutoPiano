@@ -8,7 +8,7 @@ using WindowsInput.Native;
 namespace AutoPiano
 {
     [Serializable]
-    public class NullNote : BinaryObject
+    public class NullNote : AudioBasic
     {
         public NullNote() { }
 

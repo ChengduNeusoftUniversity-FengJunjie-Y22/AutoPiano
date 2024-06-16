@@ -9,7 +9,7 @@ using WindowsInput;
 namespace AutoPiano
 {
     [Serializable]
-    public class Note : BinaryObject
+    public class Note : AudioBasic
     {
         public Note() { }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AutoPiano
 {
     [Serializable]
-    public class MetaData : BinaryObject
+    public class MetaData : AudioBasic
     {
         public MetaData() { }
 
