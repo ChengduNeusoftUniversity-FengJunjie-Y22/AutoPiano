@@ -51,11 +51,11 @@ namespace AutoPiano
             }
         }
 
-        KeysSelectBox? k1;
-        KeysSelectBox? k2;
-        KeysSelectBox? k3;
-        KeysSelectBox? k4;
-        KeysSelectBox? k5;
+        public KeysSelectBox? k1;
+        public KeysSelectBox? k2;
+        public KeysSelectBox? k3;
+        public KeysSelectBox? k4;
+        public KeysSelectBox? k5;
 
         private static ComponentInfo RoundComponentInfo = new ComponentInfo()
         //例如,这条组件信息用于获取圆角组件,那你便需要设置以下属性以获取更好的效果
@@ -233,6 +233,15 @@ namespace AutoPiano
             {
                 e.Text = e.DefaultErrorText;
             }
+        }
+
+        public void UpdateAfterUseTemp()
+        {
+            PageChangeMode.ButtonText = (IsClickChange ? "点击" : "滑动");
+            AttentiveChangeMode.ButtonText = (IsAutoAttentive ? "ON" : "OFF");
+            ReadMode.ButtonText = (TxtAnalizeVisual.IsNormalInput ? "Public" : "Private");
+            WriteMode.ButtonText = (TxtAnalizeVisual.IsNormalOutput ? "Public" : "Private");
+            SameDM.ButtonText = (IsSameDataMode ? "On" : "OFF");
         }
     }
 }

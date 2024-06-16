@@ -23,12 +23,9 @@ namespace AutoPiano
 {
     public partial class MainWindow : Window
     {
-        public static MainWindow? Instance;
-
         public MainWindow()
         {
             InitializeComponent();
-            Instance = this;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -43,12 +40,19 @@ namespace AutoPiano
 
             HotKeySet.LoadPage();
 
+            TempInfos.LoadTempInfo();
+            TempInfos.UseTempInfo();
+
             base.OnSourceInitialized(e);
         }
 
         protected override void OnClosed(EventArgs e)
         {
             GlobalHotKey.Destroy();
+
+            TempInfos.Update();
+            TempInfos.SaveTempInfo();
+
             base.OnClosed(e);
         }
 

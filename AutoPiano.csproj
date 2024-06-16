@@ -1,22 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net6.0-windows7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="FastHotKeyForWPF_NET6" Version="1.1.7" />
-    <PackageReference Include="InputSimulator" Version="1.0.4" />
-    <PackageReference Include="NetCore5.0.Microsoft.Expression.Drawing" Version="1.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FastHotKeyForWPF_NET6" Version="1.1.7" />
+		<PackageReference Include="InputSimulator" Version="1.0.4" />
+		<PackageReference Include="NetCore5.0.Microsoft.Expression.Drawing" Version="1.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Release\" />
-    <Folder Include="OldDataConverter\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Release\" />
+		<Folder Include="OldDataConverter\" />
+	</ItemGroup>
 
 </Project>
