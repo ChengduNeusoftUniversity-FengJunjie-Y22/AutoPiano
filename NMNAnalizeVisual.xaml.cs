@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -22,18 +23,18 @@ namespace AutoPiano
     public partial class NMNAnalizeVisual : Page
     {
         public static NMNAnalizeVisual? Instance;
+
         public NMNAnalizeVisual()
         {
             InitializeComponent();
-            NumberedMusicalNotation.MusicScore temp = new NumberedMusicalNotation.MusicScore();
-            temp.AddDefaultParagraph();
-            temp.AddDefaultParagraph();
-            temp.AddDefaultParagraph();
-            temp.AddDefaultParagraph();
-            temp.AddDefaultParagraph();
-            MusicScore = temp;
+            NewMusic();
+            NewScore.Click = (sender, e) =>
+            {
+                NewMusic();
+            };
             Instance = this;
         }
+
         private NumberedMusicalNotation.MusicScore _ms = new NumberedMusicalNotation.MusicScore();
         public NumberedMusicalNotation.MusicScore MusicScore
         {
@@ -47,12 +48,92 @@ namespace AutoPiano
                 ScrollControl.Maximum = _ms.Paragraphs.Count * 50;
             }
         }
+        public void NewMusic()
+        {
+            NumberedMusicalNotation.MusicScore temp = new NumberedMusicalNotation.MusicScore();
+            temp.AddDefaultParagraph();
+            temp.AddDefaultParagraph();
+            temp.AddDefaultParagraph();
+            temp.AddDefaultParagraph();
+            MusicScore = temp;
+        }
+
+        #region 简谱分析器主页标签控制区
+        private bool _issetexpended = false;
+        public bool IsSetOpen
+        {
+            get => _issetexpended;
+            set
+            {
+                if (value != _issetexpended)
+                {
+                    _issetexpended = value;
+                    if (value)
+                    {
+                        DoubleAnimation CloseSet = new DoubleAnimation()
+                        {
+                            To = 1440,
+                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
+                        };
+                        Settings.BeginAnimation(WidthProperty, CloseSet);
+                    }
+                    else
+                    {
+                        DoubleAnimation OpenSet = new DoubleAnimation()
+                        {
+                            To = 0,
+                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
+                        };
+                        Settings.BeginAnimation(WidthProperty, OpenSet);
+                    }
+                }
+            }
+        }
+        private bool _isfileexpended = false;
+        public bool IsFileSetExpended
+        {
+            get => _isfileexpended;
+            set
+            {
+                if (_isfileexpended != value)
+                {
+                    _isfileexpended = value;
+                    if (value)
+                    {
+                        DoubleAnimation OpenSet = new DoubleAnimation()
+                        {
+                            To = 280,
+                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
+                        };
+                        FileSet.BeginAnimation(HeightProperty, OpenSet);
+                    }
+                    else
+                    {
+                        DoubleAnimation CloseSet = new DoubleAnimation()
+                        {
+                            To = 0,
+                            Duration = new Duration(TimeSpan.FromSeconds(0.3))
+                        };
+                        FileSet.BeginAnimation(HeightProperty, CloseSet);
+                    }
+                }
+            }
+        }
+        private void SettingsBoxControl(object sender, RoutedEventArgs e)
+        {
+            IsSetOpen = !IsSetOpen;
+        }
+        private void FileSetBoxControl(object sender, RoutedEventArgs e)
+        {
+            IsFileSetExpended = !IsFileSetExpended;
+        }
+        #endregion
+
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SongBox.ScrollToHorizontalOffset(e.NewValue);
         }
-
         private void MouEnter(object sender, RoutedEventArgs e)
         {
             if (sender is Button button)
@@ -83,7 +164,6 @@ namespace AutoPiano
                 return;
             }
         }
-
         private void WhileInput(object sender, TextCompositionEventArgs e)
         {
             foreach (var ch in e.Text)

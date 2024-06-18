@@ -168,8 +168,8 @@ namespace AutoPiano
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.White,
-                Foreground = Brushes.Black,
+                Background = Brushes.Transparent,
+                Foreground = Brushes.White,
                 FontSize = 13,
                 BorderThickness = new Thickness(0),
                 VerticalContentAlignment = VerticalAlignment.Center,
@@ -183,8 +183,8 @@ namespace AutoPiano
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.White,
-                Foreground = Brushes.Black,
+                Background = Brushes.Transparent,
+                Foreground = Brushes.White,
                 FontSize = 13,
                 BorderThickness = new Thickness(0),
                 VerticalContentAlignment = VerticalAlignment.Center,
@@ -198,8 +198,8 @@ namespace AutoPiano
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.White,
-                Foreground = Brushes.Black,
+                Background = Brushes.Transparent,
+                Foreground = Brushes.White,
                 FontSize = 13,
                 BorderThickness = new Thickness(0),
                 VerticalContentAlignment = VerticalAlignment.Center,
@@ -213,8 +213,8 @@ namespace AutoPiano
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.White,
-                Foreground = Brushes.Black,
+                Background = Brushes.Transparent,
+                Foreground = Brushes.White,
                 FontSize = 13,
                 BorderThickness = new Thickness(0),
                 VerticalContentAlignment = VerticalAlignment.Center,
@@ -555,10 +555,10 @@ namespace AutoPiano
             /// </summary>
             public void WhileStopThisCore()
             {
-                bt2.Background = Brushes.White;
-                bt3.Background = Brushes.White;
-                bt4.Background = Brushes.White;
-                bt5.Background = Brushes.White;
+                bt2.Background = Brushes.Transparent;
+                bt3.Background = Brushes.Transparent;
+                bt4.Background = Brushes.Transparent;
+                bt5.Background = Brushes.Transparent;
             }
 
             /// <summary>
@@ -616,7 +616,7 @@ namespace AutoPiano
                 PlayTrack.PreviewMouseLeftButtonDown += ClearThisTrack;
                 PlayTrack.PreviewMouseRightButtonDown += StartTrack;
                 PlayTrack.PreviewMouseWheel += AddCores;
-                Background = Brushes.White;
+                Background = Brushes.Transparent;
                 Width = Paragraph.Max_SixteenCore * 17 + 20;
                 Height = double.NaN; // 设置高度为自动
                 PlayTrack.MouseEnter += (sender, e) =>
@@ -646,7 +646,7 @@ namespace AutoPiano
             public StackPanel Cores = new StackPanel()
             {
                 Width = Paragraph.Max_SixteenCore * 17,
-                Background = Brushes.Gray,
+                Background = Brushes.Transparent,
                 Orientation = Orientation.Horizontal,
                 Height = double.NaN,
                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -864,7 +864,7 @@ namespace AutoPiano
                                 if (button is Button)
                                 {
                                     Button button1 = (Button)button;
-                                    button1.Background = Brushes.White;
+                                    button1.Background = Brushes.Transparent;
                                 }
                             }
                         }
@@ -956,7 +956,7 @@ namespace AutoPiano
             {
                 Orientation = Orientation.Horizontal;
                 Width = double.NaN;
-                Background = Brushes.White;
+                Background = Brushes.Transparent;
                 Height = double.NaN;
                 PlayParagraph.PreviewMouseRightButtonDown += StartAllTracks;
                 PlayParagraph.PreviewMouseLeftButtonDown += DispatcherAddTracks;
@@ -990,7 +990,7 @@ namespace AutoPiano
             {
                 Width = double.NaN,
                 Orientation = Orientation.Vertical,
-                Background = Brushes.White,
+                Background = Brushes.Transparent,
                 Height = double.NaN,
             };
 
