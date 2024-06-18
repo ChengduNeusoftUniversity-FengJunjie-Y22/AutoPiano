@@ -857,9 +857,9 @@ namespace AutoPiano
                             Core core1 = (Core)core;
                             foreach (var button in core1.Children)
                             {
-                                if (button is Button)
+                                if (button is ButtonX)
                                 {
-                                    Button button1 = (Button)button;
+                                    ButtonX button1 = (ButtonX)button;
                                     button1.Background = Brushes.Transparent;
                                 }
                             }
@@ -874,9 +874,9 @@ namespace AutoPiano
                         Core core1 = (Core)core;
                         foreach (var button in core1.Children)
                         {
-                            if (button is Button)
+                            if (button is ButtonX)
                             {
-                                Button button1 = (Button)button;
+                                ButtonX button1 = (ButtonX)button;
                                 button1.Background = Brushes.Tomato;
                             }
                         }

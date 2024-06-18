@@ -149,7 +149,7 @@
                     <Border Height="20"/>
                     <local:ButtonX x:Name="NewScore" local:ButtonText="新建    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
                     <Border Height="20"/>
-                    <local:ButtonX x:Name="SaveScore" local:ButtonText="存储    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
+                    <local:ButtonX x:Name="SaveScore" local:ButtonText="解析    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
                     <Border Height="20"/>
                     <local:ButtonX x:Name="ReadScore" local:ButtonText="读取    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
                 </StackPanel>
@@ -158,7 +158,7 @@
 
         <!--简谱相关参数设置-->
         <local:ButtonX local:ButtonText=" 乐谱参数 ▼" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="290" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Left" Margin="1140,60,0,620" local:Click="SettingsBoxControl"/>
-        <Border x:Name="Settings" Width="1440" BorderThickness="5,1,5,1" BorderBrush="White" Margin="0,49,0,370" HorizontalAlignment="Right">
+        <Border x:Name="Settings" Width="0" BorderThickness="5,1,5,1" BorderBrush="White" Margin="0,49,0,370" HorizontalAlignment="Right">
             <Grid Grid.ZIndex="2" Background="#1e1e1e">
                 <TextBox x:Name="SongName" Text="Default" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" Margin="715,124,10,107"/>
                 <TextBlock Foreground="White" FontSize="40" Text="曲名" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="715,36,0,0" Width="118"/>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AutoPiano"
              mc:Ignorable="d" 
              Width="200"
-             Height="100"            
+             Height="100"
              >
     <Button Name="BT"
             BorderThickness="0,0,0,1"
