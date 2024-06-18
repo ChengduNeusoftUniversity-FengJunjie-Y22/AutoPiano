@@ -170,20 +170,22 @@ namespace AutoPiano
                 Width = 17,
                 ButtonTextColor = Brushes.White,
                 ButtonTextSize = 13,
-                BorderAnimationSide = new Thickness(0),
+                BorderAnimationSide = new Thickness(1, 0, 1, 0),
+                BorderAnimationColor = Brushes.White,
                 HoverTextColor = Brushes.Cyan
             };
 
             /// <summary>
             /// 音阶（不显示高低）
             /// </summary>
-            ButtonX bt3 = new ButtonX()//
+            ButtonX bt3 = new ButtonX()
             {
                 Height = 15,
                 Width = 17,
                 ButtonTextColor = Brushes.White,
                 ButtonTextSize = 13,
-                BorderAnimationSide = new Thickness(0),
+                BorderAnimationSide = new Thickness(1, 0, 1, 0),
+                BorderAnimationColor = Brushes.White,
                 HoverTextColor = Brushes.Cyan
             };
 
@@ -196,7 +198,8 @@ namespace AutoPiano
                 Width = 17,
                 ButtonTextColor = Brushes.White,
                 ButtonTextSize = 13,
-                BorderAnimationSide = new Thickness(0),
+                BorderAnimationSide = new Thickness(1, 0, 1, 0),
+                BorderAnimationColor = Brushes.White,
                 HoverTextColor = Brushes.Cyan
             };
 
@@ -209,7 +212,8 @@ namespace AutoPiano
                 Width = 17,
                 ButtonTextColor = Brushes.White,
                 ButtonTextSize = 13,
-                BorderAnimationSide = new Thickness(0),
+                BorderAnimationSide = new Thickness(1, 0, 1, 0),
+                BorderAnimationColor = Brushes.White,
                 HoverTextColor = Brushes.Cyan
             };
 

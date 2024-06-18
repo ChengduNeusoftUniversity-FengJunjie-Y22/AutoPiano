@@ -147,6 +147,13 @@ namespace AutoPiano
             if (BT.BorderThickness.Right > 0) BorderAnimation("RightBorder", HeightProperty, 0, BT.ActualHeight);
             if (BT.BorderThickness.Bottom > 0) BorderAnimation("BottomBorder", WidthProperty, 0, BT.ActualWidth);
         }
+        public void ContinueEnterAnimation(double end)
+        {
+            if (BT.BorderThickness.Left > 0) BorderAnimation("LeftBorder", HeightProperty, null, end);
+            if (BT.BorderThickness.Top > 0) BorderAnimation("TopBorder", WidthProperty, null, end);
+            if (BT.BorderThickness.Right > 0) BorderAnimation("RightBorder", HeightProperty, null, end);
+            if (BT.BorderThickness.Bottom > 0) BorderAnimation("BottomBorder", WidthProperty, null, end);
+        }
         private void WhileMouseLeave(object sender, MouseEventArgs e)
         {
             BT.Foreground = TempColor;
@@ -155,30 +162,30 @@ namespace AutoPiano
             if (BT.BorderThickness.Right > 0) BorderAnimation("RightBorder", HeightProperty, BT.ActualHeight, 0);
             if (BT.BorderThickness.Bottom > 0) BorderAnimation("BottomBorder", WidthProperty, BT.ActualWidth, 0);
         }
-        private void BorderAnimation(string name, DependencyProperty dp, double start, double end)
+        private void BorderAnimation(string name, DependencyProperty dp, double? start, double end)
         {
             Border target = BT.Template.FindName(name, BT) as Border;
             DoubleAnimation animation = new DoubleAnimation
             {
-                From = start,
                 To = end, // 设置鼠标进入时的边框宽度
                 Duration = TimeSpan.FromSeconds(BorderAnimationTime), // 设置动画持续时间
                 AccelerationRatio = BorderAnimationAccelerationRatio
             };
-            target.BeginAnimation(dp, animation);
+            if (start != null) animation.From = start;
+            target?.BeginAnimation(dp, animation);
         }
 
-        private void GridAnimation(string name, DependencyProperty dp, double start, double end)
+        private void GridAnimation(string name, DependencyProperty dp, double? start, double end)
         {
             Grid target = BT.Template.FindName(name, BT) as Grid;
             DoubleAnimation animation = new DoubleAnimation
             {
-                From = start,
                 To = end, // 设置鼠标进入时的边框宽度
                 Duration = TimeSpan.FromSeconds(GridAnimationTime), // 设置动画持续时间
                 AccelerationRatio = GridAnimationAccelerationRatio
             };
-            target.BeginAnimation(dp, animation);
+            if (start != null) animation.From += start;
+            target?.BeginAnimation(dp, animation);
         }
 
         public void SetButtonClick(RoutedEventHandler e)
