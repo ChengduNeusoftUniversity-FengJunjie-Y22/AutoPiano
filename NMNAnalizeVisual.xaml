@@ -149,9 +149,9 @@
                     <Border Height="20"/>
                     <local:ButtonX x:Name="NewScore" local:ButtonText="新建    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
                     <Border Height="20"/>
-                    <local:ButtonX x:Name="SaveScore" local:ButtonText="解析    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
+                    <local:ButtonX x:Name="SaveScore" local:ButtonText="解析    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center" local:Click="OutPutData"/>
                     <Border Height="20"/>
-                    <local:ButtonX x:Name="ReadScore" local:ButtonText="读取    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
+                    <local:ButtonX x:Name="ReadScore" local:ButtonText="读取    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center" local:Click="InPutData"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -162,8 +162,6 @@
             <Grid Grid.ZIndex="2" Background="#1e1e1e">
                 <TextBox x:Name="SongName" Text="Default" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" Margin="715,124,10,107"/>
                 <TextBlock Foreground="White" FontSize="40" Text="曲名" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="715,36,0,0" Width="118"/>
-                <local:ButtonX local:ButtonText="输出文件" local:BorderAnimationSide="1" local:ButtonTextColor="Wheat" local:ButtonTextSize="40" Width="180" Height="60" Margin="939,249,311,10"/>
-                <TextBlock Foreground="White" FontSize="40" Text="解析结果" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="715,254,0,0" Width="177"/>
 
                 <TextBlock Foreground="White" FontSize="40" Text="  速度" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="457,37,0,0" Width="118"/>
                 <TextBox x:Name="Right" Text="4" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="272,124,983,108"/>

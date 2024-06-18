@@ -62,7 +62,6 @@ namespace AutoPiano
             public int Key = 1;//音阶Key                    默认为1        <-1  -7>   <1  7>    <8  14>
             public int Type = 1;//时值类型Type              默认为全音符   <1,2,4,8,16>
             public bool IsBlankStay = false;//是否为占位符  默认不是
-            public bool IsFastColumn = false;//是否为滑音   默认不是
 
             public void Set(CoreSets sets, int value)
             {
@@ -77,7 +76,6 @@ namespace AutoPiano
                 switch (sets)
                 {
                     case CoreSets.IsBlankStay: IsBlankStay = value; break;
-                    case CoreSets.IsFastColumn: IsFastColumn = value; break;
                 }
             }
             public void CopyDataFrom(NumberedMusicalNotation.Core core)//复制Core对象的数据
@@ -85,7 +83,6 @@ namespace AutoPiano
                 Set(CoreSets.Key, core.Key);
                 Set(CoreSets.Type, core.Type);
                 Set(CoreSets.IsBlankStay, core.IsBlankStay);
-                Set(CoreSets.IsFastColumn, core.IsFastColumn);
             }
             public NumberedMusicalNotation.Core GetCore()//依据自身数据给出Core的实例对象
             {
@@ -103,7 +100,6 @@ namespace AutoPiano
                     core.Set(CoreSets.Key, Key);
                     core.Set(CoreSets.Type, Type);
                     core.Set(CoreSets.IsBlankStay, IsBlankStay);
-                    core.Set(CoreSets.IsFastColumn, IsFastColumn);
                     core.CalculateCoreInfo();
                     return core;
                 }

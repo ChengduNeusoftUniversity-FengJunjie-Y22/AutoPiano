@@ -18,8 +18,7 @@ public enum CoreSets
 {
     Key,
     Type,
-    IsBlankStay,
-    IsFastColumn,
+    IsBlankStay
 }
 
 /// <summary>
@@ -79,11 +78,6 @@ namespace AutoPiano
             /// 是否为占位符
             /// </summary>
             public bool IsBlankStay = false;
-
-            /// <summary>
-            /// 是否为滑音
-            /// </summary>
-            public bool IsFastColumn = false;
 
             /// <summary>
             /// 绝对时值
@@ -157,7 +151,6 @@ namespace AutoPiano
                 switch (set)
                 {
                     case CoreSets.IsBlankStay: IsBlankStay = value; break;
-                    case CoreSets.IsFastColumn: IsFastColumn = value; break;
                 }
             }
 
@@ -595,8 +588,6 @@ namespace AutoPiano
                 core.Set(CoreSets.Key, Key);
                 core.Set(CoreSets.Type, Type);
                 core.Set(CoreSets.IsBlankStay, IsBlankStay);
-                core.Set(CoreSets.IsFastColumn, IsFastColumn);
-
                 return core.GetGrid();
             }
         }

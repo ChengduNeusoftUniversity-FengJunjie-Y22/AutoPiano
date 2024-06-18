@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Xml.Linq;
 using WindowsInput.Native;
 
 namespace AutoPiano
@@ -27,6 +28,11 @@ namespace AutoPiano
         public static string NormalTypeSongData = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Data_PublicStruct");
 
         /// <summary>
+        /// 【通用格式简谱数据】默认存储到这里
+        /// </summary>
+        public static string NormalTypeMetaData = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "MetaData_PublicStruct");
+
+        /// <summary>
         /// 检查文本信息文件夹是否完备
         /// </summary>
         public static void CheckTxtFloder()
@@ -39,15 +45,28 @@ namespace AutoPiano
             {
                 System.IO.Directory.CreateDirectory(NormalTypeSongData);
             }
+            if (!System.IO.Directory.Exists(NormalTypeMetaData))
+            {
+                System.IO.Directory.CreateDirectory(NormalTypeMetaData);
+            }
         }
 
-        public static Tuple<Song, string> SelectThenAnalize(DataTypes target)
+        public static Tuple<Song, string> SelectTxtThenAnalizeSong(DataTypes target)//依据数据类型选择并解析Song
         {
             Song song = new Song();
             string name = "?";
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = (target == DataTypes.PublicStruct ? NormalTypeSongData : DefaultTxtPath);
+            openFileDialog.InitialDirectory = DefaultTxtPath;
+            switch (target)
+            {
+                case DataTypes.PublicStruct:
+                    openFileDialog.InitialDirectory = NormalTypeSongData;
+                    break;
+                case DataTypes.TxtFromBili:
+                    openFileDialog.InitialDirectory = DefaultTxtPath;
+                    break;
+            }
             openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
 
             if (openFileDialog.ShowDialog() == true)
@@ -62,13 +81,45 @@ namespace AutoPiano
 
             return Tuple.Create(song, name);
         }
+        public static MetaData SelectTxtThenAnalizeMeta(DataTypes target)
+        {
+            MetaData data = new MetaData();
 
-        public static string SelectThenReadTxt(DataTypes target)
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = NormalTypeMetaData;
+            openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string selectedFilePath = openFileDialog.FileName;
+
+                string fileContent = File.ReadAllText(selectedFilePath);
+                MessageBox.Show(fileContent);
+
+                data = NormalDataToMetaData(fileContent);
+            }
+
+            return data;
+        }
+
+        public static string SelectThenReadTxt(DataTypes target)//依据数据类型选择文件
         {
             string fileContent = string.Empty;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = (target == DataTypes.PublicStruct ? NormalTypeSongData : DefaultTxtPath);
+            switch (target)
+            {
+                case DataTypes.PublicStruct:
+                    openFileDialog.InitialDirectory = NormalTypeSongData;
+                    break;
+                case DataTypes.PublicMetaData:
+                    openFileDialog.InitialDirectory = NormalTypeMetaData;
+                    break;
+                case DataTypes.TxtFromBili:
+                    openFileDialog.InitialDirectory = DefaultTxtPath;
+                    break;
+            }
             openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
@@ -259,7 +310,8 @@ namespace AutoPiano
             return result;
         }
 
-        public static bool SaveSongAsTxt(Song target)
+
+        public static bool SaveSongAsTxt(Song target)//以通用格式保存Song类型的数据
         {
             string textToSave = SongToNormalData(target);
 
@@ -289,6 +341,35 @@ namespace AutoPiano
             }
             return true;
         }
+        public static bool SaveMetaDataAsTxt(MetaData target)//以通用格式保存MetaData类型的数据
+        {
+            bool result = false;
+
+            string textToSave = MetaDataToNormalData(target);
+
+            // 使用 SaveFileDialog 选择文件保存路径
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Text Files (*.txt)|*.txt",
+                Title = "输出为【通用】格式的自动演奏数据",
+                InitialDirectory = NormalTypeMetaData,
+                FileName = $"{(NMNAnalizeVisual.Instance == null ? "Default" : (string.IsNullOrEmpty(NMNAnalizeVisual.Instance.SongName.Text) ? "Default" : NMNAnalizeVisual.Instance.SongName.Text)).Replace(" ", string.Empty)}.txt"  // 设置默认文件名为 Song 对象的名称
+            };
+
+            // 如果用户点击了保存按钮
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                try
+                {
+                    // 将文本内容写入文件
+                    File.WriteAllText(filePath, textToSave);
+                }
+                catch { return false; }
+            }
+            return true;
+        }
+
 
         public static string SongToNormalData(Song target)//Song数据 => 通用格式数据
         {
@@ -323,6 +404,33 @@ namespace AutoPiano
 
             return result;
         }
+
+        public static string MetaDataToNormalData(MetaData target)//MetaData数据 => 通用格式数据
+        {
+            StringBuilder result = new StringBuilder();
+
+            foreach (MetaData.ParagraphData paraData in target.Data)
+            {
+                result.Append("{ ");
+                foreach (MetaData.TrackData trackData in paraData.Data)
+                {
+                    result.Append("[ ");
+                    foreach (MetaData.CoreData coreData in trackData.Data)
+                    {
+                        result.Append("( ");
+                        result.Append(coreData.Key).Append(" ");
+                        result.Append(coreData.Type).Append(" ");
+                        result.Append(coreData.IsBlankStay);
+                        result.Append(") ");
+                    }
+                    result.Append("] ");
+                }
+                result.Append("} ");
+            }
+
+            return result.ToString();
+        }
+
 
         public static Song NormalDataToSong(string target)//通用格式数据 => Song数据 
         {
@@ -364,6 +472,48 @@ namespace AutoPiano
 
             return result;
         }
+        public static MetaData NormalDataToMetaData(string target)//通用格式数据 => MetaData数据
+        {
+            MetaData result = new MetaData();
+
+            int Pindex = 0;
+            int Tindex = 0;
+
+            string[] paragraphs = target.Split("} {", StringSplitOptions.None);
+            foreach (string paragraph in paragraphs)
+            {
+                result.Data.Add(new MetaData.ParagraphData());
+                string[] tracks = paragraph.Split("] [", StringSplitOptions.None);
+                Tindex = 0;
+                foreach (string track in tracks)
+                {
+                    result.Data[Pindex].Data.Add(new MetaData.TrackData());
+                    string[] cores = track.Split(") (", StringSplitOptions.None);
+
+                    Tindex = 0;
+                    foreach (string note in cores)
+                    {
+                        string[] temp = note.Split(" ", StringSplitOptions.None);
+
+                        int tempkey = StringToInt(temp[3]);
+                        int temptype = StringToInt(temp[4]);
+                        bool tempbool = StringToBool(temp[5].Remove(temp[5].Length - 1));
+
+                        MetaData.CoreData coreData = new MetaData.CoreData();
+                        coreData.Set(CoreSets.Type, temptype);
+                        coreData.Set(CoreSets.Key, tempkey);
+                        coreData.Set(CoreSets.IsBlankStay, tempbool);
+
+                        result.Data[Pindex].Data[Tindex].Data.Add(coreData);
+                    }
+                    Tindex++;
+                }
+                Pindex++;
+            }
+
+            return result;
+        }
+
 
         public static int StringToInt(string target)
         {
@@ -375,6 +525,15 @@ namespace AutoPiano
             }
             return result;
         }
+        public static bool StringToBool(string target)
+        {
+            if (target == "True")
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public static Tuple<List<string>, List<string>> GetFilesInfo(DataTypes target)
         {

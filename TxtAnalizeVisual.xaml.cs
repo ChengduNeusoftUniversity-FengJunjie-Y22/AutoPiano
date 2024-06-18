@@ -245,7 +245,7 @@ namespace AutoPiano
                 }
                 else
                 {
-                    var result = StringProcessing.SelectThenAnalize(DataTypes.Simple);
+                    var result = StringProcessing.SelectTxtThenAnalizeSong(DataTypes.TxtFromBili);
                     CurrentSong = result.Item1;
                     SongName.Text = result.Item2;
                 }
@@ -620,7 +620,7 @@ namespace AutoPiano
             }
             else
             {
-                var result = StringProcessing.SelectThenReadTxt(DataTypes.Simple);
+                var result = StringProcessing.SelectThenReadTxt(DataTypes.TxtFromBili);
                 Song temp = Song.AddParagraph(CurrentSong, result);
                 CurrentSong = temp;
             }

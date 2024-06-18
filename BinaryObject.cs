@@ -17,7 +17,9 @@ public enum DataTypes
 {
     Simple,
     Complex_NMN,
-    PublicStruct
+    PublicStruct,
+    PublicMetaData,
+    TxtFromBili
 }
 
 namespace AutoPiano

@@ -103,6 +103,38 @@ namespace AutoPiano
         {
 
         }
+        private void OutPutData(object sender, RoutedEventArgs e)
+        {
+            MetaData temp = new MetaData();
+            temp.CopyDataFrom(MusicScore);
+            if (TxtAnalizeVisual.IsNormalOutput)
+            {
+                StringProcessing.SaveMetaDataAsTxt(temp);
+            }
+            else
+            {
+                BinaryObject.SerializeObject<MetaData>(temp, DataTypes.Complex_NMN, (string.IsNullOrEmpty(SongName.Text) ? "Default" : SongName.Text).Replace(" ", string.Empty));
+            }
+        }
+        private void InPutData(object sender, RoutedEventArgs e)
+        {
+            MetaData temp = new MetaData();
+            if (TxtAnalizeVisual.IsNormalInput)
+            {
+                MusicScore = StringProcessing.SelectTxtThenAnalizeMeta(DataTypes.PublicMetaData).GetMusicScore();
+            }
+            else
+            {
+                var result = BinaryObject.DeserializeObject<MetaData>(DataTypes.Complex_NMN);
+
+                if (result.Item1 && result.Item2 != null)
+                {
+                    temp = result.Item2;
+                }
+
+                MusicScore = temp.GetMusicScore();
+            }
+        }
 
         #region 简谱分析器主页标签控制区
         private bool _issetexpended = false;
