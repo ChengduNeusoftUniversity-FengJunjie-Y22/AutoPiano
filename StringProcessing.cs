@@ -420,7 +420,7 @@ namespace AutoPiano
                         result.Append("( ");
                         result.Append(coreData.Key).Append(" ");
                         result.Append(coreData.Type).Append(" ");
-                        result.Append(coreData.IsBlankStay);
+                        result.Append(coreData.IsBlankStay).Append(" ");
                         result.Append(") ");
                     }
                     result.Append("] ");
@@ -479,32 +479,28 @@ namespace AutoPiano
             int Pindex = 0;
             int Tindex = 0;
 
-            string[] paragraphs = target.Split("} {", StringSplitOptions.None);
-            foreach (string paragraph in paragraphs)
+            List<string> ParaString = ParagraphCatchFromMetaTxt(target);
+            foreach (string str in ParaString)
             {
                 result.Data.Add(new MetaData.ParagraphData());
-                string[] tracks = paragraph.Split("] [", StringSplitOptions.None);
                 Tindex = 0;
-                foreach (string track in tracks)
+                List<string> TrackString = TrackCatchFromMetaTxt(str);
+                foreach (string str2 in TrackString)
                 {
                     result.Data[Pindex].Data.Add(new MetaData.TrackData());
-                    string[] cores = track.Split(") (", StringSplitOptions.None);
-
-                    Tindex = 0;
-                    foreach (string note in cores)
+                    List<string> CoreString = CoreCatchFromMetaTxt(str2);
+                    foreach (string str3 in CoreString)
                     {
-                        string[] temp = note.Split(" ", StringSplitOptions.None);
-
-                        int tempkey = StringToInt(temp[3]);
-                        int temptype = StringToInt(temp[4]);
-                        bool tempbool = StringToBool(temp[5].Remove(temp[5].Length - 1));
-
+                        string[] temp = str3.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                        int keytemp = StringToInt(temp[0]);
+                        int typetemp = StringToInt(temp[1]);
+                        bool bltemp = StringToBool(temp[2]);
                         MetaData.CoreData coreData = new MetaData.CoreData();
-                        coreData.Set(CoreSets.Type, temptype);
-                        coreData.Set(CoreSets.Key, tempkey);
-                        coreData.Set(CoreSets.IsBlankStay, tempbool);
-
+                        coreData.Set(CoreSets.Key, keytemp);
+                        coreData.Set(CoreSets.Type, typetemp);
+                        coreData.Set(CoreSets.IsBlankStay, bltemp);
                         result.Data[Pindex].Data[Tindex].Data.Add(coreData);
+                        MessageBox.Show($"{coreData.Key}/{coreData.Type}/{coreData.IsBlankStay}");
                     }
                     Tindex++;
                 }
@@ -532,6 +528,49 @@ namespace AutoPiano
                 return true;
             }
             return false;
+        }
+
+        public static List<string> ParagraphCatchFromMetaTxt(string target)//捕获所有位于{}内的字符串
+        {
+            List<string> result = new List<string>();
+
+            Regex regex = new Regex(@"\{(.*?)\}");
+            MatchCollection matches = regex.Matches(target);
+
+            foreach (Match match in matches)
+            {
+                result.Add(match.Groups[1].Value);
+            }
+
+            return result;
+        }
+        public static List<string> TrackCatchFromMetaTxt(string target)//捕获所有位于[]内的字符串
+        {
+            List<string> result = new List<string>();
+
+            Regex regex = new Regex(@"\[(.*?)\]");
+            MatchCollection matches = regex.Matches(target);
+
+            foreach (Match match in matches)
+            {
+                result.Add(match.Groups[1].Value);
+            }
+
+            return result;
+        }
+        public static List<string> CoreCatchFromMetaTxt(string target)//捕获所有位于()内的字符串
+        {
+            List<string> result = new List<string>();
+
+            Regex regex = new Regex(@"\((.*?)\)");
+            MatchCollection matches = regex.Matches(target);
+
+            foreach (Match match in matches)
+            {
+                result.Add(match.Groups[1].Value);
+            }
+
+            return result;
         }
 
 

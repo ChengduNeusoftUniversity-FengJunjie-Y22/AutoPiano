@@ -86,23 +86,12 @@ namespace AutoPiano
             }
             public NumberedMusicalNotation.Core GetCore()//依据自身数据给出Core的实例对象
             {
-                if (IsBlankStay)
-                {
-                    NumberedMusicalNotation.Core core = new NumberedMusicalNotation.Core();
-                    core.IsBlankStay = true;
-                    core.Type = Type;
-                    core.CalculateCoreInfo();
-                    return core;
-                }
-                else
-                {
-                    NumberedMusicalNotation.Core core = new NumberedMusicalNotation.Core();
-                    core.Set(CoreSets.Key, Key);
-                    core.Set(CoreSets.Type, Type);
-                    core.Set(CoreSets.IsBlankStay, IsBlankStay);
-                    core.CalculateCoreInfo();
-                    return core;
-                }
+                NumberedMusicalNotation.Core core = new NumberedMusicalNotation.Core();
+                core.IsBlankStay = IsBlankStay;
+                core.Key = Key;
+                core.Type = Type;
+                core.CalculateCoreInfo();
+                return core;
             }
         }
 
