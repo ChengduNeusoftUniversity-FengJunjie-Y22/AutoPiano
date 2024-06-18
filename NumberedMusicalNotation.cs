@@ -164,61 +164,53 @@ namespace AutoPiano
             /// <summary>
             /// 高音
             /// </summary>
-            Button bt2 = new Button()
+            ButtonX bt2 = new ButtonX()
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.Transparent,
-                Foreground = Brushes.White,
-                FontSize = 13,
-                BorderThickness = new Thickness(0),
-                VerticalContentAlignment = VerticalAlignment.Center,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
+                ButtonTextColor = Brushes.White,
+                ButtonTextSize = 13,
+                BorderAnimationSide = new Thickness(0),
+                HoverTextColor = Brushes.Cyan
             };
 
             /// <summary>
             /// 音阶（不显示高低）
             /// </summary>
-            Button bt3 = new Button()//
+            ButtonX bt3 = new ButtonX()//
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.Transparent,
-                Foreground = Brushes.White,
-                FontSize = 13,
-                BorderThickness = new Thickness(0),
-                VerticalContentAlignment = VerticalAlignment.Center,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
+                ButtonTextColor = Brushes.White,
+                ButtonTextSize = 13,
+                BorderAnimationSide = new Thickness(0),
+                HoverTextColor = Brushes.Cyan
             };
 
             /// <summary>
             /// 时值类型
             /// </summary>
-            Button bt4 = new Button()
+            ButtonX bt4 = new ButtonX()
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.Transparent,
-                Foreground = Brushes.White,
-                FontSize = 13,
-                BorderThickness = new Thickness(0),
-                VerticalContentAlignment = VerticalAlignment.Center,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
+                ButtonTextColor = Brushes.White,
+                ButtonTextSize = 13,
+                BorderAnimationSide = new Thickness(0),
+                HoverTextColor = Brushes.Cyan
             };
 
             /// <summary>
             /// 低音
             /// </summary>
-            Button bt5 = new Button()
+            ButtonX bt5 = new ButtonX()
             {
                 Height = 15,
                 Width = 17,
-                Background = Brushes.Transparent,
-                Foreground = Brushes.White,
-                FontSize = 13,
-                BorderThickness = new Thickness(0),
-                VerticalContentAlignment = VerticalAlignment.Center,
-                HorizontalContentAlignment = HorizontalAlignment.Center,
+                ButtonTextColor = Brushes.White,
+                ButtonTextSize = 13,
+                BorderAnimationSide = new Thickness(0),
+                HoverTextColor = Brushes.Cyan
             };
 
             /// <summary>
@@ -412,28 +404,28 @@ namespace AutoPiano
             /// </summary>
             public void CalculateCoreInfo()
             {
-                bt2.Content = string.Empty;
-                bt3.Content = string.Empty;
-                bt4.Content = string.Empty;
-                bt5.Content = string.Empty;
+                bt2.ButtonText = string.Empty;
+                bt3.ButtonText = string.Empty;
+                bt4.ButtonText = string.Empty;
+                bt5.ButtonText = string.Empty;
 
                 //高低音
                 if (!IsBlankStay)
                 {
                     if (Key > -8 && Key < 0)
                     {
-                        bt5.Content = "•";
-                        bt2.Content = string.Empty;
+                        bt5.ButtonText = "•";
+                        bt2.ButtonText = string.Empty;
                     }
                     else if (Key > 0 && Key < 8)
                     {
-                        bt2.Content = string.Empty;
-                        bt5.Content = string.Empty;
+                        bt2.ButtonText = string.Empty;
+                        bt5.ButtonText = string.Empty;
                     }
                     else
                     {
-                        bt2.Content = "•";
-                        bt5.Content = string.Empty;
+                        bt2.ButtonText = "•";
+                        bt5.ButtonText = string.Empty;
                     }
                 }
 
@@ -444,67 +436,67 @@ namespace AutoPiano
                         ReSetButtonsWidth(272);
                         if (IsBlankStay)
                         {
-                            bt3.Content = "0" + "                 ——        ——        ——  ";
+                            bt3.ButtonText = "0" + "                 ——        ——        ——  ";
                         }
                         else
                         {
-                            bt3.Content = IntToCoreString[Key] + "                 ——        ——        ——  ";
+                            bt3.ButtonText = IntToCoreString[Key] + "                 ——        ——        ——  ";
                         }
-                        bt2.Content += "                                                         ";
-                        bt5.Content += "                                                         ";
+                        bt2.ButtonText += "                                                         ";
+                        bt5.ButtonText += "                                                         ";
                         break;
                     case 2:
                         ReSetButtonsWidth(136);
                         if (IsBlankStay)
                         {
-                            bt3.Content = "0" + "             ——      ";
+                            bt3.ButtonText = "0" + "             ——      ";
                         }
                         else
                         {
-                            bt3.Content = IntToCoreString[Key] + "             ——      ";
+                            bt3.ButtonText = IntToCoreString[Key] + "             ——      ";
                         }
-                        bt2.Content += "                          ";
-                        bt5.Content += "                          ";
+                        bt2.ButtonText += "                          ";
+                        bt5.ButtonText += "                          ";
                         break;
                     case 4:
                         ReSetButtonsWidth(68);
                         if (IsBlankStay)
                         {
-                            bt3.Content = "0" + "            ";
+                            bt3.ButtonText = "0" + "            ";
                         }
                         else
                         {
-                            bt3.Content = IntToCoreString[Key] + "            ";
+                            bt3.ButtonText = IntToCoreString[Key] + "            ";
                         }
-                        bt2.Content += "            ";
-                        bt5.Content += "            ";
+                        bt2.ButtonText += "            ";
+                        bt5.ButtonText += "            ";
 
                         break;
                     case 8:
                         ReSetButtonsWidth(34);
                         if (IsBlankStay)
                         {
-                            bt3.Content = "0" + "    ";
+                            bt3.ButtonText = "0" + "    ";
                         }
                         else
                         {
-                            bt3.Content = IntToCoreString[Key] + "    ";
+                            bt3.ButtonText = IntToCoreString[Key] + "    ";
                         }
-                        bt4.Content = "——   ";
-                        bt2.Content += "    ";
-                        bt5.Content += "    ";
+                        bt4.ButtonText = "——   ";
+                        bt2.ButtonText += "    ";
+                        bt5.ButtonText += "    ";
                         break;
                     case 16:
                         ReSetButtonsWidth(17);
                         if (IsBlankStay)
                         {
-                            bt3.Content = "0";
+                            bt3.ButtonText = "0";
                         }
                         else
                         {
-                            bt3.Content = IntToCoreString[Key];
+                            bt3.ButtonText = IntToCoreString[Key];
                         }
-                        bt4.Content += "═";
+                        bt4.ButtonText += "═";
                         break;
                 }
             }
@@ -519,8 +511,8 @@ namespace AutoPiano
 
                 core.Set(CoreSets.IsBlankStay, true);
                 core.Set(CoreSets.Type, 16);
-                core.bt3.Content = "0";
-                core.bt4.Content = "═";
+                core.bt3.ButtonText = "0";
+                core.bt4.ButtonText = "═";
                 core.CalculateCoreInfo();
 
                 return core;

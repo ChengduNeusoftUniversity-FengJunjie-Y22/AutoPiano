@@ -25,6 +25,12 @@ namespace AutoPiano
         /// </summary>
         public string ButtonText
         {
+            get
+            {
+                TextBlock? result = BT.Template.FindName("TrueText", BT) as TextBlock;
+                if (result == null) { return string.Empty; }
+                else { return result.Text; }
+            }
             set => BT.Content = value;
         }
 

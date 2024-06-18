@@ -20,6 +20,11 @@ namespace AutoPiano
     {
         public TempInfos() { }
 
+        public static TempInfos? Instance;
+        public static string FileName = "tempinfos";//文件名
+        public static string TempInfoPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Temp");//所在文件夹
+
+
         #region  热键Keys
         public Key A1;
         public Key A2;
@@ -56,15 +61,13 @@ namespace AutoPiano
         #endregion
 
 
-        #region 临时变量
+        #region 状态信息
         public Song? TempSong;//文本解析器内的数据
+        public MetaData? MetaData;//简谱解析器内的数据
         #endregion
 
 
-        #region 状态信息存取器
-        public static TempInfos? Instance;
-        public static string FileName = "tempinfos";//文件名
-        public static string TempInfoPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Temp");//所在文件夹
+        #region 存取器
         public static void SaveTempInfo()
         {
             Update();
@@ -80,11 +83,7 @@ namespace AutoPiano
                     binaryFormatter.Serialize(fileStream, Instance);
                 }
             }
-            catch (Exception ex)
-            {
-                Clipboard.SetText(ex.Message);
-                MessageBox.Show("Error loading TempInfos: " + ex.Message);
-            }
+            catch { }
         }
         public static void LoadTempInfo()
         {
@@ -97,11 +96,7 @@ namespace AutoPiano
                     Instance = (TempInfos)binaryFormatter.Deserialize(memoryStream);
                 }
             }
-            catch (Exception ex)
-            {
-                Clipboard.SetText(ex.Message);
-                MessageBox.Show("Error loading TempInfos: " + ex.Message);
-            }
+            catch { }
         }
         public static void Update()
         {

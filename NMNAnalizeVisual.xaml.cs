@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +36,29 @@ namespace AutoPiano
             Instance = this;
         }
 
+        private int _index = 0;
+        public int Index
+        {
+            get => _index;
+            set
+            {
+                if (value > -1)
+                {
+                    _index = value;
+                }
+            }
+        }
+
+        private List<TempData> _temp = new List<TempData>();
+        private List<TempData> Temp
+        {
+            get => _temp;
+            set
+            {
+
+            }
+        }
+
         private NumberedMusicalNotation.MusicScore _ms = new NumberedMusicalNotation.MusicScore();
         public NumberedMusicalNotation.MusicScore MusicScore
         {
@@ -56,6 +80,28 @@ namespace AutoPiano
             temp.AddDefaultParagraph();
             temp.AddDefaultParagraph();
             MusicScore = temp;
+        }
+        public void SaveMusic()
+        {
+            MetaData metaData = new MetaData();
+            metaData.CopyDataFrom(MusicScore);
+            BinaryObject.SerializeObject<MetaData>(metaData, DataTypes.Complex_NMN, GetName());
+        }
+        public void ReadMusic()
+        {
+            var result = BinaryObject.DeserializeObject<MetaData>(DataTypes.Complex_NMN);
+            if (result.Item1 && result.Item2 != null)
+            {
+                MusicScore = result.Item2.GetMusicScore();
+            }
+        }
+        public string GetName()
+        {
+            return $"{SongName.Text} [{Index + 1}-{Index + MusicScore.Paragraphs.Count}]";
+        }
+        public void SortTemp()
+        {
+
         }
 
         #region 简谱分析器主页标签控制区
@@ -174,6 +220,17 @@ namespace AutoPiano
                     break;
                 }
             }
+        }
+
+
+        private class TempData
+        {
+            public TempData() { }
+
+            NumberedMusicalNotation.MusicScore? Data;
+            string Name = string.Empty;
+            int Start = 0;
+            int End = 0;
         }
     }
 }

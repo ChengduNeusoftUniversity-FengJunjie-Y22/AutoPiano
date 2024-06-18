@@ -22,6 +22,7 @@ namespace AutoPiano
         /// <param name="musicscore">目标对象</param>
         public void CopyDataFrom(NumberedMusicalNotation.MusicScore musicscore)
         {
+            Data.Clear();
             foreach (NumberedMusicalNotation.Paragraph paragraph in musicscore.Paragraphs)
             {
                 ParagraphData paragraphData = new ParagraphData();
@@ -37,11 +38,22 @@ namespace AutoPiano
         public NumberedMusicalNotation.MusicScore GetMusicScore()
         {
             NumberedMusicalNotation.MusicScore musicScore = new NumberedMusicalNotation.MusicScore();
-            foreach (ParagraphData item in Data)
+            if (Data.Count > 0)
             {
-                musicScore.Paragraphs.Add(item.GetParagraph());
+                foreach (ParagraphData item in Data)
+                {
+                    musicScore.Paragraphs.Add(item.GetParagraph());
+                }
+                return musicScore;
             }
-            return musicScore;
+            else
+            {
+                musicScore.AddDefaultParagraph();
+                musicScore.AddDefaultParagraph();
+                musicScore.AddDefaultParagraph();
+                musicScore.AddDefaultParagraph();
+                return musicScore;
+            }
         }
 
         public class CoreData
