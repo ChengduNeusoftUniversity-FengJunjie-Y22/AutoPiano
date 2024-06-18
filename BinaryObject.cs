@@ -58,7 +58,7 @@ namespace AutoPiano
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static string? SelectFilePath<T>(DataTypes type) where T : class
+        public static string? SelectFilePath<T>(DataTypes? type) where T : class
         {
             FieldInfo? fieldInfo = typeof(T).GetField("Type", BindingFlags.Static | BindingFlags.Public);
 
@@ -134,7 +134,7 @@ namespace AutoPiano
         /// <summary>
         /// 反序列化存储对象【需要用户选择文件】
         /// </summary>
-        public static (bool, T?) DeserializeObject<T>(DataTypes type) where T : class
+        public static (bool, T?) DeserializeObject<T>(DataTypes? type) where T : class
         {
             string? filePath = SelectFilePath<T>(type);
             if (filePath == null) { return (false, null); }

@@ -166,31 +166,21 @@
 
         <Slider Name="ScrollControl" Style="{StaticResource BeautifySliderStyle}" Height="2" Width="1440" Margin="0,714,0,-4" HorizontalAlignment="Center" ValueChanged="Slider_ValueChanged"/>
 
-        <Border BorderThickness="0" CornerRadius="10" Margin="0,211,816,463">
+        <Border BorderThickness="0,0,5,0" BorderBrush="White" Margin="0,49,0,370">
             <Grid>
-                <Button Content="应用" Margin="454,0,0,0" Foreground="White" BorderThickness="0" FontSize="50"  MouseEnter="MouEnter" MouseLeave="MouLeave"/>
-                <Button Content="恢复默认" Margin="10,0,384,0" Foreground="White" BorderThickness="0" FontSize="50" MouseEnter="MouEnter" MouseLeave="MouLeave"/>
-            </Grid>
-        </Border>
 
-        <Border BorderThickness="0" CornerRadius="10" Margin="0,22,816,652">
-            <Grid>
-                <TextBlock Foreground="White" FontSize="40" Text="  速度" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,25,0"/>
-                <Border BorderBrush="White" CornerRadius="10" BorderThickness="1" Margin="200,0,10,0">
-                    <TextBox Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="40" BorderThickness="0" Foreground="White"  MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput"/>
-                </Border>
-            </Grid>
-        </Border>
-        <Border BorderThickness="0" CornerRadius="10" Margin="0,115,816,559">
-            <Grid>
-                <TextBlock Foreground="White" FontSize="40" Text="  拍号" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,25,0"/>
-                <Border BorderBrush="White" CornerRadius="10" BorderThickness="1" Margin="200,0,262,0">
-                    <TextBox Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="40" BorderThickness="0" Foreground="White" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput"/>
-                </Border>
-                <TextBlock Text="/" FontSize="70" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="398,-6,0,0"/>
-                <Border BorderBrush="White" CornerRadius="10" BorderThickness="1" Margin="454,0,10,0">
-                    <TextBox Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="40" BorderThickness="0" Foreground="White" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput"/>
-                </Border>
+                <TextBlock Foreground="White" FontSize="40" Text="  速度" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1284,29,0,0" Width="118"/>
+                <TextBox Name="Right" Text="4" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="1099,116,156,116"/>
+                <TextBlock Foreground="White" FontSize="40" Text="  拍号" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1284,0,0,0" Width="118"/>
+                <TextBox Name="Left" Text="4" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="846,116,409,116"/>
+
+                <TextBlock Text="/" FontSize="70" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="1047,0,0,0"/>
+                <TextBox Name="Speed" Text="80" FontSize="50" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="846,10,156,222"/>
+
+                <local:ButtonX local:ButtonText=" 关闭选项卡 ▼" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="290" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Left" Margin="0,0,0,261"/>
+
+                <local:ButtonX local:ButtonText="应用" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="100" Height="60" Margin="846,251,489,10"/>
+                <local:ButtonX local:ButtonText="恢复默认" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="180" Height="60" Margin="1222,251,33,10"/>
             </Grid>
         </Border>
     </Grid>
