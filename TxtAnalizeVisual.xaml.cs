@@ -182,7 +182,12 @@ namespace AutoPiano
 
         public static DataTypes ReadModel
         {
-            get => IsNormalOutput == true ? DataTypes.PublicStruct : DataTypes.Simple;
+            get => IsNormalInput ? DataTypes.PublicAutoData : DataTypes.PrivateAutoData;
+        }
+
+        public static DataTypes WriteModel
+        {
+            get => IsNormalOutput ? DataTypes.PublicAutoData : DataTypes.PrivateAutoData;
         }
 
         public TxtAnalizeVisual()
@@ -240,13 +245,13 @@ namespace AutoPiano
             {
                 if (IsNormalInput)
                 {
-                    CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt(DataTypes.PublicStruct));
+                    CurrentSong = FileTool.DeserializeObject<Song>(DataTypes.PublicAutoData).Item2;
                     SongName.Text = CurrentSong.Name;
                 }
                 else
                 {
-                    var result = StringProcessing.SelectTxtThenAnalizeSong(DataTypes.TxtFromBili);
-                    CurrentSong = result.Item1;
+                    var result = FileTool.ReadTxtFile();
+                    CurrentSong = StringProcessing.SongParse(result.Item3);
                     SongName.Text = result.Item2;
                 }
             }
@@ -296,40 +301,32 @@ namespace AutoPiano
 
             if (IsNormalOutput)
             {
-                if (StringProcessing.SaveSongAsTxt(CurrentSong))
+                if (FileTool.SerializeObject<Song>(CurrentSong, DataTypes.PublicAutoData, CurrentSong.Name))
                 {
                     SaveButton.Content = "完成√";
                     await Task.Delay(2500);
                     SaveButton.Content = "存档";
                     SaveButton.Foreground = Brushes.White;
-                }
-                else
-                {
-                    SaveButton.Foreground = Brushes.Red;
-                    SaveButton.Content = "⚠失败";
-                    await Task.Delay(2500);
-                    SaveButton.Content = "存档";
-                    SaveButton.Foreground = Brushes.White;
+                    return;
                 }
             }
             else
             {
-                if (BinaryObject.SerializeObject(CurrentSong, DataTypes.Simple, CurrentSong.Name))
+                if (FileTool.SerializeObject<Song>(CurrentSong, DataTypes.PrivateAutoData, CurrentSong.Name))
                 {
                     SaveButton.Content = "完成√";
                     await Task.Delay(2500);
                     SaveButton.Content = "存档";
                     SaveButton.Foreground = Brushes.White;
-                }
-                else
-                {
-                    SaveButton.Foreground = Brushes.Red;
-                    SaveButton.Content = "⚠失败";
-                    await Task.Delay(2500);
-                    SaveButton.Content = "存档";
-                    SaveButton.Foreground = Brushes.White;
+                    return;
                 }
             }
+
+            SaveButton.Foreground = Brushes.Red;
+            SaveButton.Content = "⚠失败";
+            await Task.Delay(2500);
+            SaveButton.Content = "存档";
+            SaveButton.Foreground = Brushes.White;
         }
 
         private async void Button_Click_3(object sender, RoutedEventArgs e)//读档
@@ -340,33 +337,38 @@ namespace AutoPiano
 
             if (IsNormalInput)
             {
-                CurrentSong = StringProcessing.NormalDataToSong(StringProcessing.SelectThenReadTxt(DataTypes.PublicStruct));
-                SongName.Text = CurrentSong.Name;
-                ReadButton.Content = "完成√";
-                await Task.Delay(2500);
-                ReadButton.Content = "读档";
-                ReadButton.Foreground = Brushes.White;
+                var result = FileTool.DeserializeObject<Song>(DataTypes.PublicAutoData);
+                if (result.Item1)
+                {
+                    CurrentSong = result.Item2;
+                    ReadButton.Foreground = Brushes.Red;
+                    ReadButton.Content = "成功√";
+                    await Task.Delay(2500);
+                    ReadButton.Content = "读档";
+                    ReadButton.Foreground = Brushes.White;
+                    return;
+                }
             }
             else
             {
-                var result = BinaryObject.DeserializeObject<Song>(DataTypes.Simple);
+                var result = FileTool.DeserializeObject<Song>(DataTypes.PrivateAutoData);
                 if (result.Item1)
                 {
-                    if (result.Item2 != null) { CurrentSong = result.Item2; }
-                    ReadButton.Content = "完成√";
-                    await Task.Delay(2500);
-                    ReadButton.Content = "读档";
-                    ReadButton.Foreground = Brushes.White;
-                }
-                else
-                {
+                    CurrentSong = result.Item2;
                     ReadButton.Foreground = Brushes.Red;
-                    ReadButton.Content = "⚠失败";
+                    ReadButton.Content = "成功√";
                     await Task.Delay(2500);
                     ReadButton.Content = "读档";
                     ReadButton.Foreground = Brushes.White;
+                    return;
                 }
             }
+
+            ReadButton.Foreground = Brushes.Red;
+            ReadButton.Content = "⚠失败";
+            await Task.Delay(2500);
+            ReadButton.Content = "读档";
+            ReadButton.Foreground = Brushes.White;
         }
         #endregion
 
@@ -614,14 +616,14 @@ namespace AutoPiano
 
             if (IsNormalInput)
             {
-                string result = StringProcessing.SelectThenReadTxt(DataTypes.PublicStruct);
+                var result = FileTool.DeserializeObject<Song>(DataTypes.PublicAutoData).Item2;
                 Song temp = Song.AddParagraph(CurrentSong, result);
                 CurrentSong = temp;
             }
             else
             {
-                var result = StringProcessing.SelectThenReadTxt(DataTypes.TxtFromBili);
-                Song temp = Song.AddParagraph(CurrentSong, result);
+                var result = FileTool.ReadTxtFile();
+                Song temp = Song.AddParagraph(CurrentSong, result.Item3);
                 CurrentSong = temp;
             }
         }
@@ -760,7 +762,7 @@ namespace AutoPiano
             {
                 Instance.FileInfos.Children.Clear();
 
-                var result = StringProcessing.GetFilesInfo(ReadModel);
+                var result = FileTool.GetFilesInfo(ReadModel);
 
                 for (int i = 0; i < result.Item1.Count; i++)
                 {
@@ -805,7 +807,7 @@ namespace AutoPiano
             public string FilePath = "None";
             public void GuidToSong(object sender, RoutedEventArgs e)
             {
-                var result = BinaryObject.DeserializeObject(ReadModel, FilePath);
+                var result = FileTool.DeserializeObject<Song>(ReadModel, FilePath);
                 if (result.Item1 && result.Item2 != null)
                 {
                     CurrentSong = result.Item2;

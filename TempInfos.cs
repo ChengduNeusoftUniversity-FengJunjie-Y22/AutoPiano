@@ -1,19 +1,12 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.IO;
 using System.Windows.Input;
-using System.Xml;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace AutoPiano
 {
     /// <summary>
-    /// 临时变量，存储编辑器的状态信息
+    /// 编辑器的临时状态【独立读写】
+    /// 简谱解析器临时存储的工作簿【】
     /// </summary>
     [Serializable]
     public class TempInfos
@@ -21,9 +14,12 @@ namespace AutoPiano
         public TempInfos() { }
 
         public static TempInfos? Instance;
-        public static string FileName = "tempinfos";//文件名
-        public static string TempInfoPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Temp");//所在文件夹
 
+        public static readonly string SetFileName = "SetInfo";//设置信息
+        public static readonly string AutoFileName = "LastTxtAnalized";//处于文本解析器中的数据
+        public static readonly string MetaFileName = "LastVisualAnalized";//处于简谱解析器中的数据
+
+        public static readonly string TempInfoPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Status");//状态文件夹
 
         #region  热键Keys
         public Key A1;
@@ -76,7 +72,7 @@ namespace AutoPiano
             {
                 Directory.CreateDirectory(TempInfoPath);
 
-                string filePath = Path.Combine(TempInfoPath, FileName + ".bin");
+                string filePath = Path.Combine(TempInfoPath, SetFileName + ".bin");
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -89,7 +85,7 @@ namespace AutoPiano
         {
             try
             {
-                byte[] bytes = File.ReadAllBytes(System.IO.Path.Combine(TempInfoPath, FileName + ".bin"));
+                byte[] bytes = File.ReadAllBytes(System.IO.Path.Combine(TempInfoPath, SetFileName + ".bin"));
                 using (MemoryStream memoryStream = new MemoryStream(bytes))
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();

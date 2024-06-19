@@ -85,11 +85,11 @@ namespace AutoPiano
         {
             MetaData metaData = new MetaData();
             metaData.CopyDataFrom(MusicScore);
-            BinaryObject.SerializeObject<MetaData>(metaData, DataTypes.Complex_NMN, GetName());
+            FileTool.SerializeObject<MetaData>(metaData, DataTypes.PrivateVisualData, GetName());
         }
         public void ReadMusic()
         {
-            var result = BinaryObject.DeserializeObject<MetaData>(DataTypes.Complex_NMN);
+            var result = FileTool.DeserializeObject<MetaData>(DataTypes.PrivateVisualData);
             if (result.Item1 && result.Item2 != null)
             {
                 MusicScore = result.Item2.GetMusicScore();
@@ -109,30 +109,24 @@ namespace AutoPiano
             temp.CopyDataFrom(MusicScore);
             if (TxtAnalizeVisual.IsNormalOutput)
             {
-                StringProcessing.SaveMetaDataAsTxt(temp);
+                FileTool.SerializeObject<MetaData>(temp, DataTypes.PublicVisualData, GetName());
             }
             else
             {
-                BinaryObject.SerializeObject<MetaData>(temp, DataTypes.Complex_NMN, (string.IsNullOrEmpty(SongName.Text) ? "Default" : SongName.Text).Replace(" ", string.Empty));
+                FileTool.SerializeObject<MetaData>(temp, DataTypes.PrivateVisualData, (string.IsNullOrEmpty(SongName.Text) ? "Default" : SongName.Text).Replace(" ", string.Empty));
             }
         }
         private void InPutData(object sender, RoutedEventArgs e)
         {
-            MetaData temp = new MetaData();
             if (TxtAnalizeVisual.IsNormalInput)
             {
-                MusicScore = StringProcessing.SelectTxtThenAnalizeMeta(DataTypes.PublicMetaData).GetMusicScore();
+                var result = FileTool.DeserializeObject<MetaData>(DataTypes.PublicVisualData);
+                if (result.Item1) { MusicScore = result.Item2.GetMusicScore(); }
             }
             else
             {
-                var result = BinaryObject.DeserializeObject<MetaData>(DataTypes.Complex_NMN);
-
-                if (result.Item1 && result.Item2 != null)
-                {
-                    temp = result.Item2;
-                }
-
-                MusicScore = temp.GetMusicScore();
+                var result = FileTool.DeserializeObject<MetaData>(DataTypes.PrivateVisualData);
+                if (result.Item1) { MusicScore = result.Item2.GetMusicScore(); }
             }
         }
 

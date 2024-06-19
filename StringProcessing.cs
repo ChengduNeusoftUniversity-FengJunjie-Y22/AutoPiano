@@ -17,131 +17,7 @@ namespace AutoPiano
     /// </summary>
     internal static class StringProcessing
     {
-        /// <summary>
-        /// 【TXT谱子】默认从这里被选择
-        /// </summary>
-        public static string DefaultTxtPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "TXT");
-
-        /// <summary>
-        /// 【通用格式的自动播放数据】默认存储到这里
-        /// </summary>
-        public static string NormalTypeSongData = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Data_PublicStruct");
-
-        /// <summary>
-        /// 【通用格式简谱数据】默认存储到这里
-        /// </summary>
-        public static string NormalTypeMetaData = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "MetaData_PublicStruct");
-
-        /// <summary>
-        /// 检查文本信息文件夹是否完备
-        /// </summary>
-        public static void CheckTxtFloder()
-        {
-            if (!System.IO.Directory.Exists(DefaultTxtPath))
-            {
-                System.IO.Directory.CreateDirectory(DefaultTxtPath);
-            }
-            if (!System.IO.Directory.Exists(NormalTypeSongData))
-            {
-                System.IO.Directory.CreateDirectory(NormalTypeSongData);
-            }
-            if (!System.IO.Directory.Exists(NormalTypeMetaData))
-            {
-                System.IO.Directory.CreateDirectory(NormalTypeMetaData);
-            }
-        }
-
-        public static Tuple<Song, string> SelectTxtThenAnalizeSong(DataTypes target)//依据数据类型选择并解析Song
-        {
-            Song song = new Song();
-            string name = "?";
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = DefaultTxtPath;
-            switch (target)
-            {
-                case DataTypes.PublicStruct:
-                    openFileDialog.InitialDirectory = NormalTypeSongData;
-                    break;
-                case DataTypes.TxtFromBili:
-                    openFileDialog.InitialDirectory = DefaultTxtPath;
-                    break;
-            }
-            openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string selectedFilePath = openFileDialog.FileName;
-
-                string fileContent = File.ReadAllText(selectedFilePath);
-
-                song = SongParse(fileContent);
-                name = System.IO.Path.GetFileNameWithoutExtension(selectedFilePath);
-            }
-
-            return Tuple.Create(song, name);
-        }
-        public static MetaData SelectTxtThenAnalizeMeta(DataTypes target)
-        {
-            MetaData data = new MetaData();
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = NormalTypeMetaData;
-            openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string selectedFilePath = openFileDialog.FileName;
-
-                string fileContent = File.ReadAllText(selectedFilePath);
-                MessageBox.Show(fileContent);
-
-                data = NormalDataToMetaData(fileContent);
-            }
-
-            return data;
-        }
-
-        public static string SelectThenReadTxt(DataTypes target)//依据数据类型选择文件
-        {
-            string fileContent = string.Empty;
-
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = (target == DataTypes.PublicStruct ? NormalTypeSongData : DefaultTxtPath);
-            switch (target)
-            {
-                case DataTypes.PublicStruct:
-                    openFileDialog.InitialDirectory = NormalTypeSongData;
-                    break;
-                case DataTypes.PublicMetaData:
-                    openFileDialog.InitialDirectory = NormalTypeMetaData;
-                    break;
-                case DataTypes.TxtFromBili:
-                    openFileDialog.InitialDirectory = DefaultTxtPath;
-                    break;
-            }
-            openFileDialog.Filter = "TXT Files (*.txt)|*.txt|All Files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                string selectedFilePath = openFileDialog.FileName;
-
-                fileContent = File.ReadAllText(selectedFilePath);
-            }
-
-            return fileContent;
-        }
-
         #region 文本谱解析工具
-        /// <summary>
-        /// 筛选条件: 单音符、和弦、间断都将被囊括(用于初步筛选)
-        /// </summary>
-        public static string target1 = @"\([A-Z]+\)| |[A-Z]|[\[A-Z()\]]+";
-
-        /// <summary>
-        /// 筛选条件: 在连弹中只包含单个音符、和弦(用于递归解决连弹问题)
-        /// </summary>
-        public static string target2 = @"\([A-Z]+\)|[A-Z]";
-
         private static int _blankspace = 187;
         /// <summary>
         /// 若两音符间无空格，则应用此时值
@@ -206,13 +82,21 @@ namespace AutoPiano
             }
         }
 
-        public static Song SongParse(string text)//将非通用数据解析
+
+        /// <summary>
+        /// 筛选条件: 单音符、和弦、间断都将被囊括(用于初步筛选)
+        /// </summary>
+        private static string target1 = @"\([A-Z]+\)| |[A-Z]|[\[A-Z()\]]+";
+        /// <summary>
+        /// 筛选条件: 在连弹中只包含单个音符、和弦(用于递归解决连弹问题)
+        /// </summary>
+        private static string target2 = @"\([A-Z]+\)|[A-Z]";
+        public static Song SongParse(string text)//将非通用数据解析，这里主要指B站指尖旋律的键盘谱格式
         {
             Song result = new Song();
             RecursivParse(text, false, 0, result);
             return result;
         }
-
         private static void RecursivParse(string text, bool isRecursiv, int value, Song Target)//解析按键谱
         {
             MatchCollection matches;//操作合集
@@ -270,7 +154,6 @@ namespace AutoPiano
                 }
             }
         }
-
         private static int GetSpanFromSpaceNum(int num)//获取时值
         {
             int result = 0;
@@ -290,7 +173,6 @@ namespace AutoPiano
 
             return result;
         }
-
         private static int FindBlankSpaceNumber(MatchCollection matches, int start)//获取跟随空格数量
         {
             int result = 0;
@@ -308,66 +190,6 @@ namespace AutoPiano
             }
 
             return result;
-        }
-
-
-        public static bool SaveSongAsTxt(Song target)//以通用格式保存Song类型的数据
-        {
-            string textToSave = SongToNormalData(target);
-
-            // 使用 SaveFileDialog 选择文件保存路径
-            var saveFileDialog = new SaveFileDialog
-            {
-                Filter = "Text Files (*.txt)|*.txt",
-                Title = "输出为【通用】格式的自动演奏数据",
-                InitialDirectory = NormalTypeSongData,
-                FileName = $"{target.Name.Replace(" ", string.Empty)}.txt"  // 设置默认文件名为 Song 对象的名称
-            };
-
-            // 如果用户点击了保存按钮
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filePath = saveFileDialog.FileName;
-                try
-                {
-                    // 将文本内容写入文件
-                    File.WriteAllText(filePath, textToSave);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"保存文件失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
-            }
-            return true;
-        }
-        public static bool SaveMetaDataAsTxt(MetaData target)//以通用格式保存MetaData类型的数据
-        {
-            bool result = false;
-
-            string textToSave = MetaDataToNormalData(target);
-
-            // 使用 SaveFileDialog 选择文件保存路径
-            var saveFileDialog = new SaveFileDialog
-            {
-                Filter = "Text Files (*.txt)|*.txt",
-                Title = "输出为【通用】格式的自动演奏数据",
-                InitialDirectory = NormalTypeMetaData,
-                FileName = $"{(NMNAnalizeVisual.Instance == null ? "Default" : (string.IsNullOrEmpty(NMNAnalizeVisual.Instance.SongName.Text) ? "Default" : NMNAnalizeVisual.Instance.SongName.Text)).Replace(" ", string.Empty)}.txt"  // 设置默认文件名为 Song 对象的名称
-            };
-
-            // 如果用户点击了保存按钮
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filePath = saveFileDialog.FileName;
-                try
-                {
-                    // 将文本内容写入文件
-                    File.WriteAllText(filePath, textToSave);
-                }
-                catch { return false; }
-            }
-            return true;
         }
 
 
@@ -404,7 +226,6 @@ namespace AutoPiano
 
             return result;
         }
-
         public static string MetaDataToNormalData(MetaData target)//MetaData数据 => 通用格式数据
         {
             StringBuilder result = new StringBuilder();
@@ -430,8 +251,6 @@ namespace AutoPiano
 
             return result.ToString();
         }
-
-
         public static Song NormalDataToSong(string target)//通用格式数据 => Song数据 
         {
             if (target.Length == 0) return new Song();
@@ -496,11 +315,10 @@ namespace AutoPiano
                         int typetemp = StringToInt(temp[1]);
                         bool bltemp = StringToBool(temp[2]);
                         MetaData.CoreData coreData = new MetaData.CoreData();
-                        coreData.Set(CoreSets.Key, keytemp);
-                        coreData.Set(CoreSets.Type, typetemp);
-                        coreData.Set(CoreSets.IsBlankStay, bltemp);
+                        coreData.Key = keytemp;
+                        coreData.Type = typetemp;
+                        coreData.IsBlankStay = bltemp;
                         result.Data[Pindex].Data[Tindex].Data.Add(coreData);
-                        MessageBox.Show($"{coreData.Key}/{coreData.Type}/{coreData.IsBlankStay}");
                     }
                     Tindex++;
                 }
@@ -511,7 +329,7 @@ namespace AutoPiano
         }
 
 
-        public static int StringToInt(string target)
+        public static int StringToInt(string target)//string转整数
         {
             int result = 0;
             bool success = int.TryParse(target, out int temp);
@@ -521,7 +339,7 @@ namespace AutoPiano
             }
             return result;
         }
-        public static bool StringToBool(string target)
+        public static bool StringToBool(string target)//string转bool
         {
             if (target == "True")
             {
@@ -571,37 +389,6 @@ namespace AutoPiano
             }
 
             return result;
-        }
-
-
-        public static Tuple<List<string>, List<string>> GetFilesInfo(DataTypes target)
-        {
-            string folderPath = target == DataTypes.PublicStruct ? NormalTypeSongData : DefaultTxtPath;
-
-            List<string> fileNames = new List<string>();
-            List<string> filePaths = new List<string>();
-
-            try
-            {
-                // 获取指定文件夹内的所有文件路径
-                string[] files = Directory.GetFiles(folderPath);
-
-                foreach (string file in files)
-                {
-                    // 获取文件名（不含后缀）
-                    string fileName = Path.GetFileNameWithoutExtension(file);
-                    // 获取文件的绝对路径
-                    string fullPath = Path.GetFullPath(file);
-
-                    // 添加到列表中
-                    fileNames.Add(fileName);
-                    filePaths.Add(fullPath);
-                }
-            }
-            catch { }
-
-            // 返回Tuple
-            return Tuple.Create(fileNames, filePaths);
         }
         #endregion
     }

@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Xml.Serialization;
+﻿using System.Windows.Media;
 using WindowsInput.Native;
 
 public enum PlayModel
 {
     Auto,
     Preview,
+    AutoHorn,
+    PreviewHorn,
     None
 }
 
@@ -22,8 +16,6 @@ namespace AutoPiano
     public class Song : AudioBasic
     {
         public string Name = "None";
-
-        public static DataTypes Type = DataTypes.PublicStruct;
 
         public PlayModel Model = PlayModel.None;
 
@@ -185,6 +177,24 @@ namespace AutoPiano
             }
 
             Song result = temp1 + temp3 + temp2;
+
+            return result;
+        }
+
+        public static Song AddParagraph(Song oldOne, Song newOne)
+        {
+            Song temp1 = new Song();
+            Song temp2 = new Song();
+            for (int i = 0; i < oldOne.Position; i++)
+            {
+                temp1.notes.Add(oldOne.notes[i]);
+            }
+            for (int i = oldOne.Position + 1; i < oldOne.notes.Count; i++)
+            {
+                temp2.notes.Add(oldOne.notes[i]);
+            }
+
+            Song result = temp1 + newOne + temp2;
 
             return result;
         }

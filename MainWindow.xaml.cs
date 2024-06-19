@@ -32,9 +32,7 @@ namespace AutoPiano
         {
             GlobalHotKey.Awake();
 
-            AudioBasic.CheckAudioFolder();
-            StringProcessing.CheckTxtFloder();
-            BinaryObject.CheckDataFloder();
+            FileTool.CheckDataFloder();
             AudioBasic.UpdateAudioByType(InstrumentTypes.FWPiano);
             TxtAnalizeVisual.InstrumentType = InstrumentTypes.FWPiano;
 

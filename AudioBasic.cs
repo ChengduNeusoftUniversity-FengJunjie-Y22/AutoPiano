@@ -53,11 +53,6 @@ namespace AutoPiano
     public abstract class AudioBasic : MusicTheory
     {
         #region 音源控制模块
-        public static readonly string AudioForFWPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_FW");
-        public static readonly string AudioForWFHorn = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_WF");
-        public static readonly string AudioForJHPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_JH");
-        public static readonly string AudioForHLDrum = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_HL");
-        public static readonly string AudioForXMPiano = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Audio_XM");
         public static readonly VirtualKeyCode[] AdudioKey = new VirtualKeyCode[]
         {
             VirtualKeyCode.VK_Q,
@@ -120,32 +115,6 @@ namespace AutoPiano
         "L.mp3"
         };
         /// <summary>
-        /// 检查预览音频支持文件夹是否完备
-        /// </summary>
-        public static void CheckAudioFolder()
-        {
-            if (!System.IO.Directory.Exists(AudioForFWPiano))
-            {
-                System.IO.Directory.CreateDirectory(AudioForFWPiano);
-            }
-            if (!System.IO.Directory.Exists(AudioForWFHorn))
-            {
-                System.IO.Directory.CreateDirectory(AudioForWFHorn);
-            }
-            if (!System.IO.Directory.Exists(AudioForJHPiano))
-            {
-                System.IO.Directory.CreateDirectory(AudioForJHPiano);
-            }
-            if (!System.IO.Directory.Exists(AudioForHLDrum))
-            {
-                System.IO.Directory.CreateDirectory(AudioForHLDrum);
-            }
-            if (!System.IO.Directory.Exists(AudioForXMPiano))
-            {
-                System.IO.Directory.CreateDirectory(AudioForXMPiano);
-            }
-        }
-        /// <summary>
         /// 键盘操作模拟器
         /// </summary>
         public static InputSimulator Simulator = new InputSimulator();
@@ -170,10 +139,6 @@ namespace AutoPiano
             KeyToMediaPlayer.TryGetValue(keyCode, out player);
             if (player != null) { player.Stop(); player.Position = TimeSpan.Zero; player.Play(); }
         }
-        public static void Operation()
-        {
-
-        }
         /// <summary>
         /// 依据乐器类型更新音源字典
         /// </summary>
@@ -187,7 +152,7 @@ namespace AutoPiano
                     for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForFWPiano, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForFW, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -196,7 +161,7 @@ namespace AutoPiano
                     for (int i = 0; i < 14; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForWFHorn, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForWF, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -205,7 +170,7 @@ namespace AutoPiano
                     for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForJHPiano, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForJH, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -214,7 +179,7 @@ namespace AutoPiano
                     for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(AudioForXMPiano, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForXM, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -222,16 +187,16 @@ namespace AutoPiano
                 case InstrumentTypes.HLDrum:
 
                     MediaPlayer mediaPlayer1 = new MediaPlayer();
-                    mediaPlayer1.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[7])));
+                    mediaPlayer1.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[7])));
                     result.Add(AdudioKey[7], mediaPlayer1);
                     MediaPlayer mediaPlayer2 = new MediaPlayer();
-                    mediaPlayer2.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[8])));
+                    mediaPlayer2.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[8])));
                     result.Add(AdudioKey[8], mediaPlayer2);
                     MediaPlayer mediaPlayer3 = new MediaPlayer();
-                    mediaPlayer3.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[21])));
+                    mediaPlayer3.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[21])));
                     result.Add(AdudioKey[21], mediaPlayer3);
                     MediaPlayer mediaPlayer4 = new MediaPlayer();
-                    mediaPlayer4.Open(new Uri(System.IO.Path.Combine(AudioForHLDrum, AudioName[22])));
+                    mediaPlayer4.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[22])));
                     result.Add(AdudioKey[22], mediaPlayer4);
 
                     KeyToMediaPlayer = result;
