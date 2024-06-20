@@ -131,6 +131,15 @@
         <Border Width="1440" BorderThickness="5,1,5,1" BorderBrush="Violet" Margin="0,49,0,370" HorizontalAlignment="Right"/>
         <TextBlock  Foreground="White" FontSize="25" Text="Edit - Mode - Visual"  HorizontalAlignment="Right" Margin="0,0,30,696"></TextBlock>
 
+        <!--工作簿区-->
+        <Border Margin="27,60,623,385" BorderBrush="White" BorderThickness="1" CornerRadius="10" ClipToBounds="True">
+            <ScrollViewer Margin="0,0,-20,0">
+                <StackPanel x:Name="PrivateObjects" Orientation="Vertical">
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
         <!--简谱编辑区-->
         <Border BorderThickness="4,2,4,2" Width="1440" Margin="0,384,0,26" BorderBrush="Violet"/>
         <Border BorderThickness="0" BorderBrush="White" Height="330" Width="1440" Margin="0,384,0,26">
@@ -141,8 +150,8 @@
         <Slider Name="ScrollControl" Style="{StaticResource BeautifySliderStyle}" Height="2" Width="1440" Margin="0,714,0,-4" HorizontalAlignment="Center" ValueChanged="Slider_ValueChanged"/>
 
         <!--文件读写区-->
-        <local:ButtonX local:ButtonText="文件 ▼" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Left" Margin="29,60,0,620" local:Click="FileSetBoxControl"/>
-        <Border Name="FileSet" Height="0" Width="200" Margin="29,60,1211,410" VerticalAlignment="Top">
+        <local:ButtonX local:ButtonText="文件 ▼" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Left" Margin="940,60,0,620" local:Click="FileSetBoxControl"/>
+        <Border Name="FileSet" Height="0" Width="200" Margin="940,60,300,0" VerticalAlignment="Top">
             <Grid Background="#1e1e1e" Grid.ZIndex="2">
                 <StackPanel Orientation="Vertical">
                     <local:ButtonX local:ButtonText="文件 ▲" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Center" local:Click="FileSetBoxControl"/>

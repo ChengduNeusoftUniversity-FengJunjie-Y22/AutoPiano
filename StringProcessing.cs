@@ -226,31 +226,6 @@ namespace AutoPiano
 
             return result;
         }
-        public static string MetaDataToNormalData(MetaData target)//MetaData数据 => 通用格式数据
-        {
-            StringBuilder result = new StringBuilder();
-
-            foreach (MetaData.ParagraphData paraData in target.Data)
-            {
-                result.Append("{ ");
-                foreach (MetaData.TrackData trackData in paraData.Data)
-                {
-                    result.Append("[ ");
-                    foreach (MetaData.CoreData coreData in trackData.Data)
-                    {
-                        result.Append("( ");
-                        result.Append(coreData.Key).Append(" ");
-                        result.Append(coreData.Type).Append(" ");
-                        result.Append(coreData.IsBlankStay).Append(" ");
-                        result.Append(") ");
-                    }
-                    result.Append("] ");
-                }
-                result.Append("} ");
-            }
-
-            return result.ToString();
-        }
         public static Song NormalDataToSong(string target)//通用格式数据 => Song数据 
         {
             if (target.Length == 0) return new Song();
@@ -290,6 +265,31 @@ namespace AutoPiano
             catch { return new Song(); }
 
             return result;
+        }
+        public static string MetaDataToNormalData(MetaData target)//MetaData数据 => 通用格式数据
+        {
+            StringBuilder result = new StringBuilder();
+
+            foreach (MetaData.ParagraphData paraData in target.Data)
+            {
+                result.Append("{ ");
+                foreach (MetaData.TrackData trackData in paraData.Data)
+                {
+                    result.Append("[ ");
+                    foreach (MetaData.CoreData coreData in trackData.Data)
+                    {
+                        result.Append("( ");
+                        result.Append(coreData.Key).Append(" ");
+                        result.Append(coreData.Type).Append(" ");
+                        result.Append(coreData.IsBlankStay).Append(" ");
+                        result.Append(") ");
+                    }
+                    result.Append("] ");
+                }
+                result.Append("} ");
+            }
+
+            return result.ToString();
         }
         public static MetaData NormalDataToMetaData(string target)//通用格式数据 => MetaData数据
         {
@@ -347,6 +347,7 @@ namespace AutoPiano
             }
             return false;
         }
+
 
         public static List<string> ParagraphCatchFromMetaTxt(string target)//捕获所有位于{}内的字符串
         {

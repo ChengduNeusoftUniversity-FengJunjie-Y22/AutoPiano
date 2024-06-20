@@ -1518,6 +1518,20 @@ namespace AutoPiano
                 }
                 return result;
             }
+
+            public void UpdateCoresAfterUILoaded()
+            {
+                foreach (Paragraph paragraph in Paragraphs)
+                {
+                    foreach (Track track in paragraph.Tracks.Children)
+                    {
+                        foreach (Core core in track.Cores.Children)
+                        {
+                            core.CalculateCoreInfo();
+                        }
+                    }
+                }
+            }
         }
         #endregion       
     }

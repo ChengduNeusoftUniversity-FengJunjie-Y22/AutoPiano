@@ -56,6 +56,7 @@ namespace AutoPiano
             }
         }
 
+        [Serializable]
         public class CoreData
         {
             public CoreData() { }
@@ -90,11 +91,11 @@ namespace AutoPiano
                 core.IsBlankStay = IsBlankStay;
                 core.Key = Key;
                 core.Type = Type;
-                core.CalculateCoreInfo();
                 return core;
             }
         }
 
+        [Serializable]
         public class TrackData
         {
             public TrackData() { }
@@ -123,6 +124,7 @@ namespace AutoPiano
             }
         }
 
+        [Serializable]
         public class ParagraphData
         {
             public ParagraphData() { }

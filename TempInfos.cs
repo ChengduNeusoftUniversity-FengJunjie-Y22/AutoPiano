@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Windows.Input;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows;
 
 namespace AutoPiano
 {
@@ -16,9 +17,6 @@ namespace AutoPiano
         public static TempInfos? Instance;
 
         public static readonly string SetFileName = "SetInfo";//设置信息
-        public static readonly string AutoFileName = "LastTxtAnalized";//处于文本解析器中的数据
-        public static readonly string MetaFileName = "LastVisualAnalized";//处于简谱解析器中的数据
-
         public static readonly string TempInfoPath = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Status");//状态文件夹
 
         #region  热键Keys
@@ -58,8 +56,15 @@ namespace AutoPiano
 
 
         #region 状态信息
-        public Song? TempSong;//文本解析器内的数据
-        public MetaData? MetaData;//简谱解析器内的数据
+        //文本解析器内的数据
+        public Song? TempSong;
+
+        //简谱解析器内的数据
+        public MetaData? MetaData;
+        public List<MetaData>? TempScores;
+        public List<string>? TempSocresName;
+        public List<int>? Starts;
+        public List<int>? Ends;
         #endregion
 
 
@@ -79,7 +84,10 @@ namespace AutoPiano
                     binaryFormatter.Serialize(fileStream, Instance);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         public static void LoadTempInfo()
         {
@@ -92,7 +100,10 @@ namespace AutoPiano
                     Instance = (TempInfos)binaryFormatter.Deserialize(memoryStream);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         public static void Update()
         {
@@ -116,6 +127,30 @@ namespace AutoPiano
                 if (HotKeySet.Instance.k5 != null) Instance.E2 = HotKeySet.Instance.k5.CurrentKeyB;
 
                 Instance.IsSameModel = HotKeySet.Instance.IsSameDataMode;
+
+                if (NMNAnalizeVisual.Instance != null)
+                {
+                    MetaData temp = new MetaData();
+                    temp.CopyDataFrom(NMNAnalizeVisual.Instance.MusicScore);
+                    Instance.MetaData = temp;
+                    Instance.Starts?.Clear();
+                    Instance.Ends?.Clear();
+                    foreach (var item in NMNAnalizeVisual.Instance.PrivateObjects.Children)
+                    {
+                        if (item is NMNAnalizeVisual.TempData DATA)
+                        {
+                            if (DATA.Data != null)
+                            {
+                                MetaData temp2 = new MetaData();
+                                temp2.CopyDataFrom(DATA.Data);
+                                Instance.TempScores?.Add(temp2);
+                            }
+                            Instance.TempSocresName?.Add(DATA.Name);
+                            Instance.Starts?.Add(DATA.Start);
+                            Instance.Ends?.Add(DATA.End);
+                        }
+                    }
+                }
             }
 
             Instance.IsChangePageByClick = HotKeySet.IsClickChange;
@@ -124,6 +159,8 @@ namespace AutoPiano
             Instance.IsPublicOutPut = TxtAnalizeVisual.IsNormalOutput;
 
             Instance.TempSong = TxtAnalizeVisual.CurrentSong;
+
+
         }
         public static void UseTempInfo()
         {
@@ -155,6 +192,26 @@ namespace AutoPiano
                 if (HotKeySet.Instance.k5 != null) HotKeySet.Instance.k5.CurrentKeyB = Instance.E2;
 
                 HotKeySet.Instance.IsSameDataMode = Instance.IsSameModel;
+
+                if (NMNAnalizeVisual.Instance != null && Instance.MetaData != null)
+                {
+                    NMNAnalizeVisual.Instance.MusicScore = Instance.MetaData.GetMusicScore();
+                    NMNAnalizeVisual.Instance.SongBox.Content = NMNAnalizeVisual.Instance.MusicScore;
+                    NMNAnalizeVisual.Instance.MusicScore.UpdateCoresAfterUILoaded();
+                }
+
+                if (NMNAnalizeVisual.Instance != null && Instance.TempScores != null && Instance.TempSocresName != null && Instance.Starts != null && Instance.Ends != null)
+                {
+                    for (int i = 0; i < Instance.TempSocresName.Count; i++)
+                    {
+                        NMNAnalizeVisual.TempData temp = new NMNAnalizeVisual.TempData();
+                        temp.Data = Instance.TempScores[i].GetMusicScore();
+                        temp.Name = Instance.TempSocresName[i];
+                        temp.Start = Instance.Starts[i];
+                        temp.End = Instance.Ends[i];
+                        NMNAnalizeVisual.Instance.PrivateObjects.Children.Add(temp);
+                    }
+                }
 
                 HotKeySet.Instance.UpdateAfterUseTemp();
             }

@@ -128,6 +128,12 @@ namespace AutoPiano
                 var result = FileTool.DeserializeObject<MetaData>(DataTypes.PrivateVisualData);
                 if (result.Item1) { MusicScore = result.Item2.GetMusicScore(); }
             }
+            _ms.UpdateCoresAfterUILoaded();
+        }
+        private void ConvertToTxtEdit(object sender, RoutedEventArgs e)
+        {
+            MusicScore.Stop();
+            TxtAnalizeVisual.CurrentSong = MusicScore.ConvertToSong();
         }
 
         #region 简谱分析器主页标签控制区
@@ -249,14 +255,35 @@ namespace AutoPiano
         }
 
 
-        private class TempData
-        {
-            public TempData() { }
 
-            NumberedMusicalNotation.MusicScore? Data;
-            string Name = string.Empty;
-            int Start = 0;
-            int End = 0;
+        public class TempData : ButtonX
+        {
+            public TempData()
+            {
+                ButtonTextColor = Brushes.White;
+                BorderAnimationSide = new Thickness(1);
+                BorderAnimationColor = Brushes.White;
+                HoverTextColor = Brushes.White;
+                ButtonTextSize = 30;
+                Height = 50;
+                Click = (sender, e) =>
+                {
+                    if (Instance != null && Data != null)
+                    {
+                        Instance.MusicScore = Data;
+                    }
+                };
+            }
+
+            public NumberedMusicalNotation.MusicScore? Data;
+            public string Name = string.Empty;
+            public int Start = 0;
+            public int End = 0;
+
+            public string GetFullName()
+            {
+                return Name + $"【 {Start} - {End} 】";
+            }
         }
     }
 }
