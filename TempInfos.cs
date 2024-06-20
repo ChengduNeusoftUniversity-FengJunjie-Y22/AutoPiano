@@ -63,6 +63,7 @@ namespace AutoPiano
         public MetaData? MetaData;
         public List<MetaData>? TempScores;
         public List<string>? TempSocresName;
+        public List<string>? TempTags;
         public List<int>? Starts;
         public List<int>? Ends;
         #endregion
@@ -109,6 +110,12 @@ namespace AutoPiano
         {
             if (Instance == null) { Instance = new TempInfos(); }
 
+            Instance.TempScores = new List<MetaData>();
+            Instance.TempSocresName = new List<string>();
+            Instance.TempTags = new List<string>();
+            Instance.Starts = new List<int>();
+            Instance.Ends = new List<int>();
+
             if (HotKeySet.Instance != null)
             {
                 if (HotKeySet.Instance.k1 != null) Instance.A1 = HotKeySet.Instance.k1.CurrentKeyA;
@@ -145,6 +152,7 @@ namespace AutoPiano
                                 temp2.CopyDataFrom(DATA.Data);
                                 Instance.TempScores?.Add(temp2);
                             }
+                            Instance.TempTags?.Add(DATA.ButtonText);
                             Instance.TempSocresName?.Add(DATA.Name);
                             Instance.Starts?.Add(DATA.Start);
                             Instance.Ends?.Add(DATA.End);
@@ -200,12 +208,13 @@ namespace AutoPiano
                     NMNAnalizeVisual.Instance.MusicScore.UpdateCoresAfterUILoaded();
                 }
 
-                if (NMNAnalizeVisual.Instance != null && Instance.TempScores != null && Instance.TempSocresName != null && Instance.Starts != null && Instance.Ends != null)
+                if (NMNAnalizeVisual.Instance != null && Instance.TempTags != null && Instance.TempScores != null && Instance.TempSocresName != null && Instance.Starts != null && Instance.Ends != null)
                 {
                     for (int i = 0; i < Instance.TempSocresName.Count; i++)
                     {
                         NMNAnalizeVisual.TempData temp = new NMNAnalizeVisual.TempData();
                         temp.Data = Instance.TempScores[i].GetMusicScore();
+                        temp.ButtonText = Instance.TempTags[i];
                         temp.Name = Instance.TempSocresName[i];
                         temp.Start = Instance.Starts[i];
                         temp.End = Instance.Ends[i];

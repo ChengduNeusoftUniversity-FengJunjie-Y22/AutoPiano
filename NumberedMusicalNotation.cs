@@ -394,6 +394,10 @@ namespace AutoPiano
             public void ReLoadCore()
             {
                 CalculateCoreInfo();
+                bt2.UpdateLayout();
+                bt3.UpdateLayout();
+                bt4.UpdateLayout();
+                bt5.UpdateLayout();
             }
 
             /// <summary>
@@ -467,7 +471,6 @@ namespace AutoPiano
                         }
                         bt2.ButtonText += "            ";
                         bt5.ButtonText += "            ";
-
                         break;
                     case 8:
                         ReSetButtonsWidth(34);
@@ -1527,7 +1530,7 @@ namespace AutoPiano
                     {
                         foreach (Core core in track.Cores.Children)
                         {
-                            core.CalculateCoreInfo();
+                            core.ReLoadCore();
                         }
                     }
                 }

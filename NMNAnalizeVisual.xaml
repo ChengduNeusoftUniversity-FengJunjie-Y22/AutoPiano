@@ -127,18 +127,34 @@
     </Page.Resources>
     <Grid>
         <!--固定区域-->
+        <Border Margin="10,320,5,370" BorderThickness="0,1,0,0" BorderBrush="Violet">
+            <Grid>
+                <TextBlock Foreground="White" FontSize="30" Text="Tips" VerticalAlignment="Center" Margin="25,0,1332,0"/>
+                <TextBlock x:Name="EditInfo" Foreground="White" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="117,0,0,0"/>
+            </Grid>
+        </Border>
         <Border x:Name="ModeVisual" Width="300" HorizontalAlignment="Right" VerticalAlignment="Top" BorderBrush="White" BorderThickness="0,1,0,0"/>
         <Border Width="1440" BorderThickness="5,1,5,1" BorderBrush="Violet" Margin="0,49,0,370" HorizontalAlignment="Right"/>
         <TextBlock  Foreground="White" FontSize="25" Text="Edit - Mode - Visual"  HorizontalAlignment="Right" Margin="0,0,30,696"></TextBlock>
 
         <!--工作簿区-->
-        <Border Margin="27,60,623,385" BorderBrush="White" BorderThickness="1" CornerRadius="10" ClipToBounds="True">
-            <ScrollViewer Margin="0,0,-20,0">
-                <StackPanel x:Name="PrivateObjects" Orientation="Vertical">
+        <Border Margin="940,255,30,425">
+            <Grid>
+                <TextBlock Text="小节标记" FontSize="40" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,237,0"/>
+                <TextBox x:Name="IndexString" Text="0" Margin="235,0,0,0" FontSize="50" HorizontalContentAlignment="Center" Background="Transparent" VerticalContentAlignment="Center" Foreground="White" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" TextChanged="TextBox_TextChanged"/>
+            </Grid>
+        </Border>
+        <Border Margin="27,60,720,425" BorderBrush="White" BorderThickness="1" CornerRadius="10" ClipToBounds="True">
+            <ScrollViewer HorizontalAlignment="Left" Width="710">
+                <StackPanel x:Name="PrivateObjects" Orientation="Vertical" Width="690">
 
                 </StackPanel>
             </ScrollViewer>
         </Border>
+        <local:ButtonX local:ButtonText="清空" local:BorderAnimationSide="8,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="130" Height="60" local:BorderAnimationColor="Red" local:HoverTextColor="Red" HorizontalAlignment="Left" Margin="756,60,0,620" local:Click="ClearTempObject"/>
+        <local:ButtonX local:ButtonText="暂存" local:BorderAnimationSide="8,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="130" Height="60" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Right" Margin="0,125,554,555" local:Click="AddTempObject"/>
+        <local:ButtonX local:ButtonText="转换" local:BorderAnimationSide="8,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="130" Height="60" local:BorderAnimationColor="Lime" local:HoverTextColor="Lime" HorizontalAlignment="Left" Margin="756,190,0,490" local:Click="SumTempToTxtAnalize"/>
+        <local:ButtonX local:ButtonText="输出" local:BorderAnimationSide="8,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="130" Height="60" local:BorderAnimationColor="Lime" local:HoverTextColor="Lime" HorizontalAlignment="Left" Margin="756,255,0,425" local:Click="SumTempToFloder"/>
 
         <!--简谱编辑区-->
         <Border BorderThickness="4,2,4,2" Width="1440" Margin="0,384,0,26" BorderBrush="Violet"/>
@@ -149,18 +165,20 @@
         </Border>
         <Slider Name="ScrollControl" Style="{StaticResource BeautifySliderStyle}" Height="2" Width="1440" Margin="0,714,0,-4" HorizontalAlignment="Center" ValueChanged="Slider_ValueChanged"/>
 
-        <!--文件读写区-->
-        <local:ButtonX local:ButtonText="文件 ▼" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Left" Margin="940,60,0,620" local:Click="FileSetBoxControl"/>
-        <Border Name="FileSet" Height="0" Width="200" Margin="940,60,300,0" VerticalAlignment="Top">
+        <!--文件读写区350高-->
+        <local:ButtonX local:ButtonText="当前 ▼" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Left" Margin="940,60,0,620" local:Click="FileSetBoxControl"/>
+        <Border Name="FileSet" Height="0" Width="200" VerticalAlignment="Top" BorderBrush="White" BorderThickness="1" Margin="940,60,300,0">
             <Grid Background="#1e1e1e" Grid.ZIndex="2">
                 <StackPanel Orientation="Vertical">
-                    <local:ButtonX local:ButtonText="文件 ▲" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Center" local:Click="FileSetBoxControl"/>
+                    <local:ButtonX local:ButtonText="当前 ▲" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Center" local:Click="FileSetBoxControl"/>
                     <Border Height="20"/>
-                    <local:ButtonX x:Name="NewScore" local:ButtonText="新建    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center"/>
+                    <local:ButtonX x:Name="NewScore" local:ButtonText="新建    " local:BorderAnimationSide="8,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Tomato" local:HoverTextColor="Tomato" HorizontalAlignment="Center"/>
                     <Border Height="20"/>
-                    <local:ButtonX x:Name="SaveScore" local:ButtonText="解析    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center" local:Click="OutPutData"/>
+                    <local:ButtonX x:Name="ReadScore" local:ButtonText="读档    " local:BorderAnimationSide="8,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Lime" local:HoverTextColor="Lime" HorizontalAlignment="Center" local:Click="InPutData"/>
                     <Border Height="20"/>
-                    <local:ButtonX x:Name="ReadScore" local:ButtonText="读取    " local:BorderAnimationSide="3,0,0,0" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="200" Height="50" local:BorderAnimationColor="Cyan" local:HoverTextColor="Cyan" HorizontalAlignment="Center" local:Click="InPutData"/>
+                    <local:ButtonX Width="200" Height="50" BorderAnimationSide="8,0,0,0" ButtonText="添加节 " local:Click="AddFromEnd" ButtonTextColor="White" ButtonTextSize="40" BorderAnimationColor="Cyan" HoverTextColor="Cyan"/>
+                    <Border Height="20"/>
+                    <local:ButtonX Width="200" Height="50" BorderAnimationSide="8,0,0,0" ButtonText="删除节 " local:Click="DeleteFromEnd" ButtonTextColor="White" ButtonTextSize="40" BorderAnimationColor="Cyan" HoverTextColor="Cyan"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -173,17 +191,15 @@
                 <TextBlock Foreground="White" FontSize="40" Text="曲名" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="715,36,0,0" Width="118"/>
 
                 <TextBlock Foreground="White" FontSize="40" Text="  速度" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="457,37,0,0" Width="118"/>
-                <TextBox x:Name="Right" Text="4" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="272,124,983,108"/>
+                <TextBox x:Name="Right" Text="4" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="272,124,983,108" TextChanged="Right_TextChanged"/>
                 <TextBlock Foreground="White" FontSize="40" Text="  拍号" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="457,142,0,0" Width="118"/>
-                <TextBox x:Name="Left" Text="4" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="19,124,1236,108"/>
+                <TextBox x:Name="Left" Text="4" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="50" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="19,124,1236,108" TextChanged="Left_TextChanged"/>
 
                 <TextBlock Text="/" FontSize="70" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,123,0,0"/>
-                <TextBox x:Name="Speed" Text="80" FontSize="50" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="19,18,983,214"/>
+                <TextBox x:Name="Speed" Text="80" FontSize="50" BorderBrush="White" BorderThickness="2" Background="Transparent" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="Cyan" MouseEnter="MouEnter" MouseLeave="MouLeave" PreviewTextInput="WhileInput" Margin="19,18,983,214" TextChanged="Speed_TextChanged"/>
 
                 <local:ButtonX local:ButtonText=" 乐谱参数 ▲" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="290" Height="60" local:BorderAnimationColor="White" local:HoverTextColor="White" HorizontalAlignment="Left" Margin="1130,10,0,249" local:Click="SettingsBoxControl"/>
-
-                <local:ButtonX local:ButtonText="应用" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="100" Height="60" Margin="19,249,1311,10"/>
-                <local:ButtonX local:ButtonText="恢复默认" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="180" Height="60" Margin="395,249,855,10"/>
+                <local:ButtonX local:ButtonText="恢复默认" local:BorderAnimationSide="1" local:ButtonTextColor="White" local:ButtonTextSize="40" Width="180" Height="60" Margin="395,249,855,10" local:Click="SetToDefaultTheory"/>
             </Grid>
         </Border>
     </Grid>

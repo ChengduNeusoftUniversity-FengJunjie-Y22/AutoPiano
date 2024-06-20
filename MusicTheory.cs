@@ -38,7 +38,7 @@ namespace AutoPiano
                 }
                 else
                 {
-                    _speed = 150;
+                    _speed = 80;
                 }
                 ReCalculateSets();
             }

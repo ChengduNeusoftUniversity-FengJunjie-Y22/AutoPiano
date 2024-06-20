@@ -243,17 +243,9 @@ namespace AutoPiano
 
             try
             {
-                if (IsNormalInput)
-                {
-                    CurrentSong = FileTool.DeserializeObject<Song>(DataTypes.PublicAutoData).Item2;
-                    SongName.Text = CurrentSong.Name;
-                }
-                else
-                {
-                    var result = FileTool.ReadTxtFile();
-                    CurrentSong = StringProcessing.SongParse(result.Item3);
-                    SongName.Text = result.Item2;
-                }
+                var result = FileTool.ReadTxtFile();
+                CurrentSong = StringProcessing.SongParse(result.Item3);
+                SongName.Text = result.Item2;
             }
             catch { MessageBox.Show("解析txt失败，请检查文本格式是否正确!"); }
         }

@@ -252,7 +252,6 @@ namespace AutoPiano
             return (false, new T());
         }
 
-
         /// <summary>
         /// 选择并读取Txt文件
         /// </summary>
