@@ -166,6 +166,36 @@ namespace AutoPiano
             return false;
         }
 
+        public static bool SerializeObject(MetaData binobject, string filePath, bool IsTextOutput)
+        {
+            if (IsTextOutput)
+            {
+                try
+                {
+                    File.WriteAllText(filePath, StringProcessing.MetaDataToNormalData(binobject));
+                    return true;
+                }
+                catch { return false; }
+            }
+            else
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(filePath, FileMode.Create))
+                    {
+                        BinaryFormatter formatter = new BinaryFormatter();
+                        formatter.Serialize(fs, binobject);
+                    }
+
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
         /// <summary>
         /// 依据数据类型，打开指定文件夹，读取指定文件
         /// </summary>

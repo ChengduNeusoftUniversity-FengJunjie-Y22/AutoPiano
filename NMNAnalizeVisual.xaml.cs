@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -164,8 +165,34 @@ namespace AutoPiano
         }
         private void SumTempToFloder(object sender, RoutedEventArgs e)
         {
-            FileTool.SerializeObject<Song>(SumSong(), TxtAnalizeVisual.IsNormalOutput ? DataTypes.PublicVisualData : DataTypes.PrivateVisualData, SongName.Text);
-            NewTip("已合成并输出至【文件夹】", 1500);
+            foreach (var item in PrivateObjects.Children)
+            {
+                if (item is TempData data)
+                {
+                    MetaData metaData = new MetaData();
+                    if (data.Data != null) { metaData.CopyDataFrom(data.Data); }
+                    if (TxtAnalizeVisual.IsNormalOutput)
+                    {
+                        string floderPath = System.IO.Path.Combine(FileTool.PublicVisualData, data.Name);
+                        if (!System.IO.Directory.Exists(floderPath))
+                        {
+                            System.IO.Directory.CreateDirectory(floderPath);
+                        }
+                        FileTool.SerializeObject(metaData, System.IO.Path.Combine(floderPath, data.GetFullName() + ".txt"), true);
+                        NewTip($"已合成并输出至【{floderPath}】", 4000);
+                    }
+                    else
+                    {
+                        string floderPath = System.IO.Path.Combine(FileTool.PrivateVisualData, data.Name);
+                        if (!System.IO.Directory.Exists(floderPath))
+                        {
+                            System.IO.Directory.CreateDirectory(floderPath);
+                        }
+                        FileTool.SerializeObject(metaData, System.IO.Path.Combine(floderPath, data.GetFullName() + ".bin"), false);
+                        NewTip($"已合成并输出至【{floderPath}】", 4000);
+                    }
+                }
+            }
         }
         private void AddFromEnd(object sender, RoutedEventArgs e)
         {
@@ -432,6 +459,10 @@ namespace AutoPiano
             public int Start = 0;
             public int End = 0;
 
+            public string GetFullName()
+            {
+                return Name + $"  【 {Start} - {End} 】  ";
+            }
             public string GetFullName(int start, int end)
             {
                 return Name + $"  【 {start} - {end} 】  ";
