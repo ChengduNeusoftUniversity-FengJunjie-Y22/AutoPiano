@@ -29,7 +29,12 @@ namespace AutoPiano
         public NMNAnalizeVisual()
         {
             InitializeComponent();
-            NewMusic();
+            NumberedMusicalNotation.MusicScore temp = new NumberedMusicalNotation.MusicScore();
+            temp.AddDefaultParagraph();
+            temp.AddDefaultParagraph();
+            temp.AddDefaultParagraph();
+            temp.AddDefaultParagraph();
+            MusicScore = temp;
             NewScore.Click = (sender, e) =>
             {
                 NewMusic();
@@ -72,11 +77,18 @@ namespace AutoPiano
                 _ms.Update();
                 SongBox.Content = _ms;
                 _ms.UpdateCoresAfterUILoaded();
-                ScrollControl.Maximum = _ms.Paragraphs.Count * 50;
+                MySlider.Maximum = _ms.ActualWidth;
             }
         }
         public void NewMusic()
         {
+            MessageBoxResult result = MessageBox.Show($"确定要创建新的简谱吗?这将不会保留当前的数据。", "⚠危险操作", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+
             NumberedMusicalNotation.MusicScore temp = new NumberedMusicalNotation.MusicScore();
             temp.AddDefaultParagraph();
             temp.AddDefaultParagraph();
@@ -101,10 +113,6 @@ namespace AutoPiano
         public string GetName()
         {
             return $"{SongName.Text} [{Index + 1}-{Index + MusicScore.Paragraphs.Count}]";
-        }
-        public void SortTemp()
-        {
-
         }
         private void OutPutData(object sender, RoutedEventArgs e)
         {
@@ -142,6 +150,13 @@ namespace AutoPiano
         }
         private void ClearTempObject(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show($"确定要清空暂存的数据吗?", "⚠危险操作", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+
             PrivateObjects.Children.Clear();
             Index = 0;
             NewTip("⚠已清除工作簿", 1500);
@@ -201,6 +216,12 @@ namespace AutoPiano
         }
         private void DeleteFromEnd(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult result = MessageBox.Show($"确定要从结尾处删除一小节吗?", "⚠危险操作", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
             MusicScore.DeleteLastParagraph();
             NewTip("⚠从末尾处删除了一个小节", 1000);
         }
@@ -320,10 +341,6 @@ namespace AutoPiano
         #endregion
 
 
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            SongBox.ScrollToHorizontalOffset(e.NewValue);
-        }
         private void MouEnter(object sender, RoutedEventArgs e)
         {
             if (sender is Button button)
@@ -467,6 +484,12 @@ namespace AutoPiano
             {
                 return Name + $"  【 {start} - {end} 】  ";
             }
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (MySlider.Maximum != _ms.ActualWidth) { MySlider.Maximum = _ms.ActualWidth; }
+            SongBox.ScrollToHorizontalOffset(e.NewValue);
         }
     }
 }

@@ -183,14 +183,14 @@
         <Border Width="300" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,370,0,296">
             <Button Name="SaveButton" Content="存档" Width="300" FontSize="40" MouseEnter="MouEnter" MouseLeave="MouLeave" Click="Button_Click_2"/>
         </Border>
-        <Border Width="1135" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,62,305,604">
+        <Border Width="1135" HorizontalAlignment="Right" BorderThickness="4,1,4,1" BorderBrush="White" Margin="0,62,305,604">
             <Grid>
                 <TextBlock Foreground="White" FontSize="40" VerticalAlignment="Top" Text="空格代表的时值" HorizontalAlignment="Right" Margin="0,10,10,0"/>
                 <TextBlock Name="SpaceValue" Foreground="White" FontSize="40" VerticalAlignment="Top" Text="当前 : " HorizontalAlignment="Right" Margin="0,10,809,0" Width="312"/>
                 <Slider Style="{StaticResource BeautifySliderStyle}" Width="451" Height="2" HorizontalAlignment="Left" Margin="344,22,0,22" Maximum="800" Minimum="100" ValueChanged="Slider_ValueChanged_1" Value="400"/>
             </Grid>
         </Border>
-        <Border Width="1135" HorizontalAlignment="Right" BorderThickness="0,0,4,0" BorderBrush="White" Margin="0,160,305,506">
+        <Border Width="1135" HorizontalAlignment="Right" BorderThickness="4,1,4,1" BorderBrush="White" Margin="0,160,305,506">
             <Grid>
                 <TextBlock Foreground="White" FontSize="40" VerticalAlignment="Top" Text="微调尺度" HorizontalAlignment="Right" Margin="0,10,10,0"/>
                 <TextBlock Name="AdjustValue" Foreground="White" FontSize="40" VerticalAlignment="Top" Text="当前 : " HorizontalAlignment="Right" Margin="0,10,809,0" Width="312"/>

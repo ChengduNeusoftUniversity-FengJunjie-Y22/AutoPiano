@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using static AutoPiano.NumberedMusicalNotation;
 using System.Reflection;
 using System.Windows.Controls.Primitives;
+using FastHotKeyForWPF;
 
 namespace AutoPiano
 {
@@ -218,6 +219,20 @@ namespace AutoPiano
         }
 
 
+        public void LoadFixedHotKey()//注册一些固定不可变的快捷键
+        {
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.LEFT, LastNote);
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.RIGHT, NextNote);
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.UP, AddSpan);
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.DOWN, DeleteSpan);
+
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.LEFT);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.RIGHT);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.UP);
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.DOWN);
+        }
+
+
         #region 拖条处理
         public bool IsMouseInSlider = false;
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -249,7 +264,6 @@ namespace AutoPiano
             }
             catch { MessageBox.Show("解析txt失败，请检查文本格式是否正确!"); }
         }
-
         private void Button_Click_1(object sender, RoutedEventArgs e)//粘贴板解析
         {
             CurrentSong.Stop();
@@ -269,20 +283,17 @@ namespace AutoPiano
             }
             catch { MessageBox.Show("解析粘贴板失败，请检查文本格式是否正确！"); }
         }
-
         private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)//一个空格所代表的时值
         {
             SpaceValue.Text = "当前 : " + (int)e.NewValue;
             StringProcessing.BlankSpace = (int)e.NewValue;
             if (IsPageLoaded) LittelChange.Value = e.NewValue / 8;
         }
-
         private void Slider_ValueChanged_2(object sender, RoutedPropertyChangedEventArgs<double> e)//微调时的变化量
         {
             AdjustValue.Text = "当前 : " + (int)e.NewValue;
             StringProcessing.BlankSpace_Re = (int)e.NewValue;
         }
-
         private async void Button_Click_2(object sender, RoutedEventArgs e)//存档
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
@@ -320,7 +331,6 @@ namespace AutoPiano
             SaveButton.Content = "存档";
             SaveButton.Foreground = Brushes.White;
         }
-
         private async void Button_Click_3(object sender, RoutedEventArgs e)//读档
         {
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); }
@@ -627,6 +637,50 @@ namespace AutoPiano
         }
         private void Button_Click_8(object sender, RoutedEventArgs e)//加速
         {
+            DeleteSpan();
+        }
+        private void Button_Click_9(object sender, RoutedEventArgs e)//降速
+        {
+            AddSpan();
+        }
+        private void Button_Click_7(object sender, RoutedEventArgs e)//下一个音符
+        {
+            NextNote();
+        }
+        private void Button_Click_6(object sender, RoutedEventArgs e)//上一个音符
+        {
+            LastNote();
+        }
+        private void Close(object sender, RoutedEventArgs e)//退出专注
+        {
+            UnExpendBox();
+        }
+        public void AddSpan()
+        {
+            if (EditArea.PageType != PageTypes.TxtAnalize) { return; }
+            try
+            {
+                if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
+                object temp1 = CurrentSong.notes[CurrentSong.Position];
+                if (temp1 is Note note1)
+                {
+                    note1.Span += StringProcessing.BlankSpace_Re;
+                }
+                else if (temp1 is Chord chord1)
+                {
+                    chord1.Chords.Last().Span += StringProcessing.BlankSpace_Re;
+                }
+                else if (temp1 is NullNote nunote1)
+                {
+                    nunote1.Span += StringProcessing.BlankSpace_Re;
+                }
+                CurrentSong.Position = CurrentSong.Position;
+            }
+            catch { }
+        }
+        public void DeleteSpan()
+        {
+            if (EditArea.PageType != PageTypes.TxtAnalize) { return; }
             try
             {
                 if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
@@ -671,42 +725,18 @@ namespace AutoPiano
             }
             catch { }
         }
-        private void Button_Click_9(object sender, RoutedEventArgs e)//降速
+        public void NextNote()
         {
-            try
-            {
-                if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
-                object temp1 = CurrentSong.notes[CurrentSong.Position];
-                if (temp1 is Note note1)
-                {
-                    note1.Span += StringProcessing.BlankSpace_Re;
-                }
-                else if (temp1 is Chord chord1)
-                {
-                    chord1.Chords.Last().Span += StringProcessing.BlankSpace_Re;
-                }
-                else if (temp1 is NullNote nunote1)
-                {
-                    nunote1.Span += StringProcessing.BlankSpace_Re;
-                }
-                CurrentSong.Position = CurrentSong.Position;
-            }
-            catch { }
-        }
-        private void Button_Click_7(object sender, RoutedEventArgs e)//下一个音符
-        {
+            if (EditArea.PageType != PageTypes.TxtAnalize) { return; }
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
             IsPreviewSingleOne = true;
             CurrentSong.Position++;
         }
-        private void Button_Click_6(object sender, RoutedEventArgs e)//上一个音符
+        public void LastNote()
         {
+            if (EditArea.PageType != PageTypes.TxtAnalize) { return; }
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
             CurrentSong.Position--;
-        }
-        private void Close(object sender, RoutedEventArgs e)//退出专注
-        {
-            UnExpendBox();
         }
         #endregion
 

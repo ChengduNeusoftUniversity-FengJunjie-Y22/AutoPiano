@@ -37,6 +37,7 @@ namespace AutoPiano
             TxtAnalizeVisual.InstrumentType = InstrumentTypes.FWPiano;
 
             HotKeySet.LoadPage();
+            TxtAnalizeVisual.Instance?.LoadFixedHotKey();
 
             TempInfos.LoadTempInfo();
             TempInfos.UseTempInfo();

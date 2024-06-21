@@ -163,7 +163,7 @@ namespace AutoPiano
                 Width = 17,
                 ButtonTextColor = Brushes.White,
                 ButtonTextSize = 13,
-                BorderAnimationSide = new Thickness(1, 0, 1, 0),
+                BorderAnimationSide = new Thickness(1, 1, 1, 0),
                 BorderAnimationColor = Brushes.White,
                 HoverTextColor = Brushes.Cyan
             };
@@ -205,7 +205,7 @@ namespace AutoPiano
                 Width = 17,
                 ButtonTextColor = Brushes.White,
                 ButtonTextSize = 13,
-                BorderAnimationSide = new Thickness(1, 0, 1, 0),
+                BorderAnimationSide = new Thickness(1, 0, 1, 1),
                 BorderAnimationColor = Brushes.White,
                 HoverTextColor = Brushes.Cyan
             };
@@ -240,20 +240,13 @@ namespace AutoPiano
             }
 
             /// <summary>
-            /// 滚轮统计值
-            /// </summary>
-            public static int ScrollValue = 0;
-
-            /// <summary>
             /// 改变音阶
             /// </summary>
             private void ChangeKey(object sender, MouseWheelEventArgs e)
             {
                 if (IsBlankStay) { return; }
-                ScrollValue += e.Delta;
-                if (ScrollValue > 200)
+                if (e.Delta > 0)
                 {
-                    ScrollValue = 0;
                     if (Key > 0)
                     {
                         Key += 1;
@@ -263,9 +256,8 @@ namespace AutoPiano
                     Key -= 1;
                     ReLoadCore();
                 }
-                else if (ScrollValue < -200)
+                else if (e.Delta < 0)
                 {
-                    ScrollValue = 0;
                     if (Key > 0)
                     {
                         if (_key - 1 == 0)
@@ -286,7 +278,6 @@ namespace AutoPiano
                     Key += 1;
                 }
                 ReLoadCore();
-                e.Handled = true;
             }
 
             /// <summary>
@@ -937,11 +928,6 @@ namespace AutoPiano
         /// </summary>
         public class Paragraph : StackPanel
         {
-            /// <summary>
-            /// 存储小节的父容器
-            /// </summary>
-            public MusicScore? FatherBox;
-
             public Paragraph()
             {
                 Orientation = Orientation.Horizontal;
@@ -1038,10 +1024,7 @@ namespace AutoPiano
                 bool isCtrlPressed = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
                 if (isCtrlPressed)
                 {
-                    if (FatherBox != null)
-                    {
-                        CopyThisToFahter();
-                    }
+                    CopyThisToFahter();
                 }
                 else
                 {
@@ -1061,19 +1044,12 @@ namespace AutoPiano
 
                     if (result == MessageBoxResult.Yes)
                     {
-                        if (FatherBox != null)
+                        StackPanel stackPanel = Parent as StackPanel;
+                        if (stackPanel != null)
                         {
-                            if (FatherBox.Paragraphs.Contains(this))
+                            if (stackPanel.Children.Contains(this))
                             {
-                                FatherBox.Paragraphs.Remove(this);
-                            }
-                            StackPanel stackPanel = Parent as StackPanel;
-                            if (stackPanel != null)
-                            {
-                                if (stackPanel.Children.Contains(this))
-                                {
-                                    stackPanel.Children.Remove(this);
-                                }
+                                stackPanel.Children.Remove(this);
                             }
                         }
                     }
@@ -1280,7 +1256,6 @@ namespace AutoPiano
                 Paragraph paragraph = new Paragraph();
                 paragraph.Children.Add(paragraph.PlayParagraph);
                 paragraph.Children.Add(paragraph.Tracks);
-                paragraph.FatherBox = FatherBox;
                 foreach (Track track in Tracks.Children)
                 {
                     paragraph.Tracks.Children.Add(track.CreatCopyedOne());
@@ -1296,7 +1271,6 @@ namespace AutoPiano
             {
                 Paragraph paragraph = new Paragraph();
                 paragraph.Children.Add(paragraph.Tracks);
-                paragraph.FatherBox = FatherBox;
                 paragraph.Width = double.NaN;
                 foreach (Track track in Tracks.Children)
                 {
@@ -1310,13 +1284,14 @@ namespace AutoPiano
             /// </summary>
             public void CopyThisToFahter()
             {
-                StackPanel parentStackPanel = Parent as StackPanel;
+                MusicScore parentStackPanel = Parent as MusicScore;
 
                 if (parentStackPanel != null)
                 {
                     Paragraph paragraph = CreatCopyedOne();
                     parentStackPanel.Children.Add(paragraph);
-                    FatherBox.Paragraphs.Add(paragraph);
+                    parentStackPanel.Paragraphs.Add(paragraph);
+                    parentStackPanel.UpdateCoresAfterUILoaded();
                 }
             }
         }
@@ -1365,7 +1340,6 @@ namespace AutoPiano
                 foreach (Paragraph data in Paragraphs)
                 {
                     Children.Add(data);
-                    data.FatherBox = this;
                 }
             }
 
@@ -1446,7 +1420,6 @@ namespace AutoPiano
             {
                 Paragraph result = new Paragraph().GetDefaultGrid();
                 result.IndexInMusicScore = Children.Count;
-                result.FatherBox = this;
                 Paragraphs.Add(result);
                 Children.Add(result);
             }
@@ -1502,7 +1475,6 @@ namespace AutoPiano
                 foreach (Paragraph data in metaData.GetMusicScore().Paragraphs)
                 {
                     Paragraphs.Add(data);
-                    data.FatherBox = this;
                 }
             }
 
