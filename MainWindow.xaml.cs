@@ -36,7 +36,6 @@ namespace AutoPiano
             AudioBasic.UpdateAudioByType(InstrumentTypes.FWPiano);
             TxtAnalizeVisual.InstrumentType = InstrumentTypes.FWPiano;
 
-            HotKeySet.LoadPage();
             TxtAnalizeVisual.Instance?.LoadFixedHotKey();
 
             TempInfos.LoadTempInfo();

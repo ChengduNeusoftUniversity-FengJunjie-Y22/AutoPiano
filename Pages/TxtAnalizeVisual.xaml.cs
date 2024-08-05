@@ -655,6 +655,10 @@ namespace AutoPiano
         {
             UnExpendBox();
         }
+        public void AddSpan(object sender, HotKeyEventArgs e)
+        {
+            AddSpan();
+        }
         public void AddSpan()
         {
             if (EditArea.PageType != PageTypes.TxtAnalize) { return; }
@@ -677,6 +681,10 @@ namespace AutoPiano
                 CurrentSong.Position = CurrentSong.Position;
             }
             catch { }
+        }
+        public void DeleteSpan(object sender, HotKeyEventArgs e)
+        {
+            DeleteSpan();
         }
         public void DeleteSpan()
         {
@@ -725,12 +733,20 @@ namespace AutoPiano
             }
             catch { }
         }
+        public void NextNote(object sender, HotKeyEventArgs e)
+        {
+            NextNote();
+        }
         public void NextNote()
         {
             if (EditArea.PageType != PageTypes.TxtAnalize) { return; }
             if (CurrentSong.IsOnPlaying) { CurrentSong.Pause(); return; }
             IsPreviewSingleOne = true;
             CurrentSong.Position++;
+        }
+        public void LastNote(object sender, HotKeyEventArgs e)
+        {
+            LastNote();
         }
         public void LastNote()
         {

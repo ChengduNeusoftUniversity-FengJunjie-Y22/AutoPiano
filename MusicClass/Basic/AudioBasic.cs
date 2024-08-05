@@ -152,7 +152,7 @@ namespace AutoPiano
                     for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForFW, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForFW.Path, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -161,7 +161,7 @@ namespace AutoPiano
                     for (int i = 0; i < 14; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForWF, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForWF.Path, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -170,7 +170,7 @@ namespace AutoPiano
                     for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForJH, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForJH.Path, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -179,7 +179,7 @@ namespace AutoPiano
                     for (int i = 0; i < 21; i++)
                     {
                         MediaPlayer mediaPlayer = new MediaPlayer();
-                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForXM, AudioName[i])));
+                        mediaPlayer.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForXM.Path, AudioName[i])));
                         result.Add(AdudioKey[i], mediaPlayer);
                     }
                     KeyToMediaPlayer = result;
@@ -187,16 +187,16 @@ namespace AutoPiano
                 case InstrumentTypes.HLDrum:
 
                     MediaPlayer mediaPlayer1 = new MediaPlayer();
-                    mediaPlayer1.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[7])));
+                    mediaPlayer1.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL.Path, AudioName[7])));
                     result.Add(AdudioKey[7], mediaPlayer1);
                     MediaPlayer mediaPlayer2 = new MediaPlayer();
-                    mediaPlayer2.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[8])));
+                    mediaPlayer2.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL.Path, AudioName[8])));
                     result.Add(AdudioKey[8], mediaPlayer2);
                     MediaPlayer mediaPlayer3 = new MediaPlayer();
-                    mediaPlayer3.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[21])));
+                    mediaPlayer3.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL.Path, AudioName[21])));
                     result.Add(AdudioKey[21], mediaPlayer3);
                     MediaPlayer mediaPlayer4 = new MediaPlayer();
-                    mediaPlayer4.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL, AudioName[22])));
+                    mediaPlayer4.Open(new Uri(System.IO.Path.Combine(FileTool.AudioForHL.Path, AudioName[22])));
                     result.Add(AdudioKey[22], mediaPlayer4);
 
                     KeyToMediaPlayer = result;

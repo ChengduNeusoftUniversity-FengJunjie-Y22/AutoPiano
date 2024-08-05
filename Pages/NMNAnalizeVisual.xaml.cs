@@ -188,7 +188,7 @@ namespace AutoPiano
                     if (data.Data != null) { metaData.CopyDataFrom(data.Data); }
                     if (TxtAnalizeVisual.IsNormalOutput)
                     {
-                        string floderPath = System.IO.Path.Combine(FileTool.PublicVisualData, data.Name);
+                        string floderPath = System.IO.Path.Combine(FileTool.PublicVisualData.Path, data.Name);
                         if (!System.IO.Directory.Exists(floderPath))
                         {
                             System.IO.Directory.CreateDirectory(floderPath);
@@ -198,7 +198,7 @@ namespace AutoPiano
                     }
                     else
                     {
-                        string floderPath = System.IO.Path.Combine(FileTool.PrivateVisualData, data.Name);
+                        string floderPath = System.IO.Path.Combine(FileTool.PrivateVisualData.Path, data.Name);
                         if (!System.IO.Directory.Exists(floderPath))
                         {
                             System.IO.Directory.CreateDirectory(floderPath);

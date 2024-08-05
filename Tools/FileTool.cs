@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Xml.Serialization;
 using System.Xml.XPath;
+using FolderTree;
 
 public enum DataTypes
 {
@@ -30,83 +31,34 @@ namespace AutoPiano
     public static class FileTool
     {
         //文件夹 - 1级 - 总文件夹
-        public static readonly string DataFloder = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Data");
+        public static readonly FolderNode DataFloder = new FolderNode("Data");
 
         //文件夹 - 2级 - 公私格式的解析结果数据
-        public static readonly string PublicData = System.IO.Path.Combine(DataFloder, "Public");
-        public static readonly string PrivateData = System.IO.Path.Combine(DataFloder, "Private");
-        public static readonly string AudioSource = System.IO.Path.Combine(DataFloder, "AudioSource");
+        public static readonly FolderNode PublicData = new FolderNode("Public", DataFloder);
+        public static readonly FolderNode PrivateData = new FolderNode("Private", DataFloder);
+        public static readonly FolderNode AudioSource = new FolderNode("AudioSource", DataFloder);
 
         //文件夹 - 3级 - 具体的数据
-        public static readonly string PublicAutoData = System.IO.Path.Combine(PublicData, "AutoData");
-        public static readonly string PublicVisualData = System.IO.Path.Combine(PublicData, "VisualData");
-        public static readonly string PrivateAutoData = System.IO.Path.Combine(PrivateData, "AutoData");
-        public static readonly string PrivateVisualData = System.IO.Path.Combine(PrivateData, "VisualData");
-        public static readonly string AudioForFW = System.IO.Path.Combine(AudioSource, "Audio_FW");
-        public static readonly string AudioForWF = System.IO.Path.Combine(AudioSource, "Audio_WF");
-        public static readonly string AudioForJH = System.IO.Path.Combine(AudioSource, "Audio_JH");
-        public static readonly string AudioForHL = System.IO.Path.Combine(AudioSource, "Audio_HL");
-        public static readonly string AudioForXM = System.IO.Path.Combine(AudioSource, "Audio_XM");
+        public static readonly FolderNode PublicAutoData = new FolderNode("AutoData", PublicData);
+        public static readonly FolderNode PublicVisualData = new FolderNode("VisualData", PublicData);
+        public static readonly FolderNode PrivateAutoData = new FolderNode("AutoData", PrivateData);
+        public static readonly FolderNode PrivateVisualData = new FolderNode("VisualData", PrivateData);
+        public static readonly FolderNode AudioForFW = new FolderNode("Audio_FW", AudioSource);
+        public static readonly FolderNode AudioForWF = new FolderNode("Audio_WF", AudioSource);
+        public static readonly FolderNode AudioForJH = new FolderNode("Audio_JH", AudioSource);
+        public static readonly FolderNode AudioForHL = new FolderNode("Audio_HL", AudioSource);
+        public static readonly FolderNode AudioForXM = new FolderNode("Audio_XM", AudioSource);
 
-        //用户上次选择的文件夹
-        public static string? TempSelectedFloder = null;
-
+        /// <summary>
+        /// 确保数据文件夹存在
+        /// </summary>
         public static void CheckDataFloder()
         {
-            if (!System.IO.Directory.Exists(DataFloder))
-            {
-                System.IO.Directory.CreateDirectory(DataFloder);
-            }
-
-            if (!System.IO.Directory.Exists(PublicData))
-            {
-                System.IO.Directory.CreateDirectory(PublicData);
-            }
-            if (!System.IO.Directory.Exists(PrivateData))
-            {
-                System.IO.Directory.CreateDirectory(PrivateData);
-            }
-            if (!System.IO.Directory.Exists(AudioSource))
-            {
-                System.IO.Directory.CreateDirectory(AudioSource);
-            }
-
-            if (!System.IO.Directory.Exists(PublicAutoData))
-            {
-                System.IO.Directory.CreateDirectory(PublicAutoData);
-            }
-            if (!System.IO.Directory.Exists(PublicVisualData))
-            {
-                System.IO.Directory.CreateDirectory(PublicVisualData);
-            }
-            if (!System.IO.Directory.Exists(PrivateAutoData))
-            {
-                System.IO.Directory.CreateDirectory(PrivateAutoData);
-            }
-            if (!System.IO.Directory.Exists(PrivateVisualData))
-            {
-                System.IO.Directory.CreateDirectory(PrivateVisualData);
-            }
-            if (!System.IO.Directory.Exists(AudioForFW))
-            {
-                System.IO.Directory.CreateDirectory(AudioForFW);
-            }
-            if (!System.IO.Directory.Exists(AudioForWF))
-            {
-                System.IO.Directory.CreateDirectory(AudioForWF);
-            }
-            if (!System.IO.Directory.Exists(AudioForJH))
-            {
-                System.IO.Directory.CreateDirectory(AudioForJH);
-            }
-            if (!System.IO.Directory.Exists(AudioForHL))
-            {
-                System.IO.Directory.CreateDirectory(AudioForHL);
-            }
-            if (!System.IO.Directory.Exists(AudioForXM))
-            {
-                System.IO.Directory.CreateDirectory(AudioForXM);
-            }
+            FolderManager.Creat(DataFloder, 
+                                PublicData, PrivateData, AudioSource, 
+                                PublicAutoData, PublicVisualData, 
+                                PrivateAutoData, PrivateVisualData,
+                                AudioForFW, AudioForWF, AudioForJH, AudioForHL, AudioForXM);
         }
 
         /// <summary>
@@ -344,16 +296,16 @@ namespace AutoPiano
             switch (target)
             {
                 case DataTypes.PublicAutoData:
-                    result = PublicAutoData;
+                    result = PublicAutoData.Path;
                     break;
                 case DataTypes.PublicVisualData:
-                    result = PublicVisualData;
+                    result = PublicVisualData.Path;
                     break;
                 case DataTypes.PrivateAutoData:
-                    result = PrivateAutoData;
+                    result = PrivateAutoData.Path;
                     break;
                 case DataTypes.PrivateVisualData:
-                    result = PrivateVisualData;
+                    result = PrivateVisualData.Path;
                     break;
             }
             return result;

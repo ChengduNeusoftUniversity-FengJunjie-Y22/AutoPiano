@@ -118,21 +118,6 @@ namespace AutoPiano
 
             if (HotKeySet.Instance != null)
             {
-                if (HotKeySet.Instance.k1 != null) Instance.A1 = HotKeySet.Instance.k1.CurrentKeyA;
-                if (HotKeySet.Instance.k1 != null) Instance.A2 = HotKeySet.Instance.k1.CurrentKeyB;
-
-                if (HotKeySet.Instance.k2 != null) Instance.B1 = HotKeySet.Instance.k2.CurrentKeyA;
-                if (HotKeySet.Instance.k2 != null) Instance.B2 = HotKeySet.Instance.k2.CurrentKeyB;
-
-                if (HotKeySet.Instance.k3 != null) Instance.C1 = HotKeySet.Instance.k3.CurrentKeyA;
-                if (HotKeySet.Instance.k3 != null) Instance.C2 = HotKeySet.Instance.k3.CurrentKeyB;
-
-                if (HotKeySet.Instance.k4 != null) Instance.D1 = HotKeySet.Instance.k4.CurrentKeyA;
-                if (HotKeySet.Instance.k4 != null) Instance.D2 = HotKeySet.Instance.k4.CurrentKeyB;
-
-                if (HotKeySet.Instance.k5 != null) Instance.E1 = HotKeySet.Instance.k5.CurrentKeyA;
-                if (HotKeySet.Instance.k5 != null) Instance.E2 = HotKeySet.Instance.k5.CurrentKeyB;
-
                 Instance.IsSameModel = HotKeySet.Instance.IsSameDataMode;
 
                 if (NMNAnalizeVisual.Instance != null)
@@ -184,21 +169,6 @@ namespace AutoPiano
 
             if (HotKeySet.Instance != null)
             {
-                if (HotKeySet.Instance.k1 != null) HotKeySet.Instance.k1.CurrentKeyA = Instance.A1;
-                if (HotKeySet.Instance.k1 != null) HotKeySet.Instance.k1.CurrentKeyB = Instance.A2;
-
-                if (HotKeySet.Instance.k2 != null) HotKeySet.Instance.k2.CurrentKeyA = Instance.B1;
-                if (HotKeySet.Instance.k2 != null) HotKeySet.Instance.k2.CurrentKeyB = Instance.B2;
-
-                if (HotKeySet.Instance.k3 != null) HotKeySet.Instance.k3.CurrentKeyA = Instance.C1;
-                if (HotKeySet.Instance.k3 != null) HotKeySet.Instance.k3.CurrentKeyB = Instance.C2;
-
-                if (HotKeySet.Instance.k4 != null) HotKeySet.Instance.k4.CurrentKeyA = Instance.D1;
-                if (HotKeySet.Instance.k4 != null) HotKeySet.Instance.k4.CurrentKeyB = Instance.D2;
-
-                if (HotKeySet.Instance.k5 != null) HotKeySet.Instance.k5.CurrentKeyA = Instance.E1;
-                if (HotKeySet.Instance.k5 != null) HotKeySet.Instance.k5.CurrentKeyB = Instance.E2;
-
                 HotKeySet.Instance.IsSameDataMode = Instance.IsSameModel;
 
                 if (NMNAnalizeVisual.Instance != null && Instance.MetaData != null)
@@ -221,8 +191,6 @@ namespace AutoPiano
                         NMNAnalizeVisual.Instance.PrivateObjects.Children.Add(temp);
                     }
                 }
-
-                HotKeySet.Instance.UpdateAfterUseTemp();
             }
         }
         #endregion
