@@ -10,7 +10,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FastHotKeyForWPF" Version="2.1.0" />
+		<PackageReference Include="FastHotKeyForWPF" Version="2.2.0" />
 		<PackageReference Include="FolderTree" Version="1.0.0" />
 		<PackageReference Include="InputSimulator" Version="1.0.4" />
 		<PackageReference Include="NetCore5.0.Microsoft.Expression.Drawing" Version="1.0.0" />

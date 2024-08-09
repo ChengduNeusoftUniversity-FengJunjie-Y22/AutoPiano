@@ -376,7 +376,7 @@ namespace AutoPiano
 
 
         #region 界面UI变动
-        private StackPanel[] LoadPanelBoxes()//加载音符显示区
+        public StackPanel[] LoadPanelBoxes()//加载音符显示区
         {
             StackPanel[] result = new StackPanel[CurrentSong.notes.Count];
             for (int i = 0; i < CurrentSong.notes.Count; i++)
@@ -784,11 +784,11 @@ namespace AutoPiano
         }
         public void RateFaster(object sender, RoutedEventArgs e)//比率加速
         {
-            CurrentSong *= (1 - SpeedChangeRate);
+            if (_data != null) { _data *= (1 - SpeedChangeRate); }
         }
         public void RateSlower(object sender, RoutedEventArgs e)//比率降速
         {
-            CurrentSong *= (1 + SpeedChangeRate);
+            if (_data != null) { _data *= (1 + SpeedChangeRate); }
         }
         #endregion
 

@@ -99,6 +99,14 @@ namespace AutoPiano
                 {
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
                     Instance = (TempInfos)binaryFormatter.Deserialize(memoryStream);
+                    if (Instance != null)
+                    {
+                        if (Instance.TempSong != null)
+                        {
+                            Instance.TempSong.IsStop = false;
+                            Instance.TempSong.IsOnPlaying = false;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
