@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         Background="#1e1e1e"
-        Title="MainWindow" Height="810" Width="1440" ResizeMode="NoResize" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Title="MainWindow" Height="810" Width="1440" ResizeMode="NoResize" MouseLeftButtonDown="Window_MouseLeftButtonDown" MaxHeight="10000">
     <Window.Resources>
         <Style TargetType="Ellipse">
             <Setter Property="Fill" Value="Cyan"/>

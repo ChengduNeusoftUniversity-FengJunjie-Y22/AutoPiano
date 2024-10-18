@@ -64,8 +64,8 @@
 
             <hk:HotKeyBox x:Name="KeyBoxA"
                           Width="600"
-                          CurrentKeyA="0x0005"
-                          CurrentKeyB="A"
+                          CurrentKeyA="0x002"
+                          CurrentKeyB="F1"
                           Handler="Play"
                           CornerRadius="15"
                           ActualBackground="#1e1e1e"
@@ -78,8 +78,8 @@
                           ErrorText="Failed" Margin="44,107,796,583"/>
             <hk:HotKeyBox x:Name="KeyBoxB"
                           Width="600"
-                          CurrentKeyA="0x0005"
-                          CurrentKeyB="S"
+                          CurrentKeyA="0x002"
+                          CurrentKeyB="F2"
                           Handler="Pause"
                           CornerRadius="15"
                           ActualBackground="#1e1e1e"
@@ -92,8 +92,8 @@
                           ErrorText="Failed" Margin="44,230,796,460"/>
             <hk:HotKeyBox x:Name="KeyBoxC"
                           Width="600"
-                          CurrentKeyA="0x0005"
-                          CurrentKeyB="D"
+                          CurrentKeyA="0x002"
+                          CurrentKeyB="F3"
                           Handler="Stop"
                           CornerRadius="15"
                           ActualBackground="#1e1e1e"
@@ -106,7 +106,7 @@
                           ErrorText="Failed" Margin="44,360,796,330"/>
             <hk:HotKeyBox x:Name="KeyBoxD"
                           Width="600"
-                          CurrentKeyA="0x0005"
+                          CurrentKeyA="0x0001"
                           CurrentKeyB="V"
                           Handler="InsideVisual"
                           CornerRadius="15"
@@ -120,7 +120,7 @@
                           ErrorText="Failed" Margin="44,490,796,200"/>
             <hk:HotKeyBox x:Name="KeyBoxE"
                           Width="600"
-                          CurrentKeyA="0x0005"
+                          CurrentKeyA="0x0001"
                           CurrentKeyB="C"
                           Handler="HideGameVisual"
                           CornerRadius="15"

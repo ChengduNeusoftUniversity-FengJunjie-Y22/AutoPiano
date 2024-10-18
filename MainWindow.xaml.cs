@@ -1,12 +1,13 @@
 ﻿using FastHotKeyForWPF;
-using System.Printing;
+using Microsoft.Expression.Shapes;
+using MinimalisticWPF;
+using OpenCvSharp;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Xml.Linq;
+using System.Windows.Shapes;
 
 /// <summary>
 ///  【MainWindow】当前页面类型
@@ -21,12 +22,14 @@ public enum PageTypes
 
 namespace AutoPiano
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         public MainWindow()
         {
             InitializeComponent();
         }
+
+
 
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -42,6 +45,14 @@ namespace AutoPiano
             TempInfos.UseTempInfo();
 
             base.OnSourceInitialized(e);
+
+            DynamicVisionGroup.SetPopupScreen();
+
+            GlobalHotKey.Add(ModelKeys.CTRL, NormalKeys.F4, (sender, e) =>
+            {
+                DynamicVisionGroup.UpdateArea();
+            });
+            GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.F4);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -50,6 +61,8 @@ namespace AutoPiano
 
             TempInfos.Update();
             TempInfos.SaveTempInfo();
+
+            DynamicVisionGroup.Popup.IsOpen = false;
 
             base.OnClosed(e);
         }

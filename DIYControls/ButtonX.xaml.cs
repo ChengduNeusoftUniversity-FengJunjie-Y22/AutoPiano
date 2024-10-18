@@ -138,6 +138,8 @@ namespace AutoPiano
         /// </summary>
         private Brush TempColor = Brushes.Transparent;
 
+        public List<string> Data = new List<string>();
+
         private void WhileMouseEnter(object sender, MouseEventArgs e)
         {
             TempColor = BT.Foreground;
