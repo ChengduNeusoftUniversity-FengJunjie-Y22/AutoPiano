@@ -9,13 +9,14 @@ using WindowsInput;
 namespace AutoPiano
 {
     [Serializable]
-    public class Note : AudioBasic
+    public class Note : AudioBasic, IMusicMethod
     {
         public Note() { }
 
-        public VirtualKeyCode Key { get; set; }
+        public int StartTime { get; set; } = 0;
+        public int Span { get; set; } = 0;
 
-        public int Span { get; set; }
+        public VirtualKeyCode Key { get; set; }
 
         /// <param name="code">操作码</param>
         /// <param name="span">时值</param>
@@ -64,6 +65,12 @@ namespace AutoPiano
         public string GetContentWithOutTime()
         {
             return GetKeyChar(Key).ToString();
+        }
+
+        public List<string> GetStringNodes()
+        {
+            List<string> nodes = new List<string>() { GetContentWithOutTime() };
+            return nodes;
         }
     }
 }

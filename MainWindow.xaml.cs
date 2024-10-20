@@ -53,6 +53,16 @@ namespace AutoPiano
                 DynamicVisionGroup.UpdateArea();
             });
             GlobalHotKey.ProtectHotKeyByKeys(ModelKeys.CTRL, NormalKeys.F4);
+
+            GlobalHotKey.Add(ModelKeys.CTRL | ModelKeys.ALT, NormalKeys.F1, async (sender, e) =>
+            {
+                await DynamicVisionGroup.Start();
+            });
+            GlobalHotKey.Add(ModelKeys.CTRL | ModelKeys.ALT, NormalKeys.F2, (sender, e) =>
+            {
+                DynamicVisionGroup.Parse(TxtAnalizeVisual.CurrentSong);
+            });
+
         }
 
         protected override void OnClosed(EventArgs e)

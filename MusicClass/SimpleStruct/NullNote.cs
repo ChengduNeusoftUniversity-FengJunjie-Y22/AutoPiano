@@ -8,9 +8,12 @@ using WindowsInput.Native;
 namespace AutoPiano
 {
     [Serializable]
-    public class NullNote : AudioBasic
+    public class NullNote : AudioBasic, IMusicMethod
     {
         public NullNote() { }
+
+        public int StartTime { get; set; } = 0;
+        public int Span { get; set; } = 0;
 
         public NullNote(int timeValue)
         {
@@ -18,22 +21,6 @@ namespace AutoPiano
         }
 
         public VirtualKeyCode Key = VirtualKeyCode.VK_I;
-
-        int _span = 0;
-
-        public int Span
-        {
-            get { return _span; }
-            set
-            {
-                if (value > -1)
-                {
-                    _span = value;
-                    return;
-                }
-                _span = 0;
-            }
-        }
 
         public void NewSpan(int span)
         {
@@ -65,6 +52,11 @@ namespace AutoPiano
         public string GetContentWithOutTime()
         {
             return "0";
+        }
+
+        public List<string> GetStringNodes()
+        {
+            return new List<string>();
         }
     }
 }

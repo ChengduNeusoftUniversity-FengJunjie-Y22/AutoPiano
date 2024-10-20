@@ -7,11 +7,18 @@ using System.Threading.Tasks;
 namespace AutoPiano
 {
     [Serializable]
-    public class Chord : AudioBasic
+    public class Chord : AudioBasic, IMusicMethod
     {
         public Chord() { }
 
         public List<Note> Chords = new List<Note>();//和弦=若干音符对象的合集
+
+        public int StartTime { get; set; } = 0;
+        public int Span
+        {
+            get => Chords.Last().Span;
+            set => Chords.Last().Span = value;
+        }
 
         //两种初始化和弦对象的方案
         public Chord(string chord, int span)
@@ -75,6 +82,16 @@ namespace AutoPiano
                 result += note.GetContentWithOutTime();
             }
             return result;
+        }
+
+        public List<string> GetStringNodes()
+        {
+            List<string> strings = new List<string>();
+            foreach (Note note in Chords)
+            {
+                strings.Add(note.GetContentWithOutTime());
+            }
+            return strings;
         }
     }
 }
