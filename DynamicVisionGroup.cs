@@ -179,7 +179,8 @@ namespace AutoPiano
                                 block.BeginTransition(delete);
                                 target.Preview();
                             };
-                        });
+                        })
+                        .PreLoad();
                     result[count].Add(animator);
                 }
                 count++;
